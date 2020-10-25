@@ -59,7 +59,9 @@ class FretDance:
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
         index = self.allFinger.index(finger)
         barre = fret - index
-        if distance > 1.5 * self.fretDistance:
+        if fret == 0:
+            actionPoint = 0
+        elif distance > 1.5 * self.fretDistance:
             self.changeBarre(barre)
             finger.string = string
             finger.fret = fret
@@ -69,7 +71,7 @@ class FretDance:
             finger.fret = fret
             actionPoint = distance
         finger.press = 1
-        self.trace.append(self.allFinger.index(finger)+1)
+        self.trace.append([string, fret, self.allFinger.index(finger) + 1])
         self.entropy += actionPoint
 
     def fingerDistance(self, fingerA, fingerB):
