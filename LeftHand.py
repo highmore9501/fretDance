@@ -1,7 +1,7 @@
 import math
 
 
-class LeftHand:
+class FretDance:
     """
     左手主要包括几个概念：
     1.把位，也就是第一指所在的品位
@@ -28,12 +28,13 @@ class LeftHand:
         self.stringDistance = stringDistance
         self.fretDistance = fretDistance
         self.allFinger = [self.fingerA, self.fingerB, self.fingerC, self.fingerD]
+        self.trace = []
+        self.entropy = 0
 
     def changeBarre(self, barre):
         """
         切换把位，默认所有手指全部抬起来
         :param barre: 把位数
-        :return:消耗行动力4*品格高度
         """
         self.handPosition = barre
         self.fingerA.fret = self.handPosition
@@ -45,30 +46,14 @@ class LeftHand:
         self.fingerC.press = 0
         self.fingerD.press = 0
 
-    def calFingerMove(self, finger, string, fret):
-        """
-        计算手指移动时的消耗的行动力，如果不换把行动力为两个位置之间的距离，如果换把行动力为4*品格高
-        :param finger: 手指
-        :param string:第几根弦
-        :param fret:第几品
-        :return:行动力
-        """
-        fingerStringDistance = abs(finger.string - string) * self.stringDistance
-        fingerFretDistance = abs(finger.fret - fret) * self.fretDistance
-        distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
-
-        if distance > 4 * self.fretDistance:
-            actionPoint = 4 * self.fretDistance
-            return actionPoint
-        return distance
-
-    def fingerMoveTo(self, finger, string, fret):
+    def fingerMoveTo(self, fingerNumber, string, fret):
         """
         完成按弦动作
-        :param finger: 指定的手指
+        :param fingerNumber: 第几指
         :param string: 目标弦
         :param fret: 目标品
         """
+        finger = self.allFinger[fingerNumber]
         fingerStringDistance = abs(finger.string - string) * self.stringDistance
         fingerFretDistance = abs(finger.fret - fret) * self.fretDistance
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
@@ -78,10 +63,14 @@ class LeftHand:
             self.changeBarre(barre)
             finger.string = string
             finger.fret = fret
+            actionPoint = 4 * self.fretDistance
         else:
             finger.string = string
             finger.fret = fret
+            actionPoint = distance
         finger.press = 1
+        self.trace.append(self.allFinger.index(finger)+1)
+        self.entropy += actionPoint
 
     def fingerDistance(self, fingerA, fingerB):
         """
@@ -113,6 +102,8 @@ class LeftHand:
         if self.fingerDistance(self.fingerB, self.fingerC) > 1.5 * self.fretDistance:
             return False
         if self.fingerDistance(self.fingerC, self.fingerD) > 1.5 * self.fretDistance:
+            return False
+        if self.fingerA.fret > self.fingerB.fret or self.fingerB.fret > self.fingerC.fret or self.fingerC.fret > self.fingerD.fret:
             return False
         else:
             return True
