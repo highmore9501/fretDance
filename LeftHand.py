@@ -48,7 +48,7 @@ class FretDance:
 
     def fingerMoveTo(self, fingerNumber, string, fret):
         """
-        完成按弦动作
+        完成按弦动作,返回弦，品，使用手指，以及消耗的行动力
         :param fingerNumber: 第几指
         :param string: 目标弦
         :param fret: 目标品
@@ -71,8 +71,15 @@ class FretDance:
             finger.fret = fret
             actionPoint = distance
         finger.press = 1
-        self.trace.append([string, fret, self.allFinger.index(finger) + 1])
-        self.entropy += actionPoint
+        return [string, fret, self.allFinger.index(finger) + 1], actionPoint
+
+    def handMoveTo(self, position):
+        """
+        将整个手移动到某个手型，然后计算消耗的行动力，以及每个手指按在哪里
+        :param position:
+        :return:
+        """
+        pass
 
     def fingerDistance(self, fingerA, fingerB):
         """
