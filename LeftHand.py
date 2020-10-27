@@ -1,4 +1,5 @@
 import math
+from calculate import lists_combiantions,classfiyChord,barreChord,noBarreChord
 
 
 class FretDance:
@@ -31,20 +32,21 @@ class FretDance:
         self.trace = []
         self.entropy = 0
 
-    def changeBarre(self, barre):
+    def changeBarre(self, fingerNumber, string, fret):
         """
         切换把位，默认所有手指全部抬起来
-        :param barre: 把位数
+        :param fret: 横按指放在第几品
+        :param string: 横按指按的最高弦
+        :param fingerNumber: 使用第几指横横按
         """
-        self.handPosition = barre
+        self.handPosition = fret - fingerNumber
         self.fingerA.fret = self.handPosition
         self.fingerB.fret = self.fingerA.fret + 1
         self.fingerC.fret = self.fingerA.fret + 2
         self.fingerD.fret = self.fingerA.fret + 3
-        self.fingerA.press = 0
-        self.fingerB.press = 0
-        self.fingerC.press = 0
-        self.fingerD.press = 0
+        self.allFinger[fingerNumber].string = string
+
+
 
     def fingerMoveTo(self, fingerNumber, string, fret):
         """
@@ -70,16 +72,65 @@ class FretDance:
             finger.string = string
             finger.fret = fret
             actionPoint = distance
-        finger.press = 1
         return [string, fret, self.allFinger.index(finger) + 1], actionPoint
 
     def handMoveTo(self, position):
         """
         将整个手移动到某个手型，然后计算消耗的行动力，以及每个手指按在哪里
-        :param position:
-        :return:
+        :param position:当前和弦需要按的位置列表，类似([5, 7], [4, 7], [3, 5], [2, 5], [1, 5])
+        :return:返回多个dancer，也就是手型
+
+        分析过程：
+        先将整个position里的空弦音去掉，不用处理（默认空弦不影响左手，不消耗行动力）
+        position里其它的音，先看音符位置来决定是否需要横按：
+            音符超过4个，必须使用横按：
+                有相同品格，且相同品格是最小品格:
+                先使用1指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+            有相同品格，且品格不是最小品格：
+                相同品格所在的弦是邻近弦：
+                    相同品格所在的弦是所有弦里最高的：
+                        使用4指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                        使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                        使用2指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                    使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+            音符不超过4个，分情况：
+                使用横按的话：
+                    有相同品格，且相同品格是最小品格:
+                        先使用1指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                    有相同品格，且品格不是最小品格：
+                        相同品格所在的弦是邻近弦：
+                            相同品格所在的弦是所有弦里最高的：
+                                使用4指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                                使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                                使用2指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                            使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
+                不使用横按：
+                    使用product函数得到所有每指只按一个音的可能组合，复制原手型生成新的dancer,然后调用fingerMoveTo方法，生成移动后的dancer
+
+        用上述所有情况生成的所有dancer生成一个列表，并返回
         """
-        pass
+        dancers = []
+        positionList = list(position)
+        # 去掉空弦音
+        for item in positionList:
+            if item[1] == 0:
+                positionList.remove(item)
+
+        positionType = classfiyChord(positionList)  # 判断和弦类型
+        if positionType == 'a':
+            # 按1指横按处理
+            dancers.append(barreChord(self, 1, positionList))
+        elif positionType == 'b':
+            #  按2,3,4指横按处理
+            dancers.append(barreChord(self, 2, positionList))
+            dancers.append(barreChord(self, 3, positionList))
+            dancers.append(barreChord(self, 4, positionList))
+        else:
+            #  按不能横按，但实际上又按不完全部的音符来处理
+            return dancers
+        #  按无横按处理
+        dancers.append(noBarreChord(self, position))
+        return dancers
 
     def fingerDistance(self, fingerA, fingerB):
         """
@@ -88,22 +139,12 @@ class FretDance:
         :param fingerB:
         :return: 返回距离
         """
-        distance = 0.0
         fingerStringDistance = abs(fingerA.string - fingerB.string) * self.stringDistance
         fingerFretDistance = abs(fingerA.fret - fingerB.fret) * self.fretDistance
-        if fingerA.press == 0 or fingerB.press == 0:
-            return distance
-        elif fingerA.press == 1 and fingerB.press == 1:
-            distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
-            return distance
-        elif fingerA.press > 1:
-            distance = math.sqrt(math.pow(abs(3 - fingerB.string), 2) + math.pow(fingerFretDistance, 2))
-            return distance
-        elif fingerB.press > 1:
-            distance = math.sqrt(math.pow(abs(3 - fingerA.string), 2) + math.pow(fingerFretDistance, 2))
-            return distance
-        else:
-            raise ValueError("不能同时有两个手指横按")
+        distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
+        if fingerA.fret == 0 or fingerB.fret == 0:
+            return 0.0
+        return distance
 
     def validation(self):
         if self.fingerDistance(self.fingerA, self.fingerB) > 1.5 * self.fretDistance:

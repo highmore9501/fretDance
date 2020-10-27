@@ -80,5 +80,32 @@ class midi2Notes:
         midiIn.read()
 
 
-if __name__ == '__main__':
-    pass
+def classfiyChord(position):
+    """
+    根据和弦中的音符位置，判断怎么分类，a为可1指横按，b为可234指横按，c为怎么按都按不过来
+    :param position:
+    :return:
+    """
+    return None
+
+
+def barreChord(dancer, fingerNumber, position):
+    """
+    处理横按，返回可能的dancer
+    :param dancer:
+    :param fingerNumber:
+    :param position:
+    :return:
+    """
+    result = []
+    return result
+
+
+def noBarreChord(dancer, position):
+    """
+    不使用横按，按完所有的音符，返回可能的dancer
+    :param dancer:
+    :param position:
+    :return:
+    """
+    return None

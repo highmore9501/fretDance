@@ -36,7 +36,7 @@ def fingerDanceMaker(dancerNumberLimit=200):
         for dancerNumber in range(currentDancerNumber):  # 对所有留存的指法列表遍历
             for handPosition in filteredChordPositions:  # 对所有可能的和弦按法遍历
                 currentDancer = copy.deepcopy(allFretDance[dancerNumber])  # 先继承一个父指法
-                dancers = currentDancer.handMoveTo(handPosition)  # ?? 用当前手指去按当前和弦的位置，这里会生成多个可能性，需要展开来处理
+                dancers = currentDancer.handMoveTo(handPosition)  # 用当前指法去按当前和弦的位置，这里会生成多个可能性，需要展开来处理
                 for dancer in dancers:
                     if dancer.validation:  # 验证指法是否手指生理要求
                         allFretDance.append(dancer)  # 可行则加入留存的指法列表
