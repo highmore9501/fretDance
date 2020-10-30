@@ -1,16 +1,20 @@
 import math
-from calculate import lists_combiantions,classfiyChord,barreChord,noBarreChord
+
+from calculate import classifyChord
+from chordToFinger import *
 
 
 class FretDance:
     """
-    左手主要包括几个概念：
+    FretDance是表示左手的状态，也就是表现在和弦谱上的左手指法，主要包括几个概念：
     1.把位，也就是第一指所在的品位
     2.四个手指.每个手指状态分悬空与按弦，品位满足4>=3>=2>=1
     3.空弦
-    4.把位切换
-    5.横按。1指可以在横按状态，这时1指可以同时有多个同品的触弦点。
-    默认弦距为0.85cm，品格高为3.637
+    4.横按。 这个功能写到finger()里去
+    默认弦距为0.85cm，品格高为3.637，暂不考虑品高因品格升高而变小的影响
+
+    FretDance还包括以下属性：
+    trace:用来记录
     """
 
     def __init__(self, stringDistance=0.85, fretDistance=3.637):
@@ -34,7 +38,7 @@ class FretDance:
 
     def changeBarre(self, fingerNumber, string, fret):
         """
-        切换把位，默认所有手指全部抬起来
+        换把位，默认所有手指全部抬起来,整体移动
         :param fret: 横按指放在第几品
         :param string: 横按指按的最高弦
         :param fingerNumber: 使用第几指横横按
@@ -44,92 +48,151 @@ class FretDance:
         self.fingerB.fret = self.fingerA.fret + 1
         self.fingerC.fret = self.fingerA.fret + 2
         self.fingerD.fret = self.fingerA.fret + 3
-        self.allFinger[fingerNumber].string = string
+        for finger in self.allFinger:
+            finger.string = string
+            finger.press = 0
 
-
-
-    def fingerMoveTo(self, fingerNumber, string, fret):
+    def fingerMoveTo(self, fingerNumber, string, fret, press=1):
         """
-        完成按弦动作,返回弦，品，使用手指，以及消耗的行动力
-        :param fingerNumber: 第几指
+        完成按弦动作,返回消耗的行动力
+        :param press: 手指的按弦状态
+        :param fingerNumber: 第几指，分别有1/2/3/4四根手指
         :param string: 目标弦
         :param fret: 目标品
+        如果要移动的距离过大，就直接换把,然后按弦
+        如果目标位置是空弦，或者不用按，就啥也不干，只松开手指
+        如果目标位置距离合适，移指，然后按弦
         """
-        finger = self.allFinger[fingerNumber]
+        finger = self.allFinger[fingerNumber - 1]
         fingerStringDistance = abs(finger.string - string) * self.stringDistance
         fingerFretDistance = abs(finger.fret - fret) * self.fretDistance
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
-        index = self.allFinger.index(finger)
-        barre = fret - index
-        if fret == 0:
-            actionPoint = 0
-        elif distance > 1.5 * self.fretDistance:
-            self.changeBarre(barre)
-            finger.string = string
-            finger.fret = fret
+        barre = fret - fingerNumber - 1
+        if distance > 1.5 * self.fretDistance:  # 换把
+            self.changeBarre(barre, string, fret)
+            finger.press = press
             actionPoint = 4 * self.fretDistance
-        else:
+        elif fret == 0 or press == 0:  # 空弦或不按，不移指
+            actionPoint = 0
+            finger.press = 0
+        else:  # 不换把，只移指
+            actionPoint = distance
             finger.string = string
             finger.fret = fret
-            actionPoint = distance
-        return [string, fret, self.allFinger.index(finger) + 1], actionPoint
+            finger.press = press
+        return actionPoint
 
-    def handMoveTo(self, position):
+    def touchPoints(self):
+        """
+        得到当前手型能弹奏的位置，每弦一个音，都取当前弦上被按的最高位置；如果某弦没有被按，则取空弦音。
+        :return:
+        """
+        touchPoint = list(set(self.fingerA.point + self.fingerB.point + self.fingerC.point + self.fingerD.point))
+        result = []
+        resultAppend = result.append
+        for i in range(6):
+            frets = []
+            for [string, fret] in touchPoint:
+                if string == i + 1:
+                    frets.append(fret)
+                else:
+                    frets.append(0)
+            resultAppend([i + 1, min(frets)])
+        return result
+
+    def handMoveTo(self, chord):
         """
         将整个手移动到某个手型，然后计算消耗的行动力，以及每个手指按在哪里
-        :param position:当前和弦需要按的位置列表，类似([5, 7], [4, 7], [3, 5], [2, 5], [1, 5])
+        :param chord:当前和弦需要按的位置列表，类似([5, 7], [4, 7], [3, 5], [2, 5], [1, 5])
         :return:返回多个dancer，也就是手型
-
-        分析过程：
-        先将整个position里的空弦音去掉，不用处理（默认空弦不影响左手，不消耗行动力）
-        position里其它的音，先看音符位置来决定是否需要横按：
-            音符超过4个，必须使用横按：
-                有相同品格，且相同品格是最小品格:
-                先使用1指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-            有相同品格，且品格不是最小品格：
-                相同品格所在的弦是邻近弦：
-                    相同品格所在的弦是所有弦里最高的：
-                        使用4指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                        使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                        使用2指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                    使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-            音符不超过4个，分情况：
-                使用横按的话：
-                    有相同品格，且相同品格是最小品格:
-                        先使用1指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                    有相同品格，且品格不是最小品格：
-                        相同品格所在的弦是邻近弦：
-                            相同品格所在的弦是所有弦里最高的：
-                                使用4指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                                使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                                使用2指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                            使用3指横按相同品格，生成新的dancer，然后遍历余下三指按其它品格，调用fingerMoveTo，生成移动后的dancer
-                不使用横按：
-                    使用product函数得到所有每指只按一个音的可能组合，复制原手型生成新的dancer,然后调用fingerMoveTo方法，生成移动后的dancer
-
-        用上述所有情况生成的所有dancer生成一个列表，并返回
         """
         dancers = []
-        positionList = list(position)
+        positionList = list(chord)
         # 去掉空弦音
-        for item in positionList:
-            if item[1] == 0:
-                positionList.remove(item)
+        # for item in positionList:
+        #     if item[1] == 0:
+        #         positionList.remove(item)
 
-        positionType = classfiyChord(positionList)  # 判断和弦类型
-        if positionType == 'a':
-            # 按1指横按处理
-            dancers.append(barreChord(self, 1, positionList))
-        elif positionType == 'b':
-            #  按2,3,4指横按处理
-            dancers.append(barreChord(self, 2, positionList))
-            dancers.append(barreChord(self, 3, positionList))
-            dancers.append(barreChord(self, 4, positionList))
-        else:
-            #  按不能横按，但实际上又按不完全部的音符来处理
-            return dancers
-        #  按无横按处理
-        dancers.append(noBarreChord(self, position))
+        ChordType = classifyChord(positionList)  # 判断和弦类型
+        positionType = []
+        for item in ChordType:
+            positionType.append(item[1])
+
+        if positionType == [0]:
+            dancers.append(chord2Finger00(self, chord))
+        if positionType == [1]:
+            dancers.append(chord2Finger01(self, chord))
+        if positionType == [2]:
+            dancers.append(chord2Finger02(self, chord))
+        if positionType == [1, 1]:
+            dancers.append(chord2Finger03(self, chord))
+        if positionType == [3]:
+            dancers.append(chord2Finger04(self, chord))
+        if positionType == [2, 1]:
+            dancers.append(chord2Finger05(self, chord))
+        if positionType == [1, 2]:
+            dancers.append(chord2Finger06(self, chord))
+        if positionType == [1, 1, 1]:
+            dancers.append(chord2Finger07(self, chord))
+        if positionType == [4] or positionType == [5] or positionType == [6]:
+            dancers.append(chord2Finger08(self, chord))
+        if positionType == [1, 3]:
+            dancers.append(chord2Finger09(self, chord))
+        if positionType == [2, 2]:
+            dancers.append(chord2Finger10(self, chord))
+        if positionType == [3, 1] or positionType == [4, 1] or positionType == [5, 1]:
+            dancers.append(chord2Finger11(self, chord))
+        if positionType == [1, 1, 2]:
+            dancers.append(chord2Finger12(self, chord))
+        if positionType == [1, 2, 1]:
+            dancers.append(chord2Finger13(self, chord))
+        if positionType == [2, 1, 1]:
+            dancers.append(chord2Finger14(self, chord))
+        if positionType == [1, 1, 1, 1]:
+            dancers.append(chord2Finger15(self, chord))
+        if positionType == [1, 4]:
+            dancers.append(chord2Finger16(self, chord))
+        if positionType == [2, 3]:
+            dancers.append(chord2Finger17(self, chord))
+        if positionType == [3, 2]:
+            dancers.append(chord2Finger18(self, chord))
+        if positionType == [4, 2]:
+            dancers.append(chord2Finger19(self, chord))
+        if positionType == [1, 1, 3]:
+            dancers.append(chord2Finger20(self, chord))
+        if positionType == [1, 1, 1, 3]:
+            dancers.append(chord2Finger21(self, chord))
+        if positionType == [2, 1, 2]:
+            dancers.append(chord2Finger22(self, chord))
+        if positionType == [2, 2, 1]:
+            dancers.append(chord2Finger23(self, chord))
+        if positionType == [3, 1, 1]:
+            dancers.append(chord2Finger24(self, chord))
+        if positionType == [1, 1, 1, 2]:
+            dancers.append(chord2Finger25(self, chord))
+        if positionType == [2, 1, 1, 1]:
+            dancers.append(chord2Finger26(self, chord))
+        if positionType == [2, 1, 1, 1]:
+            dancers.append(chord2Finger27(self, chord))
+        if positionType == [3, 3]:
+            dancers.append(chord2Finger28(self, chord))
+        if positionType == [2, 4]:
+            dancers.append(chord2Finger29(self, chord))
+        if positionType == [1, 5]:
+            dancers.append(chord2Finger30(self, chord))
+        if positionType == [1, 1, 4]:
+            dancers.append(chord2Finger31(self, chord))
+        if positionType == [2, 1, 3]:
+            dancers.append(chord2Finger32(self, chord))
+        if positionType == [3, 1, 2]:
+            dancers.append(chord2Finger33(self, chord))
+        if positionType == [4, 1, 1]:
+            dancers.append(chord2Finger34(self, chord))
+        if positionType == [2, 1, 1, 2]:
+            dancers.append(chord2Finger35(self, chord))
+        if positionType == [3, 1, 1, 1]:
+            dancers.append(chord2Finger36(self, chord))
+
         return dancers
 
     def fingerDistance(self, fingerA, fingerB):
@@ -162,6 +225,14 @@ class FretDance:
 class LeftFinger:
     """
     左手手指，包含弦位，品位，按弦或横按状态
+    string代表弦，fret代表品，弦和品合起来表示当前手指的指尖位置；
+    point是一个列表，包含当前手指按到的位置；
+    press代表按弦状态，各数值意义如下：
+    0 表示悬空未按弦
+    1 表示只按一个单音
+    2 表示横按，按了从指尖位置到第一弦所有同品的音
+    3 表示悬空小横按，按了从指尖位置开始往高音弦方向，同品的三个音；这个时候是把第一指节打横按下去，其实不太好按
+    暂时不考虑悬空横按只按2个音的情况，在吉它上试过了，太难按
     """
 
     def __init__(self):
@@ -176,17 +247,26 @@ class LeftFinger:
         :return: 按弦点列表，以[弦数,品格数]的形式来表示每个按弦点。
         """
         self.point = []
-        if self.press == 0:
-            return self.point
-        elif self.press == 1:
+
+        if self.press == 1:
             self.point.append([self.string, self.fret])
-            return self.point
-        else:
-            for i in range(self.press):
+        elif self.press == 2:
+            self.point = []
+            for i in range(self.string):
                 self.point.append([i + 1, self.fret])
-            return self.point
+        elif self.press == 3:
+            self.point = []
+            for i in range(3):
+                self.point.append([self.string - i, self.fret])
 
     def moveAndPress(self, string, fret, press=1):
+        """
+        移动手指，并生成新的触弦点
+        :param string: 弦
+        :param fret: 品
+        :param press: 横按状态
+        :return:
+        """
         self.string = string
         self.fret = fret
         self.press = press
