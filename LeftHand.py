@@ -119,7 +119,7 @@ class FretDance:
             positionType.append(item[1])
 
         if positionType == [0]:
-            dancers.append(chord2Finger00(self, chord))
+            dancers.append(chord2Finger00(self))
         if positionType == [1]:
             dancers.append(chord2Finger01(self, chord))
         if positionType == [2]:

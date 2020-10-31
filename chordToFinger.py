@@ -1,26 +1,107 @@
-def chord2Finger00(dancer, Chord):
+import copy
+
+from calculate import arrangeNotesInChord
+
+
+def chord2Finger00(dancer):
     """处理[0],输出结果1个,就是完全不动"""
-    pass
+    newDancer = copy.deepcopy(dancer)
+    newDancer.trace.append(dancer.trace[-1])
+    return newDancer
 
 
 def chord2Finger01(dancer, Chord):
     """处理[1],输出结果4个,分别用1/2/3/4指单按"""
-    pass
+    result = []
+    resultAppend = result.append
+    string = Chord[0][0]
+    fret = Chord[0][1]
+
+    for i in range(4):
+        newDancer = copy.deepcopy(dancer)
+        finger = newDancer.allFinger[i]
+        newDancer.fingerMoveTo(finger, string, fret)
+        resultAppend(newDancer)
+
+    return result
 
 
 def chord2Finger02(dancer, Chord):
     """处理[2],输出结果3个,输出结果4个,就是1/3/4指大横按或1指小横按,加上输出结果6个,4指对2点组合单按"""
-    pass
+    result = []
+    resultAppend = result.append
+
+    newChordByString = arrangeNotesInChord(Chord, 'string')
+    newChordByFret = arrangeNotesInChord(Chord, 'fret')
+    fret = newChordByString[0][1]
+    for i in range(2):  # 1指大小横按
+        newDancer = copy.deepcopy(dancer)
+        finger = newDancer.allFinger[0]
+        newDancer.changeBarre(1, newChordByString[0][0], fret)
+        finger.press = i + 2
+        resultAppend(newDancer)
+    for i in range(2):  # 34指大横按
+        newDancer = copy.deepcopy(dancer)
+        finger = newDancer.allFinger[i + 2]
+        newDancer.changeBarre(i + 2, newChordByString[0][0], fret)
+        finger.press = 2
+        resultAppend(newDancer)
+
+    from itertools import combinations
+    for (finger1, finger2) in combinations([0, 1, 2, 3], 2):  # 1234指对两点单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.fingerMoveTo(finger1, newChordByFret[0][0], fret)
+        newDancer.fingerMoveTo(finger2, newChordByFret[1][0], fret)
+        resultAppend(newDancer)
+
+    return result
 
 
 def chord2Finger03(dancer, Chord):
     """处理[1,1],输出结果6个,4指对2点组合单按"""
-    pass
+    result = []
+    resultAppend = result.append
+    newChordByFret = arrangeNotesInChord(Chord, 'fret')
+
+    from itertools import combinations
+    for (finger1, finger2) in combinations([0, 1, 2, 3], 2):  # 1234指对两点单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.fingerMoveTo(finger1, newChordByFret[0][0], newChordByFret[0][1])
+        newDancer.fingerMoveTo(finger2, newChordByFret[1][0], newChordByFret[1][1])
+        resultAppend(newDancer)
+
+    return result
 
 
 def chord2Finger04(dancer, Chord):
     """处理[3],输出结果4个,就是1/3/4指大横按或1指小横按,加上输出结果4个,4指对3点组合单按"""
-    pass
+    result = []
+    resultAppend = result.append
+
+    newChordByString = arrangeNotesInChord(Chord, 'string')
+    fret = newChordByString[0][1]
+    for i in range(2):  # 1指大小横按
+        newDancer = copy.deepcopy(dancer)
+        finger = newDancer.allFinger[0]
+        newDancer.changeBarre(1, newChordByString[0][0], fret)
+        finger.press = i + 2
+        resultAppend(newDancer)
+    for i in range(2):  # 34指大横按
+        newDancer = copy.deepcopy(dancer)
+        finger = newDancer.allFinger[i + 2]
+        newDancer.changeBarre(i + 2, newChordByString[0][0], fret)
+        finger.press = 2
+        resultAppend(newDancer)
+
+    from itertools import combinations
+    for (finger1, finger2) in combinations([0, 1, 2, 3], 3):  # 1234指对三个音单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.fingerMoveTo(finger1, newChordByString[0][0], fret)
+        newDancer.fingerMoveTo(finger2, newChordByString[1][0], fret)
+        newDancer.fingerMoveTo(finger2, newChordByString[2][0], fret)
+        resultAppend(newDancer)
+
+    return result
 
 
 def chord2Finger05(dancer, Chord):
@@ -183,4 +264,3 @@ def chord2Finger35(dancer, Chord):
 def chord2Finger36(dancer, Chord):
     """处理[3,1,1,1],输出结果2个,1指大/小横按,2/3/4指单按3个音"""
     pass
-

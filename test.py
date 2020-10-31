@@ -53,4 +53,3 @@ class testCalculate:
 if __name__ == '__main__':
     a = testCalculate()
     a.testChord()
-

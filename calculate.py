@@ -97,6 +97,24 @@ class midi2Notes:
         midiIn.read()
 
 
+def arrangeNotesInChord(Chord, way):
+    """
+    :param way: 根据弦高或者品高来排序
+    :param Chord: 输入和弦
+    :return: 排序过后的音符位置列表
+    """
+    number = 1
+    length = len(Chord)
+    if way == 'string':
+        number = 0
+
+    for i in range(length - 1):
+        for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
+            if Chord[j][number] > Chord[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
+                Chord[j], Chord[j + 1] = Chord[j + 1], Chord[j]
+    return Chord
+
+
 def classifyChord(Chord):
     """
     :param Chord:所有音符的位置，所有音符都是在不同弦上，并且各位置的距离是限制在人类手掌范围内的。
