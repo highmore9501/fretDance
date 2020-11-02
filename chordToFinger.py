@@ -3,6 +3,29 @@ import copy
 from calculate import arrangeNotesInChord
 
 
+def fingerNoteComb(dancer, Chord, fingerList):
+    """
+    :param dancer: 原始dancer
+    :param Chord: 多指需要按的音符位置列表，中间不包含空弦音
+    :param fingerList: 可以用到的手指列表，例如[2,3,4]表示利用2/3/4指
+    :return: 所有单按完以后生成的dancer列表
+    """
+    result = []
+    resultAppend = result.append
+    noteNumber = len(Chord)
+
+    from itertools import combinations
+
+    for fingerComb in combinations(fingerList, noteNumber):
+        newDancer = copy.deepcopy(dancer)
+        for i in range(noteNumber):
+            newDancer.fingerMoveTo(fingerComb[i], Chord[i][0], Chord[i][1])
+
+        resultAppend(newDancer)
+
+    return result
+
+
 def chord2Finger00(dancer):
     """处理[0],输出结果1个,就是完全不动"""
     newDancer = copy.deepcopy(dancer)
@@ -31,45 +54,31 @@ def chord2Finger02(dancer, Chord):
     result = []
     resultAppend = result.append
 
-    newChordByString = arrangeNotesInChord(Chord, 'string')
-    newChordByFret = arrangeNotesInChord(Chord, 'fret')
-    fret = newChordByString[0][1]
+    fret = Chord[0][1]
     for i in range(2):  # 1指大小横按
         newDancer = copy.deepcopy(dancer)
         finger = newDancer.allFinger[0]
-        newDancer.changeBarre(1, newChordByString[0][0], fret)
+        newDancer.changeBarre(1, Chord[0][0], fret)
         finger.press = i + 2
         resultAppend(newDancer)
     for i in range(2):  # 34指大横按
         newDancer = copy.deepcopy(dancer)
         finger = newDancer.allFinger[i + 2]
-        newDancer.changeBarre(i + 2, newChordByString[0][0], fret)
+        newDancer.changeBarre(i + 2, Chord[0][0], fret)
         finger.press = 2
         resultAppend(newDancer)
 
-    from itertools import combinations
-    for (finger1, finger2) in combinations([0, 1, 2, 3], 2):  # 1234指对两点单按
-        newDancer = copy.deepcopy(dancer)
-        newDancer.fingerMoveTo(finger1, newChordByFret[0][0], fret)
-        newDancer.fingerMoveTo(finger2, newChordByFret[1][0], fret)
-        resultAppend(newDancer)
+    singlePressDancer = fingerNoteComb(dancer, Chord, [1, 2, 3, 4])  # 1/2/3/4指单按和弦里的2个音
+    result += singlePressDancer
 
     return result
 
 
 def chord2Finger03(dancer, Chord):
     """处理[1,1],输出结果6个,4指对2点组合单按"""
-    result = []
-    resultAppend = result.append
     newChordByFret = arrangeNotesInChord(Chord, 'fret')
 
-    from itertools import combinations
-    for (finger1, finger2) in combinations([0, 1, 2, 3], 2):  # 1234指对两点单按
-        newDancer = copy.deepcopy(dancer)
-        newDancer.fingerMoveTo(finger1, newChordByFret[0][0], newChordByFret[0][1])
-        newDancer.fingerMoveTo(finger2, newChordByFret[1][0], newChordByFret[1][1])
-        resultAppend(newDancer)
-
+    result = fingerNoteComb(dancer,newChordByFret,[1,2,3,4])
     return result
 
 
@@ -93,40 +102,107 @@ def chord2Finger04(dancer, Chord):
         finger.press = 2
         resultAppend(newDancer)
 
-    from itertools import combinations
-    for (finger1, finger2) in combinations([0, 1, 2, 3], 3):  # 1234指对三个音单按
-        newDancer = copy.deepcopy(dancer)
-        newDancer.fingerMoveTo(finger1, newChordByString[0][0], fret)
-        newDancer.fingerMoveTo(finger2, newChordByString[1][0], fret)
-        newDancer.fingerMoveTo(finger2, newChordByString[2][0], fret)
-        resultAppend(newDancer)
+    singlePressDancer = fingerNoteComb(dancer,newChordByString,[1,2,3,4])  # 4指对3点组合单按
+    result += singlePressDancer
 
     return result
 
 
 def chord2Finger05(dancer, Chord):
-    """处理[2,1],输出结果6个,1指横按/小横按,2/3/4指单按,加上出结果4个,4指对3点组合单按"""
-    pass
+    """处理[2,1],输出结果6个,1指横按/小横按,2/3/4指单按；加上出结果4个,4指对3点组合单按"""
+    result = []
+    resultAppend = result.append
+
+    newChordByFret = arrangeNotesInChord(Chord, 'fret')
+    fret = newChordByFret[0][1]
+    for i in range(2):  # 1指大小横按最低品,2/3/4指单按最高品
+        for fingerNumber in range(2, 5):
+            newDancer = copy.deepcopy(dancer)
+            newDancer.changeBarre(1, newChordByFret[0][0], fret)
+            newDancer.allFinger[0].press = i + 2
+            newDancer.fingerMoveTo(fingerNumber, newChordByFret[2][0], newChordByFret[2][1])
+            resultAppend(newDancer)
+
+    singlePressDancer = fingerNoteComb(dancer, newChordByFret, [1, 2, 3, 4])  # 4指对3点组合单按
+    result += singlePressDancer
+
+    return result
 
 
 def chord2Finger06(dancer, Chord):
-    """处理[1,2],输出结果2个,3指小横按,1/2指单按,加上输出结果3个,4指小横按,1/2/3指单按,加上出结果4个,4指对3点组合单按"""
-    pass
+    """处理[1,2],输出结果2个,3指大横按,1/2指单按; 加上输出结果3个,4指小横按,1/2/3指单按;加上出结果4个,4指对3点组合单按"""
+    result = []
+    resultAppend = result.append
+
+    newChordByFret = arrangeNotesInChord(Chord, 'fret')
+    fret = newChordByFret[1][1]
+    for fingerNumber in range(1, 3):  # 3指大横按，1/2指单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.changeBarre(3, newChordByFret[1][0], fret)
+        newDancer.allFinger[2].press = 2
+        newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
+        resultAppend(newDancer)
+
+    for fingerNumber in range(1, 4):  # 4指大横按，1/2/3指单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.changeBarre(4, newChordByFret[1][0], fret)
+        newDancer.allFinger[2].press = 2
+        newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
+        resultAppend(newDancer)
+
+    singlePressDancer = fingerNoteComb(dancer, newChordByFret, [1, 2, 3, 4])  # 4指对3点组合单按
+    result += singlePressDancer
+
+    return result
 
 
 def chord2Finger07(dancer, Chord):
     """处理[1,1,1],输出结果4个,品格从低到高分别用1/2/3/4指,单按3个音"""
-    pass
+
+    newChordByFret = arrangeNotesInChord(Chord, 'fret')
+    singlePressDancer = fingerNoteComb(dancer, newChordByFret, [1, 2, 3, 4])  # 4指对3点组合单按
+
+    return singlePressDancer
 
 
 def chord2Finger08(dancer, Chord):
     """处理[4],[5],[6],输出结果1个,就是1指横按"""
-    pass
+    newDancer = copy.deepcopy(dancer)
+    newDancer.changeBarre(1, Chord[0][0], Chord[0][1])
+    newDancer.allFinger[0].press = 2
+    return newDancer
 
 
 def chord2Finger09(dancer, Chord):
-    """处理[1,3],输出结果1个,1指按最低品,2/3/4指根据弦数从低到高单按,加上输出结果2个,3指小横按,1/2指单按,加上输出结果3个,4指小横按,1/2/3指单按"""
-    pass
+    """处理[1,3],输出结果1个,1指按最低品,2/3/4指根据弦数从低到高单按;加上输出结果2个,3指小横按,1/2指单按;加上输出结果3个,4指小横按,1/2/3指单按"""
+    result = []
+    resultAppend = result.append
+
+    newChordByFret = arrangeNotesInChord(Chord, 'fret')
+    fret = newChordByFret[1][1]
+    for fingerNumber in range(1, 3):  # 3指大横按，1/2指单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.changeBarre(3, newChordByFret[1][0], fret)
+        newDancer.allFinger[2].press = 2
+        newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
+        resultAppend(newDancer)
+
+    for fingerNumber in range(1, 4):  # 4指大横按，1/2/3指单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.changeBarre(4, newChordByFret[1][0], fret)
+        newDancer.allFinger[2].press = 2
+        newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
+        resultAppend(newDancer)
+
+    for i in range(1):  # 1234指对四个音单按
+        newDancer = copy.deepcopy(dancer)
+        newDancer.fingerMoveTo(1, newChordByFret[0][0], newChordByFret[0][1])
+        newDancer.fingerMoveTo(2, newChordByFret[1][0], fret)
+        newDancer.fingerMoveTo(3, newChordByFret[2][0], fret)
+        newDancer.fingerMoveTo(4, newChordByFret[2][0], fret)
+        resultAppend(newDancer)
+
+    return result
 
 
 def chord2Finger10(dancer, Chord):

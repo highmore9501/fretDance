@@ -74,12 +74,8 @@ def handChordPosition(chord) ->list:
     for handPosition in handPositions:
         strings, frets = listOfList(handPosition)
 
-        try:
-            frets.remove(0)
-        except:
-            pass
-
-        handWidth = max(frets) - min(frets)
+        newFrets = [frets[i] for i in range(0,len(frets)) if frets[i]!=0]
+        handWidth = max(newFrets) - min(newFrets)
         if noteNumber == len(set(strings)) and len(set(frets)) < 5 and handWidth < 5:
             #  没有重复弦；除去空弦外，不重复的品格数小于5；所有品格手指跨度不大于6
             resultAppend(handPosition)
@@ -101,18 +97,21 @@ def arrangeNotesInChord(Chord, way):
     """
     :param way: 根据弦高或者品高来排序
     :param Chord: 输入和弦
-    :return: 排序过后的音符位置列表
+    :return: 排序过后的音符位置列表,都是由低到的的弦/品进行排列
+    其中，按品排列的输出结果中，同品位音符的弦的排列，是由低音弦到高音弦的
     """
     number = 1
     length = len(Chord)
+    newChord = list(Chord)
     if way == 'string':
         number = 0
 
     for i in range(length - 1):
         for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
-            if Chord[j][number] > Chord[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
-                Chord[j], Chord[j + 1] = Chord[j + 1], Chord[j]
-    return Chord
+            if newChord[j][number] > newChord[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
+                newChord[j], newChord[j + 1] = newChord[j + 1], newChord[j]
+
+    return newChord
 
 
 def classifyChord(Chord):

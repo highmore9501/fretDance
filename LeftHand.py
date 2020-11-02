@@ -41,9 +41,9 @@ class FretDance:
         换把位，默认所有手指全部抬起来,整体移动
         :param fret: 横按指放在第几品
         :param string: 横按指按的最高弦
-        :param fingerNumber: 使用第几指横横按
+        :param fingerNumber: 使用第几指横横按，1/2/3/4
         """
-        self.handPosition = fret - fingerNumber
+        self.handPosition = fret - fingerNumber - 1
         self.fingerA.fret = self.handPosition
         self.fingerB.fret = self.fingerA.fret + 1
         self.fingerC.fret = self.fingerA.fret + 2
@@ -67,9 +67,8 @@ class FretDance:
         fingerStringDistance = abs(finger.string - string) * self.stringDistance
         fingerFretDistance = abs(finger.fret - fret) * self.fretDistance
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
-        barre = fret - fingerNumber - 1
         if distance > 1.5 * self.fretDistance:  # 换把
-            self.changeBarre(barre, string, fret)
+            self.changeBarre(fingerNumber, string, fret)
             finger.press = press
             actionPoint = 4 * self.fretDistance
         elif fret == 0 or press == 0:  # 空弦或不按，不移指
