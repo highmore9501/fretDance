@@ -36,14 +36,27 @@ class FretDance:
         self.trace = []
         self.entropy = 0
 
-    def changeBarre(self, fingerNumber, string, fret):
+    def recordTrace(self, fingerList):
+        newTrace = []
+        for fingerNumber in fingerList:
+            if fingerNumber == 0:
+                newTrace.append([0,0,0,0])
+            else:
+                finger = self.allFinger[fingerNumber-1]
+                if finger.press != 0:
+                    newTrace.append([fingerNumber, finger.string, finger.fret, finger.press])
+
+        self.trace.append(newTrace)
+
+    def changeBarre(self, fingerNumber, string, fret, press=1):
         """
         换把位，默认所有手指全部抬起来,整体移动
+        :param press: 大小横按或单按
         :param fret: 横按指放在第几品
         :param string: 横按指按的最高弦
         :param fingerNumber: 使用第几指横横按，1/2/3/4
         """
-        self.handPosition = fret - fingerNumber - 1
+        self.handPosition = fret - fingerNumber + 1
         self.fingerA.fret = self.handPosition
         self.fingerB.fret = self.fingerA.fret + 1
         self.fingerC.fret = self.fingerA.fret + 2
@@ -51,6 +64,7 @@ class FretDance:
         for finger in self.allFinger:
             finger.string = string
             finger.press = 0
+        self.allFinger[fingerNumber-1].press = press
 
     def fingerMoveTo(self, fingerNumber, string, fret, press=1):
         """
@@ -69,7 +83,6 @@ class FretDance:
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
         if distance > 1.5 * self.fretDistance:  # 换把
             self.changeBarre(fingerNumber, string, fret)
-            finger.press = press
             actionPoint = 4 * self.fretDistance
         elif fret == 0 or press == 0:  # 空弦或不按，不移指
             actionPoint = 0
@@ -79,16 +92,22 @@ class FretDance:
             finger.string = string
             finger.fret = fret
             finger.press = press
-        return actionPoint
+        self.entropy += actionPoint
 
     def touchPoints(self):
         """
         得到当前手型能弹奏的位置，每弦一个音，都取当前弦上被按的最高位置；如果某弦没有被按，则取空弦音。
         :return:
         """
-        touchPoint = list(set(self.fingerA.point + self.fingerB.point + self.fingerC.point + self.fingerD.point))
+        #  所有手指执行计算，得到各指的按弦
+        for finger in self.allFinger:
+            finger.touchPoint()
+        # 整合各指按弦，去掉重复的按弦点，暂时没写去重
+        touchPoint = self.fingerA.point + self.fingerB.point + self.fingerC.point + self.fingerD.point
+
         result = []
         resultAppend = result.append
+
         for i in range(6):
             frets = []
             for [string, fret] in touchPoint:
@@ -96,7 +115,10 @@ class FretDance:
                     frets.append(fret)
                 else:
                     frets.append(0)
-            resultAppend([i + 1, min(frets)])
+            try:
+                resultAppend([i + 1, max(frets)])
+            except:
+                pass
         return result
 
     def handMoveTo(self, chord):
@@ -118,79 +140,69 @@ class FretDance:
             positionType.append(item[1])
 
         if positionType == [0]:
-            dancers.append(chord2Finger00(self))
+            dancers += chord2Finger00(self)
         if positionType == [1]:
-            dancers.append(chord2Finger01(self, chord))
+            dancers += chord2Finger01(self, chord)
         if positionType == [2]:
-            dancers.append(chord2Finger02(self, chord))
+            dancers += chord2Finger02(self, chord)
         if positionType == [1, 1]:
-            dancers.append(chord2Finger03(self, chord))
+            dancers += chord2Finger03(self, chord)
         if positionType == [3]:
-            dancers.append(chord2Finger04(self, chord))
+            dancers += chord2Finger04(self, chord)
         if positionType == [2, 1]:
-            dancers.append(chord2Finger05(self, chord))
+            dancers += chord2Finger05(self, chord)
         if positionType == [1, 2]:
-            dancers.append(chord2Finger06(self, chord))
+            dancers += chord2Finger06(self, chord)
         if positionType == [1, 1, 1]:
-            dancers.append(chord2Finger07(self, chord))
+            dancers += chord2Finger07(self, chord)
         if positionType == [4] or positionType == [5] or positionType == [6]:
-            dancers.append(chord2Finger08(self, chord))
+            dancers += chord2Finger08(self, chord)
         if positionType == [1, 3]:
-            dancers.append(chord2Finger09(self, chord))
+            dancers += chord2Finger09(self, chord)
         if positionType == [2, 2]:
-            dancers.append(chord2Finger10(self, chord))
+            dancers += chord2Finger10(self, chord)
         if positionType == [3, 1] or positionType == [4, 1] or positionType == [5, 1]:
-            dancers.append(chord2Finger11(self, chord))
-        if positionType == [1, 1, 2]:
-            dancers.append(chord2Finger12(self, chord))
-        if positionType == [1, 2, 1]:
-            dancers.append(chord2Finger13(self, chord))
+            dancers += chord2Finger11(self, chord)
+        if positionType == [1, 1, 2] or positionType == [1, 1, 3]:
+            dancers += chord2Finger12(self, chord)
+        if positionType == [1, 2, 1] or positionType == [1, 1, 1, 1]:
+            dancers += chord2Finger13(self, chord)
         if positionType == [2, 1, 1]:
-            dancers.append(chord2Finger14(self, chord))
-        if positionType == [1, 1, 1, 1]:
-            dancers.append(chord2Finger15(self, chord))
+            dancers += chord2Finger14(self, chord)
+        if positionType == [3,1,1,1] or positionType == [2,1,1,1]:
+            dancers += chord2Finger15(self, chord)
         if positionType == [1, 4]:
-            dancers.append(chord2Finger16(self, chord))
+            dancers += chord2Finger16(self, chord)
         if positionType == [2, 3]:
-            dancers.append(chord2Finger17(self, chord))
+            dancers += chord2Finger17(self, chord)
         if positionType == [3, 2]:
-            dancers.append(chord2Finger18(self, chord))
+            dancers += chord2Finger18(self, chord)
         if positionType == [4, 2]:
-            dancers.append(chord2Finger19(self, chord))
-        if positionType == [1, 1, 3]:
-            dancers.append(chord2Finger20(self, chord))
+            dancers += chord2Finger19(self, chord)
+        if positionType == [2,1,1,2]:
+            dancers += chord2Finger20(self, chord)
         if positionType == [1, 1, 1, 3]:
-            dancers.append(chord2Finger21(self, chord))
+            dancers += chord2Finger21(self, chord)
         if positionType == [2, 1, 2]:
-            dancers.append(chord2Finger22(self, chord))
+            dancers += chord2Finger22(self, chord)
         if positionType == [2, 2, 1]:
-            dancers.append(chord2Finger23(self, chord))
-        if positionType == [3, 1, 1]:
-            dancers.append(chord2Finger24(self, chord))
+            dancers += chord2Finger23(self, chord)
+        if positionType == [4,1,1]:
+            dancers += chord2Finger24(self, chord)
         if positionType == [1, 1, 1, 2]:
-            dancers.append(chord2Finger25(self, chord))
-        if positionType == [2, 1, 1, 1]:
-            dancers.append(chord2Finger26(self, chord))
-        if positionType == [2, 1, 1, 1]:
-            dancers.append(chord2Finger27(self, chord))
+            dancers += chord2Finger25(self, chord)
+        if positionType == [3,1,2]:
+            dancers += chord2Finger26(self, chord)
+        if positionType == [2,1,3]:
+            dancers += chord2Finger27(self, chord)
         if positionType == [3, 3]:
-            dancers.append(chord2Finger28(self, chord))
+            dancers += chord2Finger28(self, chord)
         if positionType == [2, 4]:
-            dancers.append(chord2Finger29(self, chord))
+            dancers += chord2Finger29(self, chord)
         if positionType == [1, 5]:
-            dancers.append(chord2Finger30(self, chord))
+            dancers += chord2Finger30(self, chord)
         if positionType == [1, 1, 4]:
-            dancers.append(chord2Finger31(self, chord))
-        if positionType == [2, 1, 3]:
-            dancers.append(chord2Finger32(self, chord))
-        if positionType == [3, 1, 2]:
-            dancers.append(chord2Finger33(self, chord))
-        if positionType == [4, 1, 1]:
-            dancers.append(chord2Finger34(self, chord))
-        if positionType == [2, 1, 1, 2]:
-            dancers.append(chord2Finger35(self, chord))
-        if positionType == [3, 1, 1, 1]:
-            dancers.append(chord2Finger36(self, chord))
+            dancers += chord2Finger31(self, chord)
 
         return dancers
 
@@ -208,7 +220,7 @@ class FretDance:
             return 0.0
         return distance
 
-    def validation(self):
+    def validation(self, chord):
         if self.fingerDistance(self.fingerA, self.fingerB) > 1.5 * self.fretDistance:
             return False
         if self.fingerDistance(self.fingerB, self.fingerC) > 1.5 * self.fretDistance:
@@ -217,6 +229,10 @@ class FretDance:
             return False
         if self.fingerA.fret > self.fingerB.fret or self.fingerB.fret > self.fingerC.fret or self.fingerC.fret > self.fingerD.fret:
             return False
+        touchPoints = self.touchPoints()
+        for note in chord:
+            if note not in touchPoints:
+                return False
         else:
             return True
 

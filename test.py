@@ -25,8 +25,11 @@ class testCalculate:
 
     def testChord(self, chordNotes=[5, 20, 24, 29]):
         """
-        测试和弦变指法,主要涉及position(),handChordPosition()两个函数
-        :return:
+        测试和弦变指法,主要涉及以下函数
+        position(从音符生成位置),
+        handChordPosition（过滤留下符合人体工程学的位置组合）,
+        classifyChord（判断和弦指型）,
+        arrangeNotesInChord（和弦音按弦或按品来排列）
         """
         chordPosition = []
         chordPositionAppend = chordPosition.append
@@ -35,21 +38,20 @@ class testCalculate:
             chordPositionAppend(notePositions)  # 得到所有音符的可能的位置列表
         outer = handChordPosition(chordPosition)
         types = len(outer)
-        print(chordNotes)
-        print('一共有{}种指法: '.format(types))
+        print('当前音符是' + str(chordNotes) + ', 一共有{}种指法: '.format(types))
         for i in range(types):
             print('第{}种指法是:'.format(i + 1))
             print(outer[i])
             self.testClassifyChord(outer[i])
-            self.testArrangeNotesInChord(outer[i],'string')
-            self.testArrangeNotesInChord(outer[i],'fret')
+            self.testArrangeNotesInChord(outer[i], 'string')
+            self.testArrangeNotesInChord(outer[i], 'fret')
 
     def testClassifyChord(self, chord=([6, 5], [5, 7], [4, 7], [3, 5], [2, 5])):
         n = classifyChord(chord)
         positionType = []
         for item in n:
             positionType.append(item[1])
-        print('和弦类型是' + str(positionType) + '型。')
+        print('和弦类型是' + str(positionType) + '型')
 
     def testArrangeNotesInChord(self, chord, way):
         newChordByString = arrangeNotesInChord(chord, way)

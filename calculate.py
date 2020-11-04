@@ -21,11 +21,11 @@ def position(note) -> list:
 
 def filterDance(arr, max) -> list:  # 冒泡排序
     length = len(arr)
+    for i in range(length - 1):
+        for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
+            if arr[j].entropy > arr[j + 1].entropy:  # 如果前面的大于后面的，则交换这两个元素的位置
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
     if length >= max:
-        for i in range(length - 1):
-            for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
-                if arr[j].entropy > arr[j + 1].entropy:  # 如果前面的大于后面的，则交换这两个元素的位置
-                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
         arr = arr[:max - 1]
     return arr
 
@@ -73,9 +73,11 @@ def handChordPosition(chord) ->list:
     noteNumber = len(chord)
     for handPosition in handPositions:
         strings, frets = listOfList(handPosition)
-
-        newFrets = [frets[i] for i in range(0,len(frets)) if frets[i]!=0]
-        handWidth = max(newFrets) - min(newFrets)
+        try:
+            newFrets = [frets[i] for i in range(0,len(frets)) if frets[i] != 0]
+            handWidth = max(newFrets) - min(newFrets)
+        except:
+            handWidth = 0
         if noteNumber == len(set(strings)) and len(set(frets)) < 5 and handWidth < 5:
             #  没有重复弦；除去空弦外，不重复的品格数小于5；所有品格手指跨度不大于6
             resultAppend(handPosition)
@@ -190,7 +192,6 @@ def noBarreChord(dancer, position):
 
 def dancerMaker(dancer, ChordNotes, dancerNumberLimit=200):
     allFretDance = [dancer]
-    allFretDanceAppend = allFretDance.append
     chordPosition = []  # 生成一个空的和弦按法列表
     chordPositionAppend = chordPosition.append
 
@@ -208,15 +209,14 @@ def dancerMaker(dancer, ChordNotes, dancerNumberLimit=200):
         chordPositionAppend(notePositions)  # 得到所有音符的可能的位置列表
     filteredChordPositions = handChordPosition(chordPosition)  # 过滤得到所有无重复弦的音符位置组合，也就是可能的和弦按法组合
 
-    currentDancerNumber = len(allFretDance)
+    currentDancers = copy.deepcopy(allFretDance)
+    currentDancerNumber = len(currentDancers)
 
     for dancerNumber in range(currentDancerNumber):  # 对所有留存的指法列表遍历
         for handPosition in filteredChordPositions:  # 对所有可能的和弦按法遍历
             currentDancer = copy.deepcopy(allFretDance[dancerNumber])  # 先继承一个父指法
             dancers = currentDancer.handMoveTo(handPosition)  # 用当前指法去按当前和弦的位置，这里会生成多个可能性，需要展开来处理
-            for dancer in dancers:
-                if dancer.validation:  # 验证指法是否手指生理要求
-                    allFretDanceAppend(dancer)  # 可行则加入留存的指法列表
+            allFretDance += dancers  # 加入留存的指法列表
     allFretDance = allFretDance[currentDancerNumber:]  # 删掉父指法
     allFretDance = filterDance(allFretDance, dancerNumberLimit)  # 对指法列表进行排序过滤
     return allFretDance
