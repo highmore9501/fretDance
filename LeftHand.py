@@ -36,15 +36,20 @@ class FretDance:
         self.trace = []
         self.entropy = 0
 
-    def recordTrace(self, fingerList):
+    def recordTrace(self, fingerList, noPress=[]):
+        """
+        :param fingerList:当前情况下所有用到的手指
+        :param noPress: 所有的的空弦音列表，类似[[3,0],[4,0]]
+        :return: 完成记录动作
+        """
         newTrace = []
+        if noPress is not []:
+            for item in noPress:
+                newTrace.append([0, item[0], 0, 0])
         for fingerNumber in fingerList:
-            if fingerNumber == 0:
-                newTrace.append([0,0,0,0])
-            else:
-                finger = self.allFinger[fingerNumber-1]
-                if finger.press != 0:
-                    newTrace.append([fingerNumber, finger.string, finger.fret, finger.press])
+            finger = self.allFinger[fingerNumber - 1]
+            if finger.press != 0:
+                newTrace.append([fingerNumber, finger.string, finger.fret, finger.press])
 
         self.trace.append(newTrace)
 
@@ -64,7 +69,7 @@ class FretDance:
         for finger in self.allFinger:
             finger.string = string
             finger.press = 0
-        self.allFinger[fingerNumber-1].press = press
+        self.allFinger[fingerNumber - 1].press = press
 
     def fingerMoveTo(self, fingerNumber, string, fret, press=1):
         """
@@ -83,7 +88,7 @@ class FretDance:
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
         if distance > 1.5 * self.fretDistance:  # 换把
             self.changeBarre(fingerNumber, string, fret)
-            actionPoint = 4 * self.fretDistance
+            actionPoint = fingerFretDistance + fingerFretDistance
         elif fret == 0 or press == 0:  # 空弦或不按，不移指
             actionPoint = 0
             finger.press = 0
@@ -169,7 +174,7 @@ class FretDance:
             dancers += chord2Finger13(self, chord)
         if positionType == [2, 1, 1]:
             dancers += chord2Finger14(self, chord)
-        if positionType == [3,1,1,1] or positionType == [2,1,1,1]:
+        if positionType == [3, 1, 1, 1] or positionType == [2, 1, 1, 1]:
             dancers += chord2Finger15(self, chord)
         if positionType == [1, 4]:
             dancers += chord2Finger16(self, chord)
@@ -179,7 +184,7 @@ class FretDance:
             dancers += chord2Finger18(self, chord)
         if positionType == [4, 2]:
             dancers += chord2Finger19(self, chord)
-        if positionType == [2,1,1,2]:
+        if positionType == [2, 1, 1, 2]:
             dancers += chord2Finger20(self, chord)
         if positionType == [1, 1, 1, 3]:
             dancers += chord2Finger21(self, chord)
@@ -187,13 +192,13 @@ class FretDance:
             dancers += chord2Finger22(self, chord)
         if positionType == [2, 2, 1]:
             dancers += chord2Finger23(self, chord)
-        if positionType == [4,1,1]:
+        if positionType == [4, 1, 1]:
             dancers += chord2Finger24(self, chord)
         if positionType == [1, 1, 1, 2]:
             dancers += chord2Finger25(self, chord)
-        if positionType == [3,1,2]:
+        if positionType == [3, 1, 2]:
             dancers += chord2Finger26(self, chord)
-        if positionType == [2,1,3]:
+        if positionType == [2, 1, 3]:
             dancers += chord2Finger27(self, chord)
         if positionType == [3, 3]:
             dancers += chord2Finger28(self, chord)

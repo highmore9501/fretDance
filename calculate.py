@@ -60,7 +60,7 @@ def listsCombiantions(lists) -> list:
     return result
 
 
-def handChordPosition(chord) ->list:
+def handChordPosition(chord) -> list:
     """
     输入和弦中所有音符可能的位置，输出不重复弦的组合
     :param chord:音符组合，示范B和e小三度组合，会呈现为[[[2,0],[3,4],[4,9]],[[1,0],[2,5],[3,9]]]这样的形式，
@@ -74,7 +74,7 @@ def handChordPosition(chord) ->list:
     for handPosition in handPositions:
         strings, frets = listOfList(handPosition)
         try:
-            newFrets = [frets[i] for i in range(0,len(frets)) if frets[i] != 0]
+            newFrets = [frets[i] for i in range(0, len(frets)) if frets[i] != 0]
             handWidth = max(newFrets) - min(newFrets)
         except:
             handWidth = 0
@@ -104,16 +104,15 @@ def arrangeNotesInChord(Chord, way):
     """
     number = 1
     length = len(Chord)
-    newChord = list(Chord)
     if way == 'string':
         number = 0
 
     for i in range(length - 1):
         for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
-            if newChord[j][number] > newChord[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
-                newChord[j], newChord[j + 1] = newChord[j + 1], newChord[j]
+            if Chord[j][number] > Chord[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
+                Chord[j], Chord[j + 1] = Chord[j + 1], Chord[j]
 
-    return newChord
+    return Chord
 
 
 def classifyChord(Chord):
@@ -147,7 +146,7 @@ def barreChord(dancer, fingerNumber, Chord):
     import copy
 
     result = []
-    resultAppend =result.append
+    resultAppend = result.append
     frets = []
     fretsAppend = frets.append
 
