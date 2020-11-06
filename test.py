@@ -58,7 +58,11 @@ class testCalculate:
         print('和弦按{}排列的结果是：'.format(way))
         print(newChordByString)
 
+    def testOutputFingerStyle(self):
+        trace = [[[4, 2], [5, 3]], [[5, 8], [4, 0]], [[5, 7], [3, 0]], [[4, 7], [5, 8]], [[5, 10], [2, 0]], [[3, 5], [4, 7]], [[3, 7], [2, 0]], [[1, 5], [2, 5], [3, 5]]]
+        outPut(trace)
+
 
 if __name__ == '__main__':
     a = testCalculate()
-    a.testChord()
+    a.testOutputFingerStyle()

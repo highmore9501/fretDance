@@ -6,13 +6,10 @@
 
 tmd空弦音被跳过了，明天再检查
 """
-import copy
 
-from LeftHand import FretDance
-from calculate import dancerMaker
 
 # 一个自然音阶下的，三度双音上行
-piece = [[8, 12],
+piece1 = [[8, 12],
          [10, 13],
          [12, 15],
          [13, 17],
@@ -20,26 +17,43 @@ piece = [[8, 12],
          [17, 20],
          [19, 22],
          [20, 24]]
-# piece = [[8],[10],[12],[13],[15],[17],[19],[20],[22],[24]]
-dancer = FretDance()
-AllDancers = [dancer]
-dancerLimits = 200
+# 上行自然音阶
+piece2 = [[8],[10],[12],[13],[15],[17],[19],[20],[22],[24]]
+# 下行自然音阶
+piece3 = [[36],[34],[32],[31],[29],[27],[25],[24],[22],[20]]
 
-for ChordNotes in piece:
-    currentDancers = copy.deepcopy(AllDancers)
-    DancerAmount = len(currentDancers)
-    for dancer in currentDancers:
-        NewDancers = dancerMaker(dancer, ChordNotes, dancerLimits)
-        AllDancers += NewDancers
 
-    # 当AllDancers里元素数量暴涨时，去掉原始的AllDancers以及entropy过高的dancer，只留下200个继续下一轮
-    if len(AllDancers) > DancerAmount + dancerLimits:
-        AllDancers = AllDancers[DancerAmount:DancerAmount + dancerLimits]
-    else:
-        AllDancers = AllDancers[DancerAmount:]
+def outPutFingerStyle(piece):
+    import copy
+    from LeftHand import FretDance
+    from calculate import dancerMaker, outPut
 
-print(AllDancers[0].trace)
-print(AllDancers[0].entropy)
+    dancer = FretDance()
+    AllDancers = [dancer]
+    dancerLimits = 200
+    for ChordNotes in piece:
+        currentDancers = copy.deepcopy(AllDancers)
+        DancerAmount = len(currentDancers)
+        for dancer in currentDancers:
+            NewDancers = dancerMaker(dancer, ChordNotes, dancerLimits)
+            AllDancers += NewDancers
+
+        # 当AllDancers里元素数量暴涨时，去掉原始的AllDancers以及entropy过高的dancer，只留下200个继续下一轮
+        if len(AllDancers) > DancerAmount + dancerLimits:
+            AllDancers = AllDancers[DancerAmount:DancerAmount + dancerLimits]
+        else:
+            AllDancers = AllDancers[DancerAmount:]
+
+    print(str(piece) + '的结果如下：')
+    for dancers in AllDancers:
+        print('第{}种指法消耗的行动力是{},指法如下：'.format(AllDancers.index(dancers)+1, dancers.entropy))
+        outPut(dancers.trace)
+
+
+if __name__ == '__main__':
+    # outPutFingerStyle(piece1)
+    outPutFingerStyle(piece2)
+    # outPutFingerStyle(piece3)
 
 
 

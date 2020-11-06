@@ -11,13 +11,13 @@ class FretDance:
     2.四个手指.每个手指状态分悬空与按弦，品位满足4>=3>=2>=1
     3.空弦
     4.横按。 这个功能写到finger()里去
-    默认弦距为0.85cm，品格高为3.637，暂不考虑品高因品格升高而变小的影响
+    默认弦距为0.85cm，弦长为64.7954cm
 
     FretDance还包括以下属性：
     trace:用来记录
     """
 
-    def __init__(self, stringDistance=0.85, fretDistance=3.637):
+    def __init__(self, equalConstant=1.0594630943592956, stringDistance=0.85, fullString=64.7954):
         """
         初始化左手，位置在第一把位，四指悬空，分别在1/2/3/4品。
         """
@@ -31,27 +31,45 @@ class FretDance:
         self.fingerD = LeftFinger()
         self.fingerD.fret = self.fingerA.fret + 3
         self.stringDistance = stringDistance
-        self.fretDistance = fretDistance
+        self.fullString = fullString
+        self.equalConstant = equalConstant
         self.allFinger = [self.fingerA, self.fingerB, self.fingerC, self.fingerD]
         self.trace = []
         self.entropy = 0
+
+    def stringLength(self, fret):
+        length = self.fullString / pow(self.equalConstant, fret)
+        return length
 
     def recordTrace(self, fingerList, noPress=[]):
         """
         :param fingerList:当前情况下所有用到的手指
         :param noPress: 所有的的空弦音列表，类似[[3,0],[4,0]]
-        :return: 完成记录动作
+        :return: 记录此时被弹响的音符位置
         """
-        newTrace = []
+        # newTrace = []
+        # if noPress is not []:
+        #     for item in noPress:
+        #         newTrace.append([item[0], 0])
+
+        # for fingerNumber in fingerList:
+        #     finger = self.allFinger[fingerNumber - 1]
+        #     if finger.press != 0:
+        #         newTrace.append([finger.string, finger.fret])
+
+        #  所有手指执行计算，得到各指的按弦
+        touchPoints = []
+        for fingerNumber in fingerList:
+            finger = self.allFinger[fingerNumber-1]
+            finger.touchPoint()
+            touchPoints += finger.point
+        # 整合各指按弦，去掉重复的按弦点
+
         if noPress is not []:
             for item in noPress:
-                newTrace.append([0, item[0], 0, 0])
-        for fingerNumber in fingerList:
-            finger = self.allFinger[fingerNumber - 1]
-            if finger.press != 0:
-                newTrace.append([fingerNumber, finger.string, finger.fret, finger.press])
+                touchPoints += [item]
 
-        self.trace.append(newTrace)
+        self.trace.append(touchPoints)
 
     def changeBarre(self, fingerNumber, string, fret, press=1):
         """
@@ -83,20 +101,22 @@ class FretDance:
         如果目标位置距离合适，移指，然后按弦
         """
         finger = self.allFinger[fingerNumber - 1]
+
         fingerStringDistance = abs(finger.string - string) * self.stringDistance
-        fingerFretDistance = abs(finger.fret - fret) * self.fretDistance
+        fingerFretDistance = abs(self.stringLength(finger.fret)-self.stringLength(fret))
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
-        if distance > 1.5 * self.fretDistance:  # 换把
-            self.changeBarre(fingerNumber, string, fret)
-            actionPoint = fingerFretDistance + fingerFretDistance
-        elif fret == 0 or press == 0:  # 空弦或不按，不移指
+        if fret == 0 or press == 0:  # 空弦或不按，不移指
             actionPoint = 0
             finger.press = 0
-        else:  # 不换把，只移指
+        elif abs(finger.fret - fret) < 2:  # 不换把，只移指
             actionPoint = distance
             finger.string = string
             finger.fret = fret
             finger.press = press
+        else:  # 换把
+            self.changeBarre(fingerNumber, string, fret)
+            actionPoint = fingerFretDistance + fingerStringDistance
+
         self.entropy += actionPoint
 
     def touchPoints(self):
@@ -107,7 +127,7 @@ class FretDance:
         #  所有手指执行计算，得到各指的按弦
         for finger in self.allFinger:
             finger.touchPoint()
-        # 整合各指按弦，去掉重复的按弦点，暂时没写去重
+        # 整合各指按弦，去掉重复的按弦点
         touchPoint = self.fingerA.point + self.fingerB.point + self.fingerC.point + self.fingerD.point
 
         result = []
@@ -219,18 +239,18 @@ class FretDance:
         :return: 返回距离
         """
         fingerStringDistance = abs(fingerA.string - fingerB.string) * self.stringDistance
-        fingerFretDistance = abs(fingerA.fret - fingerB.fret) * self.fretDistance
+        fingerFretDistance = abs(self.stringLength(fingerA.fret)-self.stringLength(fingerB.fret))
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
         if fingerA.fret == 0 or fingerB.fret == 0:
             return 0.0
         return distance
 
     def validation(self, chord):
-        if self.fingerDistance(self.fingerA, self.fingerB) > 1.5 * self.fretDistance:
+        if self.fingerDistance(self.fingerA, self.fingerB) > 5.0:
             return False
-        if self.fingerDistance(self.fingerB, self.fingerC) > 1.5 * self.fretDistance:
+        if self.fingerDistance(self.fingerB, self.fingerC) > 5.0:
             return False
-        if self.fingerDistance(self.fingerC, self.fingerD) > 1.5 * self.fretDistance:
+        if self.fingerDistance(self.fingerC, self.fingerD) > 5.0:
             return False
         if self.fingerA.fret > self.fingerB.fret or self.fingerB.fret > self.fingerC.fret or self.fingerC.fret > self.fingerD.fret:
             return False
