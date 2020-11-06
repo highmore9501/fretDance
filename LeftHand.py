@@ -17,9 +17,12 @@ class FretDance:
     trace:用来记录
     """
 
-    def __init__(self, equalConstant=1.0594630943592956, stringDistance=0.85, fullString=64.7954):
+    def __init__(self, ETC=1.0594630943592956, stringDistance=0.85, fullString=64.7954):
         """
         初始化左手，位置在第一把位，四指悬空，分别在1/2/3/4品。
+        :param ETC: 平均律常数，也就是2的十二次方根
+        :param stringDistance: 弦距，古典吉他每根弦之间的距离，单位是cm
+        :param fullString:弦长，古典吉他的弦长，单位是cm
         """
         self.handPosition = 1
         self.fingerA = LeftFinger()
@@ -32,12 +35,16 @@ class FretDance:
         self.fingerD.fret = self.fingerA.fret + 3
         self.stringDistance = stringDistance
         self.fullString = fullString
-        self.equalConstant = equalConstant
+        self.equalConstant = ETC
         self.allFinger = [self.fingerA, self.fingerB, self.fingerC, self.fingerD]
         self.trace = []
         self.entropy = 0
 
     def stringLength(self, fret):
+        """
+        :param fret: 品格
+        :return: 此品格的弦长
+        """
         length = self.fullString / pow(self.equalConstant, fret)
         return length
 
@@ -73,7 +80,7 @@ class FretDance:
 
     def changeBarre(self, fingerNumber, string, fret, press=1):
         """
-        换把位，默认所有手指全部抬起来,整体移动
+        换把位，默认所有手指全部抬起来,整体移动，然后按下横按的手指
         :param press: 大小横按或单按
         :param fret: 横按指放在第几品
         :param string: 横按指按的最高弦
@@ -98,7 +105,7 @@ class FretDance:
         :param fret: 目标品
         如果要移动的距离过大，就直接换把,然后按弦
         如果目标位置是空弦，或者不用按，就啥也不干，只松开手指
-        如果目标位置距离合适，移指，然后按弦
+        如果目标位置距离合适，移指，然后按弦，所有此时未按弦的手指，也会移弦位
         """
         finger = self.allFinger[fingerNumber - 1]
 
@@ -110,9 +117,11 @@ class FretDance:
             finger.press = 0
         elif abs(finger.fret - fret) < 2:  # 不换把，只移指
             actionPoint = distance
-            finger.string = string
             finger.fret = fret
             finger.press = press
+            for item in self.allFinger:
+                if item.press == 0:
+                    item.string = string
         else:  # 换把
             self.changeBarre(fingerNumber, string, fret)
             actionPoint = fingerFretDistance + fingerStringDistance
@@ -246,6 +255,11 @@ class FretDance:
         return distance
 
     def validation(self, chord):
+        """
+        验证当前指型是否符合是人类可以按出来的
+        :param chord:
+        :return:
+        """
         if self.fingerDistance(self.fingerA, self.fingerB) > 5.0:
             return False
         if self.fingerDistance(self.fingerB, self.fingerC) > 5.0:

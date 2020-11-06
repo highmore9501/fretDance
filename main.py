@@ -52,8 +52,8 @@ def outPutFingerStyle(piece):
 
 if __name__ == '__main__':
     # outPutFingerStyle(piece1)
-    outPutFingerStyle(piece2)
-    # outPutFingerStyle(piece3)
+    # outPutFingerStyle(piece2)
+    outPutFingerStyle(piece3)
 
 
 

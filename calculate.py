@@ -41,7 +41,7 @@ def position(note) -> list:
     for i in range(6):
         string = 6 - i
         fret = note - stringMode[i]
-        if 12 >= fret >= 0:
+        if 15 >= fret >= 0:
             resultappend([string, fret])
     return result
 
