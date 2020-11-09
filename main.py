@@ -5,7 +5,7 @@
 3.限制所有dancer()的数量，保持在200以内
 
 """
-
+from midiToNote import *
 # 一个自然音阶下的，三度双音上行
 piece1 = [[8, 12],
           [10, 13],
@@ -20,6 +20,7 @@ piece2 = [[8], [10], [12], [13], [15], [17], [19], [20], [22], [24]]
 # 下行自然音阶
 piece3 = [[36], [34], [32], [31], [29], [27], [25], [24], [22], [20]]
 piece4 = [[32], [31], [29], [27], [25], [24], [22], [20]]
+
 
 
 def outPutFingerStyle(piece):
@@ -48,7 +49,12 @@ def outPutFingerStyle(piece):
 
 
 if __name__ == '__main__':
-    outPutFingerStyle(piece1)
+    midiFile = 'guitarMidiFlies/Aguado_Study_no20.mid'
+    piece = midiToNote(midiFile)
+    print(piece)
+
+    # outPutFingerStyle(piece1)
     # outPutFingerStyle(piece2)
     # outPutFingerStyle(piece3)
     # outPutFingerStyle(piece4)
+    outPutFingerStyle(piece)

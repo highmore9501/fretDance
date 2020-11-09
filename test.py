@@ -1,31 +1,13 @@
-from mxm.midifile import MidiInFile
-from mxm.midifile import MidiToCode
-from mxm.midifile import exampledir
-
 from calculate import *
 from LeftHand import FretDance
 from chordToFinger import *
-
-
-# test_file = testdir('midifiles/cubase-minimal-type1.mid')
-# test_file = testdir('midifiles-out/mxm_midifile_type_1_minimal.mid')
-
-# advanced Creative Commons midi file example found at:
-# http://www.piano-midi.de/bach.htm
-# Copyright © 1996-2016 by Bernd Krueger
-
-
-def testMidi():
-    test_file = exampledir('midi-in/bach_847.mid')
-    midiIn = MidiInFile(MidiToCode(), test_file)
-    midiIn.read()
 
 
 class test:
     def __init__(self):
         pass
 
-    def testChord(self, chordNotes=[5, 20, 24, 29]):
+    def testChord(self, chordNotes=None):
         """
         测试和弦变指法,主要涉及以下函数
         position(从音符生成位置),
@@ -33,6 +15,8 @@ class test:
         classifyChord（判断和弦指型）,
         arrangeNotesInChord（和弦音按弦或按品来排列）
         """
+        if chordNotes is None:
+            chordNotes = [5, 20, 24, 29]
         chordPosition = []
         chordPositionAppend = chordPosition.append
         for note in chordNotes:  # 把和弦分解成音符
