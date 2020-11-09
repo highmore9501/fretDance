@@ -2,33 +2,6 @@ import copy
 from collections import Counter
 
 
-def outPut(trace):
-    length = len(trace)
-    line1 = []
-    line2 = []
-    line3 = []
-    line4 = []
-    line5 = []
-    line6 = []
-    lines = [line1, line2, line3, line4, line5, line6]
-    for i in range(length):
-        chord = trace[i]
-        strings = [note[0] for note in chord]
-        frets = [note[1] for note in chord]
-        for string in range(0, 6):
-            if string+1 in strings:
-                fret = frets[strings.index(string+1)]
-                if fret > 9:
-                    lines[string].append(str(fret))
-                else:
-                    lines[string].append(str(fret)+'-')
-            else:
-                lines[string].append('--')
-
-    for i in range(6):
-        print(' '.join(lines[i]))
-
-
 def position(note) -> list:
     """
     计算音符所有可能的位置

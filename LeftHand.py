@@ -37,7 +37,8 @@ class FretDance:
         self.fullString = fullString
         self.equalConstant = ETC
         self.allFinger = [self.fingerA, self.fingerB, self.fingerC, self.fingerD]
-        self.trace = []
+        self.traceNote = []
+        self.traceFinger = []
         self.entropy = 0
 
     def stringLength(self, fret):
@@ -48,7 +49,7 @@ class FretDance:
         length = self.fullString / pow(self.equalConstant, fret)
         return length
 
-    def recordTrace(self, fingerList, noPress=[]):
+    def recordTrace(self, fingerList, noPress=None):
         """
         :param fingerList:当前情况下所有用到的手指
         :param noPress: 所有的的空弦音列表，类似[[3,0],[4,0]]
@@ -66,17 +67,20 @@ class FretDance:
 
         #  所有手指执行计算，得到各指的按弦
         touchPoints = []
+
         for fingerNumber in fingerList:
             finger = self.allFinger[fingerNumber-1]
             finger.touchPoint()
             touchPoints += finger.point
         # 整合各指按弦，去掉重复的按弦点
 
-        if noPress is not []:
+        if noPress:
             for item in noPress:
                 touchPoints += [item]
+            fingerList.append(0)
 
-        self.trace.append(touchPoints)
+        self.traceNote.append(touchPoints)
+        self.traceFinger.append(fingerList)
 
     def changeBarre(self, fingerNumber, string, fret, press=1):
         """
@@ -107,25 +111,57 @@ class FretDance:
         如果目标位置是空弦，或者不用按，就啥也不干，只松开手指
         如果目标位置距离合适，移指，然后按弦，所有此时未按弦的手指，也会移弦位
         """
-        finger = self.allFinger[fingerNumber - 1]
 
+        finger = self.allFinger[fingerNumber - 1]
+        fingerChangePoints = 0
+        if finger.press != 0:
+            fingerChangePoints = self.stringDistance
         fingerStringDistance = abs(finger.string - string) * self.stringDistance
-        fingerFretDistance = abs(self.stringLength(finger.fret)-self.stringLength(fret))
+        fingerFretDistance = abs(self.stringLength(finger.fret) - self.stringLength(fret))
         distance = math.sqrt(math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
         if fret == 0 or press == 0:  # 空弦或不按，不移指
             actionPoint = 0
             finger.press = 0
-        elif abs(finger.fret - fret) < 2:  # 不换把，只移指
-            actionPoint = distance
-            finger.fret = fret
-            finger.press = press
+
+        elif self.allFinger[0].fret - 1 <= fret <= self.allFinger[3].fret + 1:  # 要按的品在整个手掌+-1的范围内，移指
+            currentMaxFret = self.allFinger[3].fret
+            currentMinFret = self.allFinger[0].fret
+            actionPoint = distance + fingerChangePoints
+
             for item in self.allFinger:
+                # 没有按弦的手指会随着移指的动作，产生移动，移动不会超过当前最低到最高品的范围
                 if item.press == 0:
-                    item.string = string
+                    item.string += string - finger.string
+                if item.string > 6:
+                    item.string = 6
+                if item.string < 1:
+                    item.string = 1
+
+                item.fret += fret - finger.fret
+                if item.fret > currentMaxFret:
+                    item.fret = currentMaxFret
+                if item.fret < currentMinFret:
+                    item.fret = currentMinFret
+                # 与当前手指目标位置同弦或低音弦，且品格更高的手指如果正在大横按，需要抬起来
+                if item.press == 2 and item.string >= string and item.fret >= fret:
+                    item.press = 0
+                # 与当前手指目标位置同弦或者低三根弦，且品格更高的手指正在小横按，需要抬起来
+                if item.press == 3 and string <= item.string <= string + 3 and item.fret >= fret:
+                    item.press = 0
+                # 与当前手指目标位置同弦，且品格更高的手指正在单按，需要抬起来
+                if item.press == 1 and item.string == string and item.fret >= fret:
+                    item.press = 0
+            # 完成按弦动作
+            finger.fret = fret
+            finger.string = string
+            finger.press = press
+
         else:  # 换把
             self.changeBarre(fingerNumber, string, fret)
-            actionPoint = fingerFretDistance + fingerStringDistance
-
+            if fret <= 10:
+                actionPoint = fingerFretDistance + fingerStringDistance + 4 * self.stringDistance
+            else:
+                actionPoint = 1.5 * fingerFretDistance + fingerStringDistance + 4 * self.stringDistance
         self.entropy += actionPoint
 
     def touchPoints(self):
@@ -162,19 +198,20 @@ class FretDance:
         :return:返回多个dancer，也就是手型
         """
         dancers = []
-        positionList = list(chord)
-        # 去掉空弦音
-        # for item in positionList:
-        #     if item[1] == 0:
-        #         positionList.remove(item)
+        positionList = []
+        try:
+            len(chord[0])
+            positionList = list(chord)
+        except:
+            positionList.append(chord)
 
         ChordType = classifyChord(positionList)  # 判断和弦类型
         positionType = []
         for item in ChordType:
             positionType.append(item[1])
 
-        if positionType == [0]:
-            dancers += chord2Finger00(self)
+        if not positionType:
+            dancers.append(chord2Finger00(self, chord))
         if positionType == [1]:
             dancers += chord2Finger01(self, chord)
         if positionType == [2]:
@@ -260,20 +297,49 @@ class FretDance:
         :param chord:
         :return:
         """
-        if self.fingerDistance(self.fingerA, self.fingerB) > 5.0:
+        if self.fingerDistance(self.fingerA, self.fingerB) > 3.7:
             return False
-        if self.fingerDistance(self.fingerB, self.fingerC) > 5.0:
+        if self.fingerDistance(self.fingerB, self.fingerC) > 3.7:
             return False
-        if self.fingerDistance(self.fingerC, self.fingerD) > 5.0:
+        if self.fingerDistance(self.fingerC, self.fingerD) > 3.7:
             return False
         if self.fingerA.fret > self.fingerB.fret or self.fingerB.fret > self.fingerC.fret or self.fingerC.fret > self.fingerD.fret:
             return False
+
+        # 验证所有要按的音符是否都按出来的，特别是空弦音是否被按住发不出声
         touchPoints = self.touchPoints()
         for note in chord:
             if note not in touchPoints:
                 return False
         else:
             return True
+
+    def outPutNote(self):
+        length = len(self.traceNote)
+        line1 = []
+        line2 = []
+        line3 = []
+        line4 = []
+        line5 = []
+        line6 = []
+        lines = [line1, line2, line3, line4, line5, line6]
+        for i in range(length):
+            chord = self.traceNote[i]
+            strings = [note[0] for note in chord]
+            frets = [note[1] for note in chord]
+            for string in range(0, 6):
+                if string + 1 in strings:
+                    fret = frets[strings.index(string + 1)]
+                    if fret > 9:
+                        lines[string].append(str(fret))
+                    else:
+                        lines[string].append(str(fret) + '-')
+                else:
+                    lines[string].append('--')
+
+        for i in range(6):
+            print(' '.join(lines[i]))
+        print(self.traceFinger)
 
 
 class LeftFinger:

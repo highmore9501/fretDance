@@ -3,6 +3,8 @@ from mxm.midifile import MidiToCode
 from mxm.midifile import exampledir
 
 from calculate import *
+from LeftHand import FretDance
+from chordToFinger import *
 
 
 # test_file = testdir('midifiles/cubase-minimal-type1.mid')
@@ -47,9 +49,15 @@ class test:
             self.testArrangeNotesInChord(outer[i], 'fret')
 
     def testClassifyChord(self, chord=([6, 5], [5, 7], [4, 7], [3, 5], [2, 5])):
-        n = classifyChord(chord)
+        positionList = []
+        try:
+            len(chord[0])
+            positionList = list(chord)
+        except:
+            positionList.append(chord)
+        ChordType = classifyChord(positionList)  # 判断和弦类型
         positionType = []
-        for item in n:
+        for item in ChordType:
             positionType.append(item[1])
         print('和弦类型是' + str(positionType) + '型')
 
@@ -59,10 +67,32 @@ class test:
         print(newChordByString)
 
     def testOutput(self):
-        trace = [[[4, 2], [5, 3]], [[5, 8], [4, 0]], [[5, 7], [3, 0]], [[4, 7], [5, 8]], [[5, 10], [2, 0]], [[3, 5], [4, 7]], [[3, 7], [2, 0]], [[1, 5], [2, 5], [3, 5]]]
+        trace = [[[4, 2], [5, 3]], [[5, 8], [4, 0]], [[5, 7], [3, 0]], [[4, 7], [5, 8]], [[5, 10], [2, 0]],
+                 [[3, 5], [4, 7]], [[3, 7], [2, 0]], [[1, 5], [2, 5], [3, 5]]]
         outPut(trace)
+
+    def testChordToFinger(self, fun, chord):
+        dancer = FretDance()
+        result = fun(dancer, chord)
+        i = 1
+        if type(result) == type(dancer):
+            print(result.entropy)
+            for finger in result.allFinger:
+                if finger.press != 0:
+                    print([finger.string, finger.fret])
+        else:
+            for dancer in result:
+                print('第{}种指法是：'.format(i))
+                print(dancer.entropy)
+                i += 1
+                for finger in dancer.allFinger:
+                    if finger.press != 0:
+                        print([finger.string, finger.fret])
 
 
 if __name__ == '__main__':
     a = test()
-    a.testOutput()
+    chord = [[3, 0]]
+
+    fun = chord2Finger00
+    a.testChordToFinger(fun, chord)

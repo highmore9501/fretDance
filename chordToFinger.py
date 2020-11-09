@@ -13,19 +13,24 @@ def getChordList(Chord):
     return chordList, noPress
 
 
-def fingerNoteComb(dancer, Chord, fingerList, finger=[], noPress=[]):
+def fingerNoteComb(dancer, Chord, fingerList, usedFinger=None, ESN=None):
     """
-    :param noPress: 空弦音(原来母和弦里的空弦音，和这个函数里的Chord不同，这个函数里的Chord已经过滤掉空弦音了)
-    :param finger: 其它使用过的手指列表
+    :param ESN: empty string note 空弦音
+    原来母和弦里的空弦音，和这个函数里的Chord不同，这个函数里的Chord已经过滤掉空弦音了
+    :param usedFinger: 其它使用过的手指列表
     :param dancer: 原始dancer
     :param Chord: 多指需要按的音符位置列表，中间不包含空弦音
     :param fingerList: 可以用到的手指列表，例如[2,3,4]表示利用2/3/4指
     :return: 所有单按完以后生成的dancer列表
     """
+    if ESN is None:
+        ESN = []
+    if usedFinger is None:
+        usedFinger = []
     result = []
     resultAppend = result.append
     noteNumber = len(Chord)
-    realFingerList = fingerList + finger
+    realFingerList = fingerList + usedFinger
 
     from itertools import combinations
 
@@ -33,17 +38,21 @@ def fingerNoteComb(dancer, Chord, fingerList, finger=[], noPress=[]):
         newDancer = copy.deepcopy(dancer)
         for i in range(noteNumber):
             newDancer.fingerMoveTo(fingerComb[i], Chord[i][0], Chord[i][1])
-        newDancer.recordTrace(realFingerList, noPress)
+        newDancer.recordTrace(realFingerList, ESN)
         if newDancer.validation(Chord):
             resultAppend(newDancer)
 
     return result
 
 
-def chord2Finger00(dancer):
-    """处理[0],输出结果1个,就是完全不动"""
+def chord2Finger00(dancer, chord):
+    """处理[0],也就是全部空弦音的情况，输出结果1个,就是完全不动"""
     newDancer = copy.deepcopy(dancer)
-    newDancer.recordTrace([1, 2, 3, 4])
+    newTrace = []
+    for [string, fret] in chord:
+        newTrace.append([string, 0])
+    newDancer.traceNote.append(newTrace)
+    newDancer.traceFinger.append([0])
     return newDancer
 
 
