@@ -22,7 +22,6 @@ piece3 = [[36], [34], [32], [31], [29], [27], [25], [24], [22], [20]]
 piece4 = [[32], [31], [29], [27], [25], [24], [22], [20]]
 
 
-
 def outPutFingerStyle(piece):
     import copy
     from LeftHand import FretDance
@@ -30,22 +29,29 @@ def outPutFingerStyle(piece):
 
     dancer = FretDance()
     AllDancers = [dancer]
-    dancerLimits = 200
+    dancerLimits = 10
     for ChordNotes in piece:
-        currentDancers = copy.deepcopy(AllDancers)
-        DancerAmount = len(currentDancers)
-        for dancer in currentDancers:
-            NewDancers = dancerMaker(dancer, ChordNotes, dancerLimits)
-            AllDancers += NewDancers
+        try:
+            currentDancers = copy.deepcopy(AllDancers)
+            DancerAmount = len(currentDancers)
+            for dancer in currentDancers:
+                NewDancers = dancerMaker(dancer, ChordNotes, dancerLimits)
+                AllDancers += NewDancers
 
-        # 当AllDancers里元素数量暴涨时，去掉原始的AllDancers以及entropy过高的dancer，只留下200个继续下一轮
-        if len(AllDancers) > DancerAmount + dancerLimits:
-            AllDancers = AllDancers[DancerAmount:DancerAmount + dancerLimits]
-        else:
-            AllDancers = AllDancers[DancerAmount:]
+            # 当AllDancers里元素数量暴涨时，去掉原始的AllDancers以及entropy过高的dancer，只留下200个继续下一轮
+            if len(AllDancers) > DancerAmount + dancerLimits:
+                AllDancers = AllDancers[DancerAmount:DancerAmount + dancerLimits]
+            else:
+                AllDancers = AllDancers[DancerAmount:]
+                if len(AllDancers) == 1:
+                    print('这个和弦只有唯一解了：')
+                    print(ChordNotes)
 
-    print('最优指法消耗的行动力是{},指法如下：'.format(AllDancers[0].entropy))
-    AllDancers[0].outPutNote()
+            print('最优指法消耗的行动力是{},指法如下：'.format(AllDancers[0].entropy))
+            AllDancers[0].outPutNote()
+        except:
+            print('这个和弦弹不了：')
+            print(ChordNotes)
 
 
 if __name__ == '__main__':

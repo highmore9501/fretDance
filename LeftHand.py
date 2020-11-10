@@ -297,11 +297,11 @@ class FretDance:
         :param chord:
         :return:
         """
-        if self.fingerDistance(self.fingerA, self.fingerB) > 3.7:
+        if self.fingerDistance(self.fingerA, self.fingerB) > 4.3:
             return False
-        if self.fingerDistance(self.fingerB, self.fingerC) > 3.7:
+        if self.fingerDistance(self.fingerB, self.fingerC) > 4.3:
             return False
-        if self.fingerDistance(self.fingerC, self.fingerD) > 3.7:
+        if self.fingerDistance(self.fingerC, self.fingerD) > 4.3:
             return False
         if self.fingerA.fret > self.fingerB.fret or self.fingerB.fret > self.fingerC.fret or self.fingerC.fret > self.fingerD.fret:
             return False
@@ -315,30 +315,42 @@ class FretDance:
             return True
 
     def outPutNote(self):
-        length = len(self.traceNote)
-        line1 = []
-        line2 = []
-        line3 = []
-        line4 = []
-        line5 = []
-        line6 = []
-        lines = [line1, line2, line3, line4, line5, line6]
-        for i in range(length):
-            chord = self.traceNote[i]
-            strings = [note[0] for note in chord]
-            frets = [note[1] for note in chord]
-            for string in range(0, 6):
-                if string + 1 in strings:
-                    fret = frets[strings.index(string + 1)]
-                    if fret > 9:
-                        lines[string].append(str(fret))
-                    else:
-                        lines[string].append(str(fret) + '-')
-                else:
-                    lines[string].append('--')
 
-        for i in range(6):
-            print(' '.join(lines[i]))
+        def printNotes(Notes, lineFeed=30):
+            line1 = []
+            line2 = []
+            line3 = []
+            line4 = []
+            line5 = []
+            line6 = []
+            lines = [line1, line2, line3, line4, line5, line6]
+            if len(Notes) > lineFeed:
+                length = lineFeed
+            else:
+                length = len(Notes)
+            for i in range(length):
+                chord = Notes[i]
+                strings = [note[0] for note in chord]
+                frets = [note[1] for note in chord]
+                for string in range(0, 6):
+                    if string + 1 in strings:
+                        fret = frets[strings.index(string + 1)]
+                        if fret > 9:
+                            lines[string].append(str(fret))
+                        else:
+                            lines[string].append(str(fret) + '-')
+                    else:
+                        lines[string].append('--')
+
+            for i in range(6):
+                print(' '.join(lines[i]))
+
+        allNote = copy.copy(self.traceNote)
+        while len(allNote) > 30:
+            printNotes(allNote)
+            allNote = allNote[30:]
+        printNotes(allNote)
+
         print(self.traceFinger)
 
 

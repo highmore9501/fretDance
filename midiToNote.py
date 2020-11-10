@@ -5,13 +5,11 @@ def midiToNote(midiFile):
     resultAppend = result.append
     note = []
     for msg in mid.play():
-        if msg.type == 'note_off' and msg.time != 0:
-            if not note:
-                note.append(msg.note-40)
+        if msg.type == 'note_on':
+            note.append(msg.note-40)
+        if msg.type == 'note_off':
             if note:
                 resultAppend(note)
                 note = []
-        if msg.type == 'note_off' and msg.time == 0:
-            note.append(msg.note-40)
     return result
 

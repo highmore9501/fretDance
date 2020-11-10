@@ -106,13 +106,17 @@ def arrangeNotesInChord(Chord, way):
     length = len(Chord)
     if way == 'string':
         number = 0
+    if type(Chord) == tuple:
+        ChordList = list(Chord)
+    else:
+        ChordList = Chord
 
     for i in range(length - 1):
         for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
-            if Chord[j][number] > Chord[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
-                Chord[j], Chord[j + 1] = Chord[j + 1], Chord[j]
+            if ChordList[j][number] > ChordList[j + 1][number]:  # 如果前面的大于后面的，则交换这两个元素的位置
+                ChordList[j], ChordList[j + 1] = ChordList[j + 1], ChordList[j]
 
-    return Chord
+    return ChordList
 
 
 def classifyChord(Chord):

@@ -50,12 +50,13 @@ class test:
         print('和弦按{}排列的结果是：'.format(way))
         print(newChordByString)
 
-    def testOutput(self):
-        trace = [[[4, 2], [5, 3]], [[5, 8], [4, 0]], [[5, 7], [3, 0]], [[4, 7], [5, 8]], [[5, 10], [2, 0]],
-                 [[3, 5], [4, 7]], [[3, 7], [2, 0]], [[1, 5], [2, 5], [3, 5]]]
-        outPut(trace)
-
     def testChordToFinger(self, fun, chord):
+        """
+        测试chordToFinger里各种公式有没有问题
+        :param fun: 公式的名字
+        :param chord: 测试和弦
+        :return:
+        """
         dancer = FretDance()
         result = fun(dancer, chord)
         i = 1
@@ -76,7 +77,10 @@ class test:
 
 if __name__ == '__main__':
     a = test()
-    chord = [[3, 0]]
+    # chord = [[3, 0]]
+    #
+    # fun = chord2Finger00
+    # a.testChordToFinger(fun, chord)
 
-    fun = chord2Finger00
-    a.testChordToFinger(fun, chord)
+    chordNotes = [8, 15, 20, 24, 32]
+    a.testChord(chordNotes)
