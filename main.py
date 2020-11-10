@@ -29,7 +29,7 @@ def outPutFingerStyle(piece):
 
     dancer = FretDance()
     AllDancers = [dancer]
-    dancerLimits = 10
+    dancerLimits = 200
     for ChordNotes in piece:
         try:
             currentDancers = copy.deepcopy(AllDancers)
@@ -43,15 +43,18 @@ def outPutFingerStyle(piece):
                 AllDancers = AllDancers[DancerAmount:DancerAmount + dancerLimits]
             else:
                 AllDancers = AllDancers[DancerAmount:]
-                if len(AllDancers) == 1:
+                if len(AllDancers) < 1:
                     print('这个和弦只有唯一解了：')
                     print(ChordNotes)
-
-            print('最优指法消耗的行动力是{},指法如下：'.format(AllDancers[0].entropy))
-            AllDancers[0].outPutNote()
+                if len(AllDancers) == 0:
+                    print('这个和弦无解了：')
+                    print(ChordNotes)
         except:
             print('这个和弦弹不了：')
             print(ChordNotes)
+
+    print('最优指法消耗的行动力是{},指法如下：'.format(AllDancers[0].entropy))
+    AllDancers[0].outPutNote()
 
 
 if __name__ == '__main__':

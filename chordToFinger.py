@@ -1,13 +1,18 @@
-import copy
-
 from calculate import arrangeNotesInChord
+
+
+def copyNewDancer(dancer):
+    import copy
+    newDancer = copy.deepcopy(dancer)
+    newDancer.releaseFingers()
+    return newDancer
 
 
 def getChordList(Chord):
     chordList = list(Chord)
     chordLength = len(chordList)
     noPress = []
-    for i in range(chordLength-1, -1, -1):
+    for i in range(chordLength - 1, -1, -1):
         if chordList[i][1] == 0:
             noPress.append(chordList.pop(i))
     return chordList, noPress
@@ -35,7 +40,7 @@ def fingerNoteComb(dancer, Chord, fingerList, usedFinger=None, ESN=None):
     from itertools import combinations
 
     for fingerComb in combinations(fingerList, noteNumber):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         for i in range(noteNumber):
             newDancer.fingerMoveTo(fingerComb[i], Chord[i][0], Chord[i][1])
         newDancer.recordTrace(realFingerList, ESN)
@@ -46,14 +51,11 @@ def fingerNoteComb(dancer, Chord, fingerList, usedFinger=None, ESN=None):
 
 
 def chord2Finger00(dancer, chord):
-    """处理[0],也就是全部空弦音的情况，输出结果1个,就是对应弦上如果有手指按下去了就松开，其它不动"""
-    newDancer = copy.deepcopy(dancer)
+    """处理[0],也就是全部空弦音的情况，输出结果1个"""
+    newDancer = copyNewDancer(dancer)
     newTrace = []
     for [string, fret] in chord:
         newTrace.append([string, 0])
-        for finger in newDancer.allFinger:
-            if finger.string == string and finger.press != 0:
-                finger.press = 0
     newDancer.traceNote.append(newTrace)
     newDancer.traceFinger.append([0])
     return newDancer
@@ -69,7 +71,7 @@ def chord2Finger01(dancer, Chord):
     fret = chordList[0][1]
 
     for i in range(4):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.fingerMoveTo(i + 1, string, fret)
         newDancer.recordTrace([i + 1], noPress)
         if newDancer.validation(Chord):
@@ -88,15 +90,15 @@ def chord2Finger02(dancer, Chord):
     fret = chordList[0][1]
     for i in range(2):  # 1指大小横按
         for string in range(chordList[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, fret, i + 2)
             newDancer.recordTrace([1], noPress)
             if newDancer.validation(Chord):
                 resultAppend(newDancer)
 
     for i in range(2):  # 34指大横按
-        for string in range(chordList[0][0],7):
-            newDancer = copy.deepcopy(dancer)
+        for string in range(chordList[0][0], 7):
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(i + 2, string, fret, 2)
             newDancer.recordTrace([i + 2], noPress)
             if newDancer.validation(Chord):
@@ -127,8 +129,8 @@ def chord2Finger04(dancer, Chord):
     newChordByString = arrangeNotesInChord(chordList, 'string')
     fret = newChordByString[0][1]
     for i in range(2):  # 1指大小横按
-        for string in range(newChordByString[0][0],7):
-            newDancer = copy.deepcopy(dancer)
+        for string in range(newChordByString[0][0], 7):
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, fret, i + 2)
             newDancer.recordTrace([1], noPress)
             if newDancer.validation(Chord):
@@ -136,7 +138,7 @@ def chord2Finger04(dancer, Chord):
 
     for i in range(2):  # 34指大横按
         for string in range(newChordByString[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(i + 2, string, fret, 2)
             newDancer.recordTrace([i + 2], noPress)
             if newDancer.validation(Chord):
@@ -159,8 +161,8 @@ def chord2Finger05(dancer, Chord):
     fret = newChordByFret[0][1]
     for i in range(2):  # 1指大小横按最低品,2/3/4指单按最高品
         for fingerNumber in range(2, 5):
-            for string in range(newChordByFret[0][0],7):
-                newDancer = copy.deepcopy(dancer)
+            for string in range(newChordByFret[0][0], 7):
+                newDancer = copyNewDancer(dancer)
                 newDancer.changeBarre(1, string, fret, i + 2)
                 newDancer.fingerMoveTo(fingerNumber, newChordByFret[2][0], newChordByFret[2][1])
                 newDancer.recordTrace([1, fingerNumber], noPress)
@@ -185,7 +187,7 @@ def chord2Finger06(dancer, Chord):
     fret = newChordByFret[1][1]
     for fingerNumber in range(1, 3):  # 3指大横按，1/2指单按
         for string in range(newChordByFret[1][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(3, string, fret, 2)
             newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
             newDancer.recordTrace([3, fingerNumber], noPress)
@@ -194,7 +196,7 @@ def chord2Finger06(dancer, Chord):
 
     for fingerNumber in range(1, 4):  # 4指大横按，1/2/3指单按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(4, string, fret, 2)
             newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
             newDancer.recordTrace([4, fingerNumber], noPress)
@@ -220,7 +222,7 @@ def chord2Finger08(dancer, Chord):
     """处理[4],[5],[6],输出结果1个,就是1指横按"""
     chordList, noPress = getChordList(Chord)
     for string in range(chordList[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, chordList[0][1], 2)
         newDancer.recordTrace([1], noPress)
         if newDancer.validation(Chord):
@@ -238,7 +240,7 @@ def chord2Finger09(dancer, Chord):
     fret = newChordByFret[1][1]
     for fingerNumber in range(1, 3):  # 3指大横按，1/2指单按
         for string in range(newChordByFret[1][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(3, string, fret, 2)
             newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
             newDancer.recordTrace([3, fingerNumber], noPress)
@@ -247,7 +249,7 @@ def chord2Finger09(dancer, Chord):
 
     for fingerNumber in range(1, 4):  # 4指大横按，1/2/3指单按
         for string in range(newChordByFret[1][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(4, string, fret, 2)
             newDancer.fingerMoveTo(fingerNumber, newChordByFret[0][0], newChordByFret[0][1])
             newDancer.recordTrace([4, fingerNumber], noPress)
@@ -255,7 +257,7 @@ def chord2Finger09(dancer, Chord):
                 resultAppend(newDancer)
 
     for i in range(1):  # 1234指对四个音单按
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.fingerMoveTo(1, newChordByFret[0][0], newChordByFret[0][1])
         newDancer.fingerMoveTo(2, newChordByFret[1][0], fret)
         newDancer.fingerMoveTo(3, newChordByFret[2][0], fret)
@@ -278,21 +280,21 @@ def chord2Finger10(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(0, 1):  # 1指大/小横按,2/3/4指单按2个单音
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], i + 2)
             singlePressDancer = fingerNoteComb(newDancer, newChordByFret[2:], [2, 3, 4], ESN=noPress)
             result += singlePressDancer
 
     for i in range(0, 1):  # 1指大横按,3/4指小横按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(i + 3, newChordByFret[2][0], newChordByFret[2][1], 3)
             newDancer.recordTrace([1, i + 3], noPress)
             if newDancer.validation(Chord):
                 resultAppend(newDancer)
 
-    newDancer = copy.deepcopy(dancer)
+    newDancer = copyNewDancer(dancer)
     for i in range(4):  # 1/2指按2个低音,3/4指按2个高音
         newDancer.fingerMoveTo(i + 1, newChordByFret[i][0], newChordByFret[i][1])
     newDancer.recordTrace([1, 2, 3, 4], noPress)
@@ -308,7 +310,7 @@ def chord2Finger11(dancer, Chord):
     chordList, noPress = getChordList(Chord)
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)  # 1指大横按
+        newDancer = copyNewDancer(dancer)  # 1指大横按
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
         singlePressDancer = fingerNoteComb(newDancer, [newChordByFret[-1]], [2, 3, 4], ESN=noPress)  # 2/3/4指对1点组合单按
         result += singlePressDancer
@@ -324,7 +326,7 @@ def chord2Finger12(dancer, Chord):
 
     for i in range(2):
         for string in range(newChordByFret[2][0], 7):
-            newDancer = copy.deepcopy(dancer)  # 3/4指大横按
+            newDancer = copyNewDancer(dancer)  # 3/4指大横按
             newDancer.changeBarre(i + 3, string, newChordByFret[2][1], 2)
             singlePressDancer = fingerNoteComb(newDancer, [newChordByFret[:1]], [1, 2], ESN=noPress)  # 1,2指对2点组合单按
             result += singlePressDancer
@@ -336,7 +338,7 @@ def chord2Finger13(dancer, Chord):
     """处理[1,2,1],[1,1,1,1],输出结果1个,品格从低到高分别用1234"""
     chordList, noPress = getChordList(Chord)
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
-    newDancer = copy.deepcopy(dancer)
+    newDancer = copyNewDancer(dancer)
     for i in range(4):
         newDancer.fingerMoveTo(i + 1, newChordByFret[i][0], newChordByFret[i][1])
     newDancer.recordTrace([1, 2, 3, 4], noPress)
@@ -352,7 +354,7 @@ def chord2Finger14(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(0, 1):  # 1指大/小横按,2/3/4指单按2个单音
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], i + 2)
             singlePressDancer = fingerNoteComb(newDancer, newChordByFret[-2:], [2, 3, 4], [1], noPress)
             result += singlePressDancer
@@ -368,7 +370,7 @@ def chord2Finger15(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(0, 1):  # 1指大/小横按,2/3/4指单按2个单音
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], i + 2)
             singlePressDancer = fingerNoteComb(newDancer, newChordByFret[i + 2:], [2, 3, 4], [1], noPress)
             result += singlePressDancer
@@ -384,7 +386,7 @@ def chord2Finger16(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(0, 1):  # 3/4指大横按,1/2指单按低音
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(i + 3, string, newChordByFret[0][1], 2)
             singlePressDancer = fingerNoteComb(newDancer, [newChordByFret[0]], [1, 2], [i + 3], noPress)
             result += singlePressDancer
@@ -401,7 +403,7 @@ def chord2Finger17(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(0, 1):  # 1指大横按,3/4指小横按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(i + 3, newChordByFret[2][0], newChordByFret[2][1], 3)
             newDancer.recordTrace([1, i + 3], noPress)
@@ -421,7 +423,7 @@ def chord2Finger18(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(0, 1):  # 1指大横按,3/4指小横按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(i + 3, newChordByFret[2][0], newChordByFret[2][1], 3)
             newDancer.recordTrace([1, i + 3], noPress)
@@ -430,7 +432,7 @@ def chord2Finger18(dancer, Chord):
 
     for i in range(0, 1):  # 1指大/小横按,2/3/4指单按2个单音
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], i + 2)
             singlePressDancer = fingerNoteComb(newDancer, newChordByFret[3:], [2, 3, 4], [1], noPress)
             result += singlePressDancer
@@ -446,14 +448,14 @@ def chord2Finger19(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
         singlePressDancer = fingerNoteComb(newDancer, newChordByFret[4:], [2, 3, 4], [1], noPress)
         result += singlePressDancer
 
     for i in range(0, 1):  # 1指大横按,3/4指小横按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(i + 3, newChordByFret[4][0], newChordByFret[4][1], 3)
             newDancer.recordTrace([1, i + 3], noPress)
@@ -469,7 +471,7 @@ def chord2Finger20(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
         newDancer.changeBarre(4, newChordByFret[4][0], newChordByFret[4][1], 3)
         newDancer.fingerMoveTo(2, newChordByFret[2][0], newChordByFret[2][1])
@@ -488,7 +490,7 @@ def chord2Finger21(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(4, string, newChordByFret[3][1], 3)
         newDancer.fingerMoveTo(1, newChordByFret[0][0], newChordByFret[0][1])
         newDancer.fingerMoveTo(2, newChordByFret[1][0], newChordByFret[1][1])
@@ -507,7 +509,7 @@ def chord2Finger22(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)  # 1指大横按，4指小横按,2/3指单按1个音
         newDancer.changeBarre(4, newChordByFret[3][0], newChordByFret[3][1], 3)
         singlePressDancer = fingerNoteComb(newDancer, [newChordByFret[2]], [2, 3], [1, 4], noPress)
@@ -515,7 +517,7 @@ def chord2Finger22(dancer, Chord):
 
     for i in range(1):  # 1指大横按，3指小横按,2指单按1个音
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(3, newChordByFret[3][0], newChordByFret[3][1], 3)
             newDancer.fingerMoveTo(2, newChordByFret[2][0], newChordByFret[2][1])
@@ -535,7 +537,7 @@ def chord2Finger23(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)  # 1指大横按，3指小横按,4指单按1个音
         newDancer.changeBarre(3, newChordByFret[2][0], newChordByFret[2][1], 3)
         newDancer.fingerMoveTo(4, newChordByFret[4][0], newChordByFret[4][1])
@@ -545,7 +547,7 @@ def chord2Finger23(dancer, Chord):
 
     for i in range(2):
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], i + 2)  # 1指大/小横按，2/3/4指按3个音
             newDancer.fingerMoveTo(2, newChordByFret[2][0], newChordByFret[2][1])
             newDancer.fingerMoveTo(3, newChordByFret[3][0], newChordByFret[3][1])
@@ -563,7 +565,7 @@ def chord2Finger24(dancer, Chord):
     chordList, noPress = getChordList(Chord)
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
         singlePressDancer = fingerNoteComb(newDancer, newChordByFret[-2:], [2, 3, 4], [1], noPress)
         result += singlePressDancer
@@ -577,7 +579,7 @@ def chord2Finger25(dancer, Chord):
     chordList, noPress = getChordList(Chord)
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[3][0], 7):
-        newDancer = copy.deepcopy(dancer)  # 4指大横按
+        newDancer = copyNewDancer(dancer)  # 4指大横按
         newDancer.changeBarre(4, string, newChordByFret[3][1], 2)
         singlePressDancer = fingerNoteComb(newDancer, [newChordByFret[:2]], [1, 2, 3], [4], noPress)  # 1/2/3指对3点组合单按
         result += singlePressDancer
@@ -594,7 +596,7 @@ def chord2Finger26(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)  # 1指大横按，3指小横按,2指单按
         newDancer.changeBarre(3, newChordByFret[-2][0], newChordByFret[-2][1], 3)
         newDancer.fingerMoveTo(2, newChordByFret[3][0], newChordByFret[3][1])
@@ -604,7 +606,7 @@ def chord2Finger26(dancer, Chord):
 
     for i in range(2):
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)  # 1指大横按，4指小横按,2/3指单按
             newDancer.changeBarre(4, newChordByFret[-2][0], newChordByFret[-2][1], 3)
             newDancer.fingerMoveTo(i + 2, newChordByFret[3][0], newChordByFret[3][1])
@@ -625,7 +627,7 @@ def chord2Finger27(dancer, Chord):
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for i in range(2):
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], i + 2)  # 1指大/小横按，3指小横按,2指单按
             newDancer.changeBarre(3, newChordByFret[-2][0], newChordByFret[-2][1], 3)
             newDancer.fingerMoveTo(2, newChordByFret[2][0], newChordByFret[2][1])
@@ -635,7 +637,7 @@ def chord2Finger27(dancer, Chord):
 
     for i in range(2):
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)  # 1指大横按,4指小横按，2/3指单按1个音
             newDancer.changeBarre(4, newChordByFret[-2][0], newChordByFret[-2][1], 3)
             newDancer.fingerMoveTo(i + 2, newChordByFret[2][0], newChordByFret[2][1])
@@ -655,14 +657,14 @@ def chord2Finger28(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[0][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(1, string, newChordByFret[0][1], 2)  # 1指大横按,234指单按3音
         singlePressDancer = fingerNoteComb(newDancer, newChordByFret[3:], [2, 3, 4], [1], noPress)
         result += singlePressDancer
 
     for i in range(0, 1):  # 1指大横按,3/4指小横按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(i + 3, newChordByFret[3][0], newChordByFret[3][1], 3)
             newDancer.recordTrace([1, i + 3], noPress)
@@ -682,7 +684,7 @@ def chord2Finger29(dancer, Chord):
 
     for i in range(2):  # 1指大横按,3/4指小横按
         for string in range(newChordByFret[0][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(1, string, newChordByFret[0][1], 2)
             newDancer.changeBarre(i + 3, newChordByFret[2][0], newChordByFret[2][1], 2)
             newDancer.recordTrace([1, i + 3], noPress)
@@ -702,7 +704,7 @@ def chord2Finger30(dancer, Chord):
 
     for i in range(2):  # 1指单按,3/4指小横按
         for string in range(newChordByFret[1][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(i + 3, string, newChordByFret[1][1], 3)
             newDancer.fingerMoveTo(1, newChordByFret[0][0], newChordByFret[0][1])
             newDancer.recordTrace([1, i + 3], noPress)
@@ -721,7 +723,7 @@ def chord2Finger31(dancer, Chord):
 
     newChordByFret = arrangeNotesInChord(chordList, 'fret')
     for string in range(newChordByFret[2][0], 7):
-        newDancer = copy.deepcopy(dancer)
+        newDancer = copyNewDancer(dancer)
         newDancer.changeBarre(3, string, newChordByFret[2][1], 3)  # 3指小横按,1/2指单按2个音
         for i in range(2):
             newDancer.fingerMoveTo(i + 1, newChordByFret[i][0], newChordByFret[i][1])
@@ -731,7 +733,7 @@ def chord2Finger31(dancer, Chord):
 
     for i in range(1):
         for string in range(newChordByFret[2][0], 7):
-            newDancer = copy.deepcopy(dancer)
+            newDancer = copyNewDancer(dancer)
             newDancer.changeBarre(4, string, newChordByFret[2][1], 3)  # 4指小横按,1/2/3指按2个音
             singlePressDancer = fingerNoteComb(newDancer, newChordByFret[:1], [1, 2, 3], [4], noPress)
             result += singlePressDancer

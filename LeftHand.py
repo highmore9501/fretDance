@@ -41,6 +41,10 @@ class FretDance:
         self.traceFinger = []
         self.entropy = 0
 
+    def releaseFingers(self):
+        for finger in self.allFinger:
+            finger.press = 0
+
     def stringLength(self, fret):
         """
         :param fret: 品格
