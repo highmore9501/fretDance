@@ -2,6 +2,11 @@ from calculate import arrangeNotesInChord
 
 
 def copyNewDancer(dancer):
+    """
+    复制原来的dancer，并且把手指都抬起来
+    :param dancer:
+    :return:
+    """
     import copy
     newDancer = copy.deepcopy(dancer)
     newDancer.releaseFingers()

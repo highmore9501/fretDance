@@ -9,7 +9,8 @@ def midiToNote(midiFile):
             note.append(msg.note-40)
         if msg.type == 'note_off':
             if note:
-                resultAppend(note)
+                notes = list(set(note))
+                resultAppend(notes)
                 note = []
     return result
 

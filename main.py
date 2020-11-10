@@ -22,14 +22,13 @@ piece3 = [[36], [34], [32], [31], [29], [27], [25], [24], [22], [20]]
 piece4 = [[32], [31], [29], [27], [25], [24], [22], [20]]
 
 
-def outPutFingerStyle(piece):
+def outPutFingerStyle(piece, dancerLimits=20):
     import copy
     from LeftHand import FretDance
     from calculate import dancerMaker
 
     dancer = FretDance()
     AllDancers = [dancer]
-    dancerLimits = 200
     for ChordNotes in piece:
         try:
             currentDancers = copy.deepcopy(AllDancers)

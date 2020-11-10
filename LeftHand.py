@@ -319,6 +319,7 @@ class FretDance:
             return True
 
     def outPutNote(self):
+        import copy
 
         def printNotes(Notes, lineFeed=30):
             line1 = []
@@ -348,6 +349,7 @@ class FretDance:
 
             for i in range(6):
                 print(' '.join(lines[i]))
+            print(' ')
 
         allNote = copy.copy(self.traceNote)
         while len(allNote) > 30:
