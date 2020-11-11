@@ -1,4 +1,9 @@
 def midiToNote(midiFile):
+    """
+    把midi文件转化成乐曲piece
+    :param midiFile:
+    :return: piece
+    """
     import mido
     mid = mido.MidiFile(midiFile)
     result = []

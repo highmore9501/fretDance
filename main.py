@@ -20,9 +20,16 @@ piece2 = [[8], [10], [12], [13], [15], [17], [19], [20], [22], [24]]
 # 下行自然音阶
 piece3 = [[36], [34], [32], [31], [29], [27], [25], [24], [22], [20]]
 piece4 = [[32], [31], [29], [27], [25], [24], [22], [20]]
+piece5 = [[8, 20, 12, 15]]
 
 
 def outPutFingerStyle(piece, dancerLimits=20):
+    """
+    输入乐曲，输出tab谱，输出指法。指法暂时还没有很好的展示方法。
+    :param piece: 乐曲
+    :param dancerLimits: 最多可以存在的dancer数量，这个值会影响计算速度
+    :return:
+    """
     import copy
     from LeftHand import FretDance
     from calculate import dancerMaker
@@ -37,7 +44,7 @@ def outPutFingerStyle(piece, dancerLimits=20):
                 NewDancers = dancerMaker(dancer, ChordNotes, dancerLimits)
                 AllDancers += NewDancers
 
-            # 当AllDancers里元素数量暴涨时，去掉原始的AllDancers以及entropy过高的dancer，只留下200个继续下一轮
+            # 当AllDancers里元素数量暴涨时，去掉原始的AllDancers以及entropy过高的dancer，只留下20个继续下一轮
             if len(AllDancers) > DancerAmount + dancerLimits:
                 AllDancers = AllDancers[DancerAmount:DancerAmount + dancerLimits]
             else:

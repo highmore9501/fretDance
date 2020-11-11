@@ -6,21 +6,22 @@ from chordToFinger import *
 
 class FretDance:
     """
-    FretDance是表示左手的状态，也就是表现在和弦谱上的左手指法，主要包括几个概念：
-    1.把位，也就是第一指所在的品位
-    2.四个手指.每个手指状态分悬空与按弦，品位满足4>=3>=2>=1
-    3.空弦
-    4.横按。 这个功能写到finger()里去
-    默认弦距为0.85cm，弦长为64.7954cm
+    FretDance是表示左手，也就是表现在和弦谱上的左手指法以及它运行至今的轨迹，主要包括几个属性：
+    1.handPosition把位，也就是第一指所在的品位
+    2.finger手指.一共有ABCD4个，allFinger表示这4个手指的集合。手指的位置和按弦状态决定了有哪些音符能被弹出来
+    3.trace 轨迹，表示左手运行至今的轨迹，包括它使用了哪些手指按了哪些位置以及这些动作的顺序。traceNote记录音符位置，traceFinger记录使用的手指
+    4.entropy 熵，表示左手运行至今消耗的行动力
 
-    FretDance还包括以下属性：
-    trace:用来记录
+    此外FretDancer还包括了几个计算用的常数：
+    ETC: 平均律常数，也就是2的十二次方根
+    stringDistance: 弦距，古典吉他每根弦之间的距离，单位是cm，默认是0.85cm
+    fullString:弦长，古典吉他的弦长，单位是cm,默认为为64.7954cm
     """
 
     def __init__(self, ETC=1.0594630943592956, stringDistance=0.85, fullString=64.7954):
         """
         初始化左手，位置在第一把位，四指悬空，分别在1/2/3/4品。
-        :param ETC: 平均律常数，也就是2的十二次方根
+        :param ETC: 平均律常数，也就是2的十二次方根，此常数用来计算品格之间的距离
         :param stringDistance: 弦距，古典吉他每根弦之间的距离，单位是cm
         :param fullString:弦长，古典吉他的弦长，单位是cm
         """
@@ -42,11 +43,14 @@ class FretDance:
         self.entropy = 0
 
     def releaseFingers(self):
+        """
+        抬起所有的手指
+        """
         for finger in self.allFinger:
             finger.press = 0
 
     def stringLength(self, fret):
-        """
+        """计算弦长
         :param fret: 品格
         :return: 此品格的弦长
         """
@@ -55,21 +59,10 @@ class FretDance:
 
     def recordTrace(self, fingerList, noPress=None):
         """
+        记录此时被弹响的音符位置
         :param fingerList:当前情况下所有用到的手指
         :param noPress: 所有的的空弦音列表，类似[[3,0],[4,0]]
-        :return: 记录此时被弹响的音符位置
         """
-        # newTrace = []
-        # if noPress is not []:
-        #     for item in noPress:
-        #         newTrace.append([item[0], 0])
-
-        # for fingerNumber in fingerList:
-        #     finger = self.allFinger[fingerNumber - 1]
-        #     if finger.press != 0:
-        #         newTrace.append([finger.string, finger.fret])
-
-        #  所有手指执行计算，得到各指的按弦
         touchPoints = []
 
         for fingerNumber in fingerList:
@@ -94,15 +87,20 @@ class FretDance:
         :param string: 横按指按的最高弦
         :param fingerNumber: 使用第几指横横按，1/2/3/4
         """
-        self.handPosition = fret - fingerNumber + 1
-        self.fingerA.fret = self.handPosition
-        self.fingerB.fret = self.fingerA.fret + 1
-        self.fingerC.fret = self.fingerA.fret + 2
-        self.fingerD.fret = self.fingerA.fret + 3
-        for finger in self.allFinger:
-            finger.string = string
-            finger.press = 0
-        self.allFinger[fingerNumber - 1].press = press
+        if fret - fingerNumber > 9:  # 不支持过高的横按
+            return
+        elif fingerNumber != 1 and press == 2:  # 大横按必须用1指
+            return
+        else:
+            self.handPosition = fret - fingerNumber + 1
+            self.fingerA.fret = self.handPosition
+            self.fingerB.fret = self.fingerA.fret + 1
+            self.fingerC.fret = self.fingerA.fret + 2
+            self.fingerD.fret = self.fingerA.fret + 3
+            for finger in self.allFinger:
+                finger.string = string
+                finger.press = 0
+            self.allFinger[fingerNumber - 1].press = press
 
     def fingerMoveTo(self, fingerNumber, string, fret, press=1):
         """
@@ -111,11 +109,11 @@ class FretDance:
         :param fingerNumber: 第几指，分别有1/2/3/4四根手指
         :param string: 目标弦
         :param fret: 目标品
-        如果要移动的距离过大，就直接换把,然后按弦
+
         如果目标位置是空弦，或者不用按，就啥也不干，只松开手指
         如果目标位置距离合适，移指，然后按弦，所有此时未按弦的手指，也会移弦位
+        如果要移动的距离过大，就直接换把,然后按弦
         """
-
         finger = self.allFinger[fingerNumber - 1]
         fingerChangePoints = 0
         if finger.press != 0:
@@ -319,6 +317,9 @@ class FretDance:
             return True
 
     def outPutNote(self):
+        """
+        输出轨迹，按设定好的格式打印出traceNote和traceFinger
+        """
         import copy
 
         def printNotes(Notes, lineFeed=30):
@@ -370,6 +371,7 @@ class LeftFinger:
     1 表示只按一个单音
     2 表示横按，按了从指尖位置到第一弦所有同品的音
     3 表示悬空小横按，按了从指尖位置开始往高音弦方向，同品的三个音；这个时候是把第一指节打横按下去，其实不太好按
+
     暂时不考虑悬空横按只按2个音的情况，在吉它上试过了，太难按
     """
 
@@ -396,16 +398,3 @@ class LeftFinger:
             self.point = []
             for i in range(3):
                 self.point.append([self.string - i, self.fret])
-
-    def moveAndPress(self, string, fret, press=1):
-        """
-        移动手指，并生成新的触弦点
-        :param string: 弦
-        :param fret: 品
-        :param press: 横按状态
-        :return:
-        """
-        self.string = string
-        self.fret = fret
-        self.press = press
-        self.touchPoint()
