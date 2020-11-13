@@ -10,7 +10,7 @@ chordPosition: 构成和弦的所有音符的位置，也就是notePosition的�
 所以前面还有`[[5,3],[4,2],[3,0]]`,`[[6,8],[5,7],[3,0]]`也可以用来表示为chordNote=[8,12,15]时的chordPosition。
 * piece: 乐曲。乐曲是由一系列的chordNote组成的列表。
 * midi: midi格式的音乐文件。经过解析后，midi文件中的音符可以转化成piece，里面只保留了同时发声的音符(chordNote)，以及其发声的先后顺序。midi文件中的其它信息因与指法编排无关，不再保留。
-* fretDancer：直译是指板上的舞蹈者，也就是指一只在品格上舞动的左手。它是由四只手指组成（古典吉它中大拇指并不用来按弦，所以不做考虑），可以完成在吉它指板上的各种按弦动作。此外还有两个重要的属性
+* fretDancer：直译是指板上的舞蹈者，也就是指一只在指板上舞动的左手。它是由四只手指组成（古典吉它中大拇指并不用来按弦，所以不做考虑），可以完成在吉它指板上的各种按弦动作。此外还有两个重要的属性
 trace和entropy。trace记录了dancer运动至今的每次动作，每处理一个chordNote时使用的手指finger，按的弦string和品fret，以及是否空弦或大小横按等。
 entropy则记录了dancer运动至今每次动作消耗行动力的总和，它的大小意味着dancer运动的省力程度。一般来讲越省力的dancer，它的trace就代表了越科学的指法。
 * finger:手指。归属于fretDancer的手指，每个手指都有弦string,品fret,状态press,接触点touchPoint几个属性。表示手指正在几弦几品上，状态press是0/未按或者1/单按，或者是2/大横按，3/小横按。touchPoint

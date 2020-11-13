@@ -16,10 +16,12 @@ def position(note) -> list:
         fret = note - stringMode[i]
         if 15 >= fret >= 0:
             resultAppend([string, fret])
+        elif fret > 15 and (string == 1 or string == 2):
+            resultAppend([string, fret])
     return result
 
 
-def filterDance(allDancer, Limit) -> list:  # 冒泡排序，用来对allDancer里的dancer进行排序，并且删除掉行动力过高的dancer
+def arrangeDancers(allDancer, Limit) -> list:  # 冒泡排序，用来对allDancer里的dancer进行排序，并且删除掉行动力过高的dancer
     length = len(allDancer)
     for i in range(length - 1):
         for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
@@ -28,6 +30,15 @@ def filterDance(allDancer, Limit) -> list:  # 冒泡排序，用来对allDancer�
     if length >= Limit:
         allDancer = allDancer[:Limit - 1]
     return allDancer
+
+
+def arrangeLists(arr) -> list:  # 冒泡排序，用来对allDancer里的dancer进行排序，并且删除掉行动力过高的dancer
+    length = len(arr)
+    for i in range(length - 1):
+        for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
+            if arr[j] > arr[j + 1]:  # 如果前面的大于后面的，则交换这两个元素的位置
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
 
 
 def analyzeChord(chordPosition):
@@ -187,5 +198,5 @@ def dancerMaker(dancer, ChordNotes, dancerNumberLimit=200):
             dancers = currentDancer.handMoveTo(handPosition)  # 用当前指法去按当前和弦的位置，这里会生成多个可能性，需要展开来处理
             allFretDance += dancers  # 加入留存的指法列表
     allFretDance = allFretDance[currentDancerNumber:]  # 删掉父指法
-    allFretDance = filterDance(allFretDance, dancerNumberLimit)  # 对指法列表进行排序过滤
+    allFretDance = arrangeDancers(allFretDance, dancerNumberLimit)  # 对指法列表进行排序过滤
     return allFretDance

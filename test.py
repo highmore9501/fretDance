@@ -74,13 +74,41 @@ class test:
                     if finger.press != 0:
                         print([finger.string, finger.fret])
 
+    def testDancerMaker(self, ChordNotes, dancerNumberLimit=20):
+        dancer = FretDance()
+        allFretDance = [dancer]
+        chordPosition = []  # 生成一个空的和弦按法列表
+        chordPositionAppend = chordPosition.append
+
+        if len(ChordNotes) > 6:
+            print(ChordNotes)
+            print('音符超出6个')
+            raise
+
+        for note in ChordNotes:  # 把和弦分解成音符
+            if note < 0 or note > 48:
+                print(ChordNotes)
+                print('音符超出上下限')
+                raise
+            notePositions = position(note)  # 得到当前音符可能的位置列表
+            chordPositionAppend(notePositions)  # 得到所有音符的可能的位置列表
+        filteredChordPositions = handChordPosition(chordPosition)  # 过滤得到所有无重复弦的音符位置组合，也就是可能的和弦按法组合
+
+        currentDancers = copy.deepcopy(allFretDance)
+        currentDancerNumber = len(currentDancers)
+
+        for dancerNumber in range(currentDancerNumber):  # 对所有留存的指法列表遍历
+            for handPosition in filteredChordPositions:  # 对所有可能的和弦按法遍历
+                currentDancer = copy.deepcopy(allFretDance[dancerNumber])  # 先继承一个父指法
+                dancers = currentDancer.handMoveTo(handPosition)  # 用当前指法去按当前和弦的位置，这里会生成多个可能性，需要展开来处理
+                allFretDance += dancers  # 加入留存的指法列表
+        allFretDance = allFretDance[currentDancerNumber:]  # 删掉父指法
+        allFretDance = arrangeDancers(allFretDance, dancerNumberLimit)  # 对指法列表进行排序过滤
+        allFretDance[0].outPutNote()
+
 
 if __name__ == '__main__':
     a = test()
-    # chord = [[3, 0]]
-    #
-    # fun = chord2Finger00
-    # a.testChordToFinger(fun, chord)
+    chordNote = [24, 16, 19, 12]
+    a.testDancerMaker(chordNote)
 
-    chordNotes = [8, 15, 20, 24, 32]
-    a.testChord(chordNotes)
