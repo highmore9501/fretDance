@@ -32,7 +32,7 @@ def arrangeDancers(allDancer, Limit) -> list:  # 冒泡排序，用来对allDanc
     return allDancer
 
 
-def arrangeLists(arr) -> list:  # 冒泡排序，用来对allDancer里的dancer进行排序，并且删除掉行动力过高的dancer
+def arrangeLists(arr) -> list:  # 冒泡排序，用来对arr进行排序
     length = len(arr)
     for i in range(length - 1):
         for j in range(length - 1 - i):  # 第二层for表示具体比较哪两个元素
