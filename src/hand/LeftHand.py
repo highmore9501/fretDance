@@ -1,6 +1,8 @@
 from src.hand.LeftFinger import LeftFinger, PRESSSTATE
 from src.guitar.Guitar import Guitar
+import copy
 from typing import List
+from src.utils.utils import print_strikethrough
 
 
 class LeftHand():
@@ -20,15 +22,27 @@ class LeftHand():
     def getMaxFingerDistance(self) -> float:
         return self._maxFingerDistance
 
-    def output(self) -> None:
+    def allOpen(self) -> None:
+        """
+        set all fingers to open. 将所有手指设置为抬起
+        """
+        for finger in self.fingers:
+            finger.press = PRESSSTATE["Open"]
+
+    def output(self, showOpenFinger: bool = False) -> None:
         """
         print current hand. 输出当前手型
         """
+        print("当前手型如下：")
+        for finger in self.fingers:
+            finger.output()
         # 计算所有手指的最小fret值
         minFret = 24
+        minFretIsSetted = False
         for finger in self.fingers:
             if finger.fret < minFret and finger.fret != 0:
                 minFret = finger.fret
+                minFretIsSetted = True
         if minFret < 4:
             baseFret = 0
         elif minFret < 6:
@@ -39,97 +53,115 @@ class LeftHand():
             baseFret = 7
         elif minFret < 13:
             baseFret = 9
-        else:
+        elif minFretIsSetted:
             baseFret = 12
+        else:
+            baseFret = 0
         print(baseFret)
 
-        for i in range(6):
-            found = False
-            # 寻找self.fingers中具有相同stringIndex的手指
+        for stringIndex in range(6):
+            txt = ""
+            allnoteInStringIndex = []
             for finger in self.fingers:
-                if finger.guitarString._stringIndex == i:
-                    fret = finger.fret
-                    if fret == 0:
-                        print("0"+8*" --")
+                if finger.stringIndex == stringIndex:
+                    allnoteInStringIndex.append(finger)
+            # 如果这根弦上没有手指
+            if len(allnoteInStringIndex) == 0:
+                txt += "|" + 8 * " --" + str(stringIndex)
+            else:
+                pressedFinger = []
+                openFinger = []
+                hasOpenStringNote = False
+                for finger in allnoteInStringIndex:
+                    # 也就是index为-1的手指存在，说明本弦是空弦音
+                    if finger._fingerIndex == -1:
+                        hasOpenStringNote = True
+                    # 根据在这根弦上的手指的按弦状态，将手指分为按下和抬起两类
+                    press = finger.press
+                    if press != PRESSSTATE["Open"]:
+                        pressedFinger.append(finger)
                     else:
-                        foramttedFret = str(
-                            fret) if fret > 9 else " "+str(fret)
-                        txt = "|" + (fret-baseFret-1)*" --" + " " + \
-                            foramttedFret+(8-fret+baseFret)*" --"
-                        print(txt)
-                    found = True
-            if not found:
-                print("|"+8*" --")
+                        openFinger.append(finger)
+
+                # 如果是空弦音，就以0起头
+                if hasOpenStringNote:
+                    txt += "0"
+                else:
+                    txt += "|"
+
+                for characterIndex in range(1, 9):
+                    characterIndexInPressedFinger = False
+                    characterIndexInOpenFinger = False
+                    fingerIndex = 0
+                    for finger in pressedFinger:
+                        if finger.fret - baseFret == characterIndex:
+                            characterIndexInPressedFinger = True
+                            fingerIndex = finger._fingerIndex
+
+                    openFingersInFret = []
+                    for finger in openFinger:
+                        if finger.fret - baseFret == characterIndex:
+                            characterIndexInOpenFinger = True
+                            openFingersInFret.append(finger._fingerIndex)
+
+                    if characterIndexInPressedFinger:
+                        txt += f" -{str(fingerIndex)}"
+                    elif characterIndexInOpenFinger and showOpenFinger:
+                        if len(openFingersInFret) == 1:
+                            strikethrough_text = print_strikethrough(
+                                str(openFingersInFret[0]))
+                            txt += f" 0{strikethrough_text}"
+                        elif len(openFingersInFret) == 2:
+                            strikethrough_text = print_strikethrough(
+                                str(openFingersInFret[0]) + str(openFingersInFret[1]))
+                            txt += f" {strikethrough_text}"
+                        elif len(openFingersInFret) == 3:
+                            strikethrough_text = print_strikethrough(
+                                str(openFingersInFret[0]) + str(openFingersInFret[1])+str(openFingersInFret[2]))
+                            text += strikethrough_text
+                    else:
+                        txt += " --"
+
+                txt += str(stringIndex)
+
+            print(txt)
 
         print("-------------------------------")
-
-    def calculateEntropy(self, guitar: Guitar, targetHand: 'LeftHand') -> float:
-        """
-        calculate the entropy between two hands. 计算两个手型转换之间的熵
-        :param targetHand: 目标手型
-        :return: entropy. 熵
-        """
-        entropy = 0
-        etc = guitar._ETC
-        tmpFingers = self.fingers.copy()
-        # 根据食指计算两个手型之间是否要换把位,
-        handPositionDiff = self.handPosition - targetHand.handPosition
-
-        if abs(handPositionDiff) > 1:
-            # 先计算手指抬起的消耗
-            for finger in tmpFingers:
-                if finger.press != PRESSSTATE["Open"]:
-                    entropy += self.fingerDistanceTofretboard
-
-            # 再计算手掌换把的消耗
-            entropy += abs(guitar._fullString / pow(etc, self.handPosition) -
-                           guitar._fullString / pow(etc, targetHand.handPosition))
-
-            # 把临时的fingers列表里面的每个手指都移动handPositionDiff品格
-            for tmpFinger in tmpFingers:
-                tmpFinger.fret += handPositionDiff
-
-        # 最后计算每个手指运动的消耗
-        for index in range(len(tmpFingers)):
-            currentFinger = tmpFingers[index]
-            fingerName = currentFinger._fingerName
-            # 在targetHand.fingers中寻找有相同手指名字的手指
-            targetFinger = None
-            for finger in targetHand.fingers:
-                if finger._fingerName == fingerName:
-                    targetFinger = finger
-                    break
-            if targetFinger is None:
-                continue
-
-            if currentFinger.press != PRESSSTATE["Open"]:
-                entropy += self.fingerDistanceTofretboard
-            if targetFinger.press == PRESSSTATE["Open"]:
-                continue
-            # 计算手指的移动和按下的消耗
-            entropy += currentFinger.distanceTo(
-                guitar, targetFinger) + self.fingerDistanceTofretboard
-
-        return entropy
 
     def verifyValid(self) -> bool:
         """
         verify if the hand is valid. 验证手型是否合法
         """
-        for i in range(len(self.fingers)-1):
-            minIndexFingerIsHigher = self.fingers[i]._fingerIndex < self.fingers[i +
-                                                                                 1]._fingerIndex and self.fingers[i].fret > self.fingers[i+1].fret
+        if len(self.fingers) == 0:
+            return False
+        if len(self.fingers) == 1:
+            return True
+
+        sortedFingers = sorted(self.fingers, key=lambda x: x._fingerIndex)
+        for i in range(len(sortedFingers)-1):
+            minIndexFingerIsHigher = sortedFingers[i]._fingerIndex < sortedFingers[i +
+                                                                                   1]._fingerIndex and sortedFingers[i].fret > sortedFingers[i+1].fret
             if minIndexFingerIsHigher:
                 return False
 
-            maxIndexFingerIsLower = self.fingers[i]._fingerIndex > self.fingers[i +
-                                                                                1]._fingerIndex and self.fingers[i].fret < self.fingers[i+1].fret
+            maxIndexFingerIsLower = sortedFingers[i]._fingerIndex > sortedFingers[i +
+                                                                                  1]._fingerIndex and sortedFingers[i].fret < sortedFingers[i+1].fret
             if maxIndexFingerIsLower:
                 return False
 
-            fingerDistanceIsTooLarge = abs(self.fingers[i].fret - self.fingers[i+1].fret) > 2 * abs(
-                self.fingers[i]._fingerIndex - self.fingers[i+1]._fingerIndex)
-            if fingerDistanceIsTooLarge:
+            bothFingerIsNotZero = sortedFingers[i].fret != 0 and sortedFingers[i+1].fret != 0
+            fingerDistanceIsTooLarge = abs(sortedFingers[i].fret - sortedFingers[i+1].fret) > 2 * abs(
+                sortedFingers[i]._fingerIndex - sortedFingers[i+1]._fingerIndex)
+            if fingerDistanceIsTooLarge and bothFingerIsNotZero:
+                return False
+
+            fingerIndexLargeThanFret = sortedFingers[i]._fingerIndex > sortedFingers[i].fret + 1
+            if fingerIndexLargeThanFret:
+                return False
+
+            minFingerIsOuter = sortedFingers[i].fret == sortedFingers[i +
+                                                                      1].fret and sortedFingers[i].stringIndex < sortedFingers[i+1].stringIndex
+            if minFingerIsOuter:
                 return False
 
         return True
@@ -147,4 +179,153 @@ class LeftHand():
                 handPosition = finger.fret
 
         handPosition -= (minFingerIndex - 1)
+        if handPosition < 1:
+            handPosition = 1
         return handPosition
+
+    def generateNextHands(self, guitar: Guitar, fingerPositions: List[tuple[str, int]]) -> tuple['LeftHand', float]:
+        """
+        :parma guitar: Guitar. 吉他
+        :param chord: List of notes, including fret and string index and index of finger which pressed it. 音符列表，包括品格，弦的索引和按下它的手指的索引
+        :return: List of next hands and their entropy. 下一个手型和它们的熵的列表
+        """
+        # 初始化一些信息
+        entropy = 0
+        etc = guitar._ETC
+
+        fingerIndexCounter = {}
+
+        # 统计每个手指的触弦数量
+        for fingerPosition in fingerPositions:
+            if "finger" in fingerPosition:
+                fingerIndex = fingerPosition['finger']
+            else:
+                fingerPosition['finger'] = -1
+                fingerIndex = -1
+
+            if fingerIndex in fingerIndexCounter:
+                fingerIndexCounter[fingerIndex] += 1
+            else:
+                fingerIndexCounter[fingerIndex] = 1
+
+        # 先遍历所有fingerPosition，判断出当前手型的把位
+        newHandPosition = 0
+        minFingerIndex = 4
+        for fingerPosition in fingerPositions:
+            fret = fingerPosition['fret']
+            finger_index = fingerPosition['finger']
+            if 0 < finger_index < minFingerIndex:
+                minFingerIndex = finger_index
+                newHandPosition = fret
+
+        newHandPosition -= (minFingerIndex - 1)
+        if newHandPosition < 1:
+            newHandPosition = 1
+
+        # 换把
+        tmpFingers = copy.deepcopy(self.fingers)
+        # 去掉tmpFingers中index小于1的手指，确保tmpFinger里只会有1234手指
+        tmpFingers = [
+            finger for finger in tmpFingers if finger._fingerIndex > 0]
+        handPositionDiff = newHandPosition - self.handPosition
+
+        if abs(handPositionDiff) > 1:
+            # 先计算手指抬起的消耗
+            for finger in tmpFingers:
+                if finger.press != PRESSSTATE["Open"]:
+                    entropy += self.fingerDistanceTofretboard
+
+            # 再计算手掌换把的消耗
+            entropyChangeBarrel = abs(guitar._fullString / pow(etc, self.handPosition) -
+                                      guitar._fullString / pow(etc, newHandPosition))
+            entropy += entropyChangeBarrel
+            # 把临时的fingers列表里面的每个手指都移动handPositionDiff品格
+            for tmpFinger in tmpFingers:
+                tmpFinger.fret += handPositionDiff
+                tmpFinger.press = PRESSSTATE["Open"]
+
+        # 计算那些在新手型里需要按弦的手弦的消耗
+        pressedFingers = []
+        indexIsCaculated = {
+            1: False,
+            2: False,
+            3: False,
+            4: False
+        }
+        for fingerPosition in fingerPositions:
+            # 如果是一个空弦音，生成一个空手指，并加入到pressedFingers中
+            if fingerPosition['finger'] == -1:
+                newGuitarString = copy.deepcopy(guitar.guitarStrings[0])
+                newFinger = LeftFinger(-1, newGuitarString, 0, "Open")
+                newFinger.stringIndex = fingerPosition['index']
+                pressedFingers.append(newFinger)
+                continue
+
+            # 如果这个位置不是空弦音，需要计算它的消耗
+            guitar_string_index = fingerPosition['index']
+            fret = fingerPosition['fret']
+            finger_index = fingerPosition['finger']
+
+            # 如果某个手指已经计算过了，就跳过
+            if indexIsCaculated[finger_index] == True:
+                continue
+
+            for tmpFinger in tmpFingers:
+                if tmpFinger._fingerIndex == finger_index:
+                    # 计算手指的按弦状态
+                    finger_repeat_times = fingerIndexCounter[finger_index]
+                    if finger_repeat_times == 1:
+                        pressState = PRESSSTATE["Pressed"]
+                    elif finger_repeat_times > 1 and finger_index == 1:
+                        pressState = PRESSSTATE["Barre"]
+                    elif finger_repeat_times == 2 and finger_index == 4:
+                        pressState = PRESSSTATE["Partial_barre_2_strings"]
+                    elif finger_repeat_times == 3 and finger_index == 4:
+                        pressState = PRESSSTATE["Partial_barre_3_strings"]
+                    else:
+                        return None, None
+                    # 计算抬指的消耗
+                    if (tmpFinger.fret != fret or tmpFinger.stringIndex != guitar_string_index) and tmpFinger.press != PRESSSTATE["Open"]:
+                        entropy += self.fingerDistanceTofretboard
+                    # 计算移动手指的消耗
+                    fingerStringDistance = abs(
+                        tmpFinger.stringIndex - guitar_string_index) * guitar._stringDistance
+                    entropy += fingerStringDistance
+                    fingerFretDistance = abs(guitar._fullString / pow(etc, tmpFinger.fret) -
+                                             guitar._fullString / pow(etc, fret))
+                    entropy += fingerFretDistance
+
+                    tmpFinger.fret = fret
+                    tmpFinger.stringIndex = guitar_string_index
+
+                    tmpFinger.press = pressState
+                    # 计算落指的消耗
+                    entropy += self.fingerDistanceTofretboard
+                    pressedFingers.append(tmpFinger)
+                    indexIsCaculated[finger_index] = True
+
+        # 将无归属的手指计算当前位置以及消耗
+        openFingers = []
+        for tmpFinger in tmpFingers:
+            if tmpFinger not in pressedFingers:
+                if tmpFinger.press != PRESSSTATE["Open"]:
+                    entropy += self.fingerDistanceTofretboard
+                    tmpFinger.press = PRESSSTATE["Open"]
+                openFingers.append(tmpFinger)
+
+        conflictFinger = []
+        if len(openFingers) != 0 and len(pressedFingers) != 0:
+            # 寻找两个数列中是否存在stringIndex和fret都相同的手指，如果有，就将openFinger在品格上反向移动一格以解决冲突
+            for openFinger in openFingers:
+                for pressedFinger in pressedFingers:
+                    if openFinger.stringIndex == pressedFinger.stringIndex and openFinger.fret == pressedFinger.fret:
+                        openFinger.fret += openFinger._fingerIndex - pressedFinger._fingerIndex
+                        conflictFinger.append(openFinger)
+
+        # 用现在的手指状态生成新的LeftHand，返回它以及消耗
+        nextLeftFingerList = pressedFingers + openFingers
+        newHand = LeftHand(nextLeftFingerList)
+        if not newHand.verifyValid():
+            return None, None
+
+        return newHand, entropy

@@ -37,7 +37,7 @@ class LeftFinger:
         # fingerName等于FINGERS中值为fingerIndex的key值
         self._fingerName = list(FINGERS.keys())[list(
             FINGERS.values()).index(fingerIndex)]
-        self.guitarString = guitarString
+        self.stringIndex = guitarString._stringIndex
         self.fret = fret
         self.press = PRESSSTATE[press]
 
@@ -50,8 +50,8 @@ class LeftFinger:
         return self._fingerIndex
 
     def output(self) -> None:
-        print(self._fingerName, "|",
-              self.guitarString._stringIndex, "string | ", self.fret, "fret |  ", list(PRESSSTATE.keys())[list(
+        print(self._fingerIndex, "|",
+              self.stringIndex, "string | ", self.fret, "fret |  ", list(PRESSSTATE.keys())[list(
                   PRESSSTATE.values()).index(self.press)])
 
     def getTouchedPoint(self, guitarStrings: List[GuitarString]) -> List[GuitarNote]:
@@ -88,9 +88,9 @@ class LeftFinger:
         fingerFretDistance = 0
         etc = guitar._ETC
 
-        if self.guitarString._stringIndex != targetFinger.guitarString._stringIndex:
+        if self.stringIndex != targetFinger.stringIndex:
             fingerStringDistance += abs(
-                self.guitarString._stringIndex - targetFinger.guitarString._stringIndex) * guitar._stringDistance
+                self.stringIndex - targetFinger.stringIndex) * guitar._stringDistance
         if self.fret != targetFinger.fret:
             fingerFretDistance += abs(guitar._fullString / pow(etc, self.fret) -
                                       guitar._fullString / pow(etc, targetFinger.fret))

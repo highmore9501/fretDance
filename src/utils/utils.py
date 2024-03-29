@@ -116,7 +116,7 @@ def convertNotesToChord(notes: List[int], guitar: Guitar) -> List[Dict[str, int]
     return result
 
 
-def convertChordToHands(chord: List[Tuple[Dict[str, int]]]) -> List[List[Dict[str, int]]]:
+def convertChordTofingerPositions(chord: List[Tuple[Dict[str, int]]]) -> List[List[Dict[str, int]]]:
     """
     convert chord to a list of possible hands. 将和弦转换为可能的手型列表
     :param chord: chord. 和弦
@@ -182,6 +182,10 @@ def stringIndexIsUsed(index: int, notePositions: List[dict]) -> bool:
         if position["index"] == index:
             return True
     return False
+
+
+def print_strikethrough(text):
+    return f"\033[9m{text}\033[0m"
 
 
 if __name__ == "__main__":
