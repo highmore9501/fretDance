@@ -1,6 +1,6 @@
-from src.guitar.GuitarString import GuitarString
-from src.guitar.GuitarNote import GuitarNote
-from src.guitar.Guitar import Guitar
+from ..guitar.GuitarString import GuitarString
+from ..guitar.GuitarNote import GuitarNote
+from ..guitar.Guitar import Guitar
 from typing import List
 import math
 

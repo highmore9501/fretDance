@@ -1,4 +1,4 @@
-from src.guitar.GuitarString import GuitarString
+from .GuitarString import GuitarString
 from typing import List
 
 

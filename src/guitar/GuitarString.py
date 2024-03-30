@@ -1,4 +1,4 @@
-from src.guitar.MusicNote import MusicNote
+from .MusicNote import MusicNote
 from typing import List
 
 

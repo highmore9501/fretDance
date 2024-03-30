@@ -1,5 +1,5 @@
-from src.hand.LeftFinger import LeftFinger, PRESSSTATE
-from src.guitar.Guitar import Guitar
+from .LeftFinger import LeftFinger, PRESSSTATE
+from ..guitar.Guitar import Guitar
 import copy
 from typing import List
 from src.utils.utils import print_strikethrough

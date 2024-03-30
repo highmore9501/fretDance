@@ -1,4 +1,4 @@
-from src.hand.LeftHand import LeftHand
+from .hand.LeftHand import LeftHand
 
 
 class HandPoseRecorder():
@@ -17,6 +17,10 @@ class HandPoseRecorder():
         self.currentEntropy += entropy
         self.entropys.append(self.currentEntropy)
         self.beats.append(beat)
+        # if beat == 2.5:
+        #     self.handPoseList[-2].output(True)
+        #     handPose.output(True)
+        #     print("Entropy: ", self.currentEntropy)
 
     def currentHandPose(self) -> LeftHand:
         return self.handPoseList[-1]

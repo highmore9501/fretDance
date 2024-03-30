@@ -1,5 +1,5 @@
-from src.guitar.GuitarString import GuitarString
-from src.guitar.MusicNote import MusicNote
+from .GuitarString import GuitarString
+from .MusicNote import MusicNote
 
 
 class GuitarNote:

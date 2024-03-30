@@ -1,5 +1,5 @@
 from typing import List, Dict, Tuple
-from src.guitar.Guitar import Guitar
+from ..guitar.Guitar import Guitar
 import itertools
 
 KEYNOTES: dict = {
@@ -163,6 +163,8 @@ def verifyValidCombination(combination: List[Dict[str, int]]) -> bool:
     for i in range(len(combination) - 1):
         if "finger" in combination[i+1] and "finger" in combination[i] and combination[i]["finger"] > combination[i + 1]["finger"] and combination[i]["fret"] < combination[i + 1]["fret"]:
             return False
+        if "finger" in combination[i+1] and "finger" in combination[i] and combination[i]["finger"] < combination[i + 1]["finger"] and combination[i]["fret"] > combination[i + 1]["fret"]:
+            return False
 
     # if the same finger has different fret, return false. 如果同一个finger值有对应不同的fret，返回false。
     fingerFretDict = {}
@@ -190,8 +192,6 @@ def print_strikethrough(text):
 
 if __name__ == "__main__":
     result = [
-        {'index': 4, 'fret': 3, 'finger': 1},
-        {'index': 3, 'fret': 2, 'finger': 2},
         {'index': 2, 'fret': 0}
     ]
 
