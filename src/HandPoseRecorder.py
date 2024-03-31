@@ -1,4 +1,5 @@
 from .hand.LeftHand import LeftHand
+import json
 
 
 class HandPoseRecorder():
@@ -36,6 +37,32 @@ class HandPoseRecorder():
             print("Entropy: ", self.entropys[i])
             print("Beat: ", self.beats[i])
             self.handPoseList[i].output(showOpenFinger)
+
+    def save(self, jsonFilePath: str):
+        handsDict = []
+        for i in range(1, len(self.handPoseList)):
+            handInfo = []
+            beat = self.beats[i]
+            leftHand = self.handPoseList[i]
+            for finger in leftHand.fingers:
+                fingerIndex = finger._fingerIndex
+                fingerInfo = {
+                    "stringIndex": finger.stringIndex,
+                    "fret": finger.fret,
+                    "press": finger.press
+                }
+                handInfo.append({
+                    "fingerIndex": fingerIndex,
+                    "fingerInfo": fingerInfo
+                })
+
+            handsDict.append({
+                "beat": beat,
+                "leftHand": handInfo
+            })
+
+        with open(jsonFilePath, 'w') as f:
+            json.dump(handsDict, f)
 
 
 class HandPoseRecordPool():
