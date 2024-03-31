@@ -2,7 +2,8 @@ from .LeftFinger import LeftFinger, PRESSSTATE
 from ..guitar.Guitar import Guitar
 import copy
 from typing import List
-from src.utils.utils import print_strikethrough
+from ..utils.utils import print_strikethrough
+from ..utils.fretDistanceDict import FRET_DISTANCE_DICT
 
 
 class LeftHand():
@@ -191,14 +192,15 @@ class LeftHand():
         """
         # 初始化一些信息
         entropy = 0
-        etc = guitar._ETC
 
         fingerIndexCounter = {}
 
         # 统计每个手指的触弦数量
+        hasPressedFinger = False
         for fingerPosition in fingerPositions:
             if "finger" in fingerPosition:
                 fingerIndex = fingerPosition['finger']
+                hasPressedFinger = True
             else:
                 fingerPosition['finger'] = -1
                 fingerIndex = -1
@@ -207,6 +209,17 @@ class LeftHand():
                 fingerIndexCounter[fingerIndex] += 1
             else:
                 fingerIndexCounter[fingerIndex] = 1
+
+        tmpFingers = copy.deepcopy(self.fingers)
+        # 去掉tmpFingers中index小于1的手指，确保tmpFinger里只会有1234手指
+        tmpFingers = [
+            finger for finger in tmpFingers if finger._fingerIndex > 0]
+
+        if not hasPressedFinger:
+            for finger in tmpFingers:
+                finger.press = PRESSSTATE["Open"]
+            newHand = LeftHand(tmpFingers)
+            return newHand, entropy
 
         # 先遍历所有fingerPosition，判断出当前手型的把位
         newHandPosition = 0
@@ -223,10 +236,6 @@ class LeftHand():
             newHandPosition = 1
 
         # 换把
-        tmpFingers = copy.deepcopy(self.fingers)
-        # 去掉tmpFingers中index小于1的手指，确保tmpFinger里只会有1234手指
-        tmpFingers = [
-            finger for finger in tmpFingers if finger._fingerIndex > 0]
         handPositionDiff = newHandPosition - self.handPosition
 
         if abs(handPositionDiff) > 1:
@@ -235,14 +244,20 @@ class LeftHand():
                 if finger.press != PRESSSTATE["Open"]:
                     entropy += self.fingerDistanceTofretboard
 
-            # 再计算手掌换把的消耗
-            entropyChangeBarrel = abs(guitar._fullString / pow(etc, self.handPosition) -
-                                      guitar._fullString / pow(etc, newHandPosition))
-            entropy += entropyChangeBarrel
+            if self.handPosition != newHandPosition:
+                start_fret = min(self.handPosition, newHandPosition)
+                end_fret = max(self.handPosition, newHandPosition)
+                distance_query_name = str(start_fret) + "-" + str(end_fret)
+                distance_query_result = FRET_DISTANCE_DICT[distance_query_name]
+                entropyChangeBarrel = guitar._fullString * distance_query_result
+
+                entropy += entropyChangeBarrel
             # 把临时的fingers列表里面的每个手指都移动handPositionDiff品格
             for tmpFinger in tmpFingers:
                 tmpFinger.fret += handPositionDiff
                 tmpFinger.press = PRESSSTATE["Open"]
+                if tmpFinger.fret > 23:
+                    return None, None
 
         # 计算那些在新手型里需要按弦的手弦的消耗
         pressedFingers = []
@@ -291,11 +306,18 @@ class LeftHand():
                     fingerStringDistance = abs(
                         tmpFinger.stringIndex - guitar_string_index) * guitar._stringDistance
                     entropy += fingerStringDistance
-                    fingerFretDistance = abs(guitar._fullString / pow(etc, tmpFinger.fret) -
-                                             guitar._fullString / pow(etc, fret))
-                    entropy += fingerFretDistance
 
-                    tmpFinger.fret = fret
+                    if fret != tmpFinger.fret:
+                        start_fret = min(fret, tmpFinger.fret)
+                        end_fret = max(fret, tmpFinger.fret)
+                        distance_query_name = str(
+                            start_fret) + "-" + str(end_fret)
+                        distance_query_result = FRET_DISTANCE_DICT[distance_query_name]
+                        fingerFretDistance = guitar._fullString * distance_query_result
+
+                        entropy += fingerFretDistance
+                        tmpFinger.fret = fret
+
                     tmpFinger.stringIndex = guitar_string_index
 
                     tmpFinger.press = pressState

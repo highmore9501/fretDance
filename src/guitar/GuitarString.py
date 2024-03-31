@@ -23,7 +23,7 @@ class GuitarString():
 
     def getFretByNote(self, note: int) -> int | bool:
         fret = note - self._baseNote.num
-        if fret < 0 or fret > 24:
+        if fret < 0 or fret > 23:
             return False
         return note - self._baseNote.num
 
