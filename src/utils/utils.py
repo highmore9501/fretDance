@@ -1,5 +1,7 @@
 from typing import List, Dict, Tuple
 from ..guitar.Guitar import Guitar
+from numpy import array
+from .fretDistanceDict import FRET_DISTANCE_DICT
 import itertools
 
 KEYNOTES: dict = {
@@ -188,6 +190,22 @@ def stringIndexIsUsed(index: int, notePositions: List[dict]) -> bool:
 
 def print_strikethrough(text):
     return f"\033[9m{text}\033[0m"
+
+
+def twiceLerp(p0: array, p1: array, p2: array, p3: array, fret: int, stringIndex: int) -> array:
+    fret_query_string = "0-"+str(fret)
+    fret_value = FRET_DISTANCE_DICT[fret_query_string]
+    p_fret_0 = p0 + (p2 - p0) * fret_value
+    p_fret_1 = p1 + (p3 - p1) * fret_value
+    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+    return p_final
+
+
+def lerp(p0: array, p1: array, fret: int) -> array:
+    fret_query_string = "0-"+str(fret)
+    fret_value = FRET_DISTANCE_DICT[fret_query_string]
+    p_final = p0 + (p1 - p0) * fret_value
+    return p_final
 
 
 if __name__ == "__main__":
