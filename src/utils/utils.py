@@ -2,6 +2,7 @@ from typing import List, Dict, Tuple
 from ..guitar.Guitar import Guitar
 from numpy import array
 from .fretDistanceDict import FRET_DISTANCE_DICT
+from ..blender.blenderRecords import NORMAL_P1, NORMAL_P2, NORMAL_P0, NORMAL_P3, INNER_P0, INNER_P1, INNER_P2, INNER_P3, OUTER_P0, OUTER_P1, OUTER_P2, OUTER_P3
 import itertools
 
 KEYNOTES: dict = {
@@ -192,19 +193,33 @@ def print_strikethrough(text):
     return f"\033[9m{text}\033[0m"
 
 
-def twiceLerp(p0: array, p1: array, p2: array, p3: array, fret: int, stringIndex: int) -> array:
+def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int) -> array:
+    if hand_state == "OUTER":
+        data0 = OUTER_P0[value]
+        data1 = OUTER_P1[value]
+        data2 = OUTER_P2[value]
+        data3 = OUTER_P3[value]
+    elif hand_state == "INNER":
+        data0 = INNER_P0[value]
+        data1 = INNER_P1[value]
+        data2 = INNER_P2[value]
+        data3 = INNER_P3[value]
+    else:
+        data0 = NORMAL_P0[value]
+        data1 = NORMAL_P1[value]
+        data2 = NORMAL_P2[value]
+        data3 = NORMAL_P3[value]
+
+    p0 = array(data0[valueType])
+    p1 = array(data1[valueType])
+    p2 = array(data2[valueType])
+    p3 = array(data3[valueType])
+
     fret_query_string = "0-"+str(fret)
     fret_value = FRET_DISTANCE_DICT[fret_query_string]
     p_fret_0 = p0 + (p2 - p0) * fret_value
     p_fret_1 = p1 + (p3 - p1) * fret_value
     p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
-    return p_final
-
-
-def lerp(p0: array, p1: array, fret: int) -> array:
-    fret_query_string = "0-"+str(fret)
-    fret_value = FRET_DISTANCE_DICT[fret_query_string]
-    p_final = p0 + (p1 - p0) * fret_value
     return p_final
 
 
