@@ -193,7 +193,7 @@ def print_strikethrough(text):
     return f"\033[9m{text}\033[0m"
 
 
-def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int) -> array:
+def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int, isFinger: bool = True) -> array:
     if hand_state == "OUTER":
         data0 = OUTER_P0[value]
         data1 = OUTER_P1[value]
@@ -210,6 +210,7 @@ def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringInde
         data2 = NORMAL_P2[value]
         data3 = NORMAL_P3[value]
 
+    # p0和p1实际上并不是空品，而是1品;而p2和p3是12品
     p0 = array(data0[valueType])
     p1 = array(data1[valueType])
     p2 = array(data2[valueType])
@@ -217,9 +218,15 @@ def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringInde
 
     fret_query_string = "0-"+str(fret)
     fret_value = FRET_DISTANCE_DICT[fret_query_string]
+    if isFinger:
+        p0_fret = FRET_DISTANCE_DICT["0-1"]
+        p2_fret = FRET_DISTANCE_DICT["0-12"]
+        fret_value = (fret_value - p0_fret) / (p2_fret - p0_fret)
+
     p_fret_0 = p0 + (p2 - p0) * fret_value
     p_fret_1 = p1 + (p3 - p1) * fret_value
     p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+
     return p_final
 
 

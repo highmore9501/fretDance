@@ -122,6 +122,11 @@ def export_controller_info():
     collections = ['PositionControllers',
                    'RotationControllers', 'PivotControllers']
 
+    ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
+                      "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
+
+    armature = "Kamisato IK_arm"
+
     result = {}
 
     for collection in collections:
@@ -141,7 +146,62 @@ def export_controller_info():
                     "rotation": [obj_info.x, obj_info.y, obj_info.z],
                 }
 
+    # 选中armature
+    bpy.context.view_layer.objects.active = bpy.data.objects[armature]
+    # 切换到pose mode
+    bpy.ops.object.mode_set(mode='POSE')
+    # 遍历所有骨骼
+    for bone in bpy.context.object.pose.bones:
+        bone_name = bone.name
+        if bone_name in ik_pivot_bones:
+            bone_info = bone.location
+            result[bone_name] = {
+                "position": [bone_info.x, bone_info.y, bone_info.z],
+            }
+    # 切换到object mode
+    bpy.ops.object.mode_set(mode='OBJECT')
+
     print(result)
+
+
+def import_controller_info(data):
+    all_controllers = [
+        "R_L", "RP_L", "R_rotation_L",
+        "M_L", "MP_L", "M_rotation_L",
+        "I_L", "IP_L", "I_rotation_L",
+        "P_L", "PP_L", "P_rotation_L",
+        "H_L", "HP_L", "H_rotation_X_L", "H_rotation_Y_L",
+        "T_L", "TP_L", "T_rotation_L"
+    ]
+
+    all_ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
+                          "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
+    armature = "Kamisato IK_arm"
+
+    for controller in all_controllers:
+        obj = bpy.data.objects[controller]
+        value = data[controller]
+        if "rotation" in controller:
+            obj.rotation_euler = value["rotation"]
+        else:
+            obj.location = value["position"]
+
+    # 选中armature
+    bpy.context.view_layer.objects.active = bpy.data.objects[armature]
+    # 切换到pose mode
+    bpy.ops.object.mode_set(mode='POSE')
+    # 遍历所有骨骼
+    for bone in bpy.context.object.pose.bones:
+        bone_name = bone.name
+        if bone_name in all_ik_pivot_bones:
+            try:
+                bone_info = data[bone_name]
+                bone.location = bone_info["position"]
+            except:
+                pass
+
+    # 切换到object mode
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 if __name__ == "__main__":
