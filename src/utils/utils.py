@@ -193,7 +193,7 @@ def print_strikethrough(text):
     return f"\033[9m{text}\033[0m"
 
 
-def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int, isFinger: bool = True) -> array:
+def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int | float, isFinger: bool = True) -> array:
     if hand_state == "OUTER":
         data0 = OUTER_P0[value]
         data1 = OUTER_P1[value]

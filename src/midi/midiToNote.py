@@ -3,7 +3,7 @@ from typing import List
 import random
 
 
-def midiToGuitarNotes(midiFilePath: str, muteChannel: List[int] = [17]) -> List[dict]:
+def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[int] = [17]) -> List[dict]:
     """
     :param muteChannel: channels need to filter out, normally it is drum channel. 需要过滤掉的通道，一般是打击乐通道
     :param midiFilePath: path of input midi file. 输入midi文件路径
@@ -11,7 +11,8 @@ def midiToGuitarNotes(midiFilePath: str, muteChannel: List[int] = [17]) -> List[
     """
     midFile = MidiFile(midiFilePath)
     tick_per_beat: int = midFile.ticks_per_beat
-    midTrack = MidiFile(midiFilePath).tracks[0]
+    midTrack = MidiFile(midiFilePath).tracks[useChannel]
+    print(midTrack)
 
     result = []
     note = []

@@ -333,6 +333,8 @@ class LeftHand():
                 if tmpFinger.press != PRESSSTATE["Open"]:
                     entropy += self.fingerDistanceTofretboard
                     tmpFinger.press = PRESSSTATE["Open"]
+                tmpFinger.stringIndex = 2
+                tmpFinger.fret = newHandPosition + tmpFinger._fingerIndex - 1
                 openFingers.append(tmpFinger)
 
         conflictFinger = []

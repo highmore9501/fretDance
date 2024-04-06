@@ -2,6 +2,7 @@ import json
 from numpy import array, linalg, cross
 from ..utils.utils import twiceLerp
 from ..blender.blenderRecords import NORMAL_P2, NORMAL_P0, NORMAL_P3
+from ..hand.LeftFinger import PRESSSTATE
 
 
 def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> None:
@@ -38,6 +39,7 @@ def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> Non
         leftHand = item["leftHand"]
         fingerInfos = {}
         barre = 1
+        max_finger_string_index = 0
         index_finger_string_number = 0
 
         # 先遍历当前所有手指，找到第一指和第二指所在的弦位置
@@ -72,6 +74,10 @@ def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> Non
             stringIndex = data["fingerInfo"]["stringIndex"]
             fret = data["fingerInfo"]["fret"]
             press = data["fingerInfo"]["press"]
+            if press == PRESSSTATE['Open']:
+                stringIndex -= 0.5
+
+            max_finger_string_index = max(max_finger_string_index, stringIndex)
 
             # 这里是计算当前手型的把位，如果当前手型没有任何手指是按下的，那么把位不会变
             if press != 0 and fingerIndex < min_press_fingerIndex:
@@ -80,24 +86,12 @@ def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> Non
 
             if fingerIndex == 1:
                 position_value_name = "I_L"
-                ik_position_value_name = "IP_L"
-                ik_pivot_bone_name = 'IndexFinger_IK_pivot_L'
-                rotation_value_name = "I_rotation_L"
             elif fingerIndex == 2:
                 position_value_name = "M_L"
-                ik_position_value_name = "MP_L"
-                ik_pivot_bone_name = 'MiddleFinger_IK_pivot_L'
-                rotation_value_name = "M_rotation_L"
             elif fingerIndex == 3:
                 position_value_name = "R_L"
-                ik_position_value_name = "RP_L"
-                ik_pivot_bone_name = 'Ring_IK_pivot_L'
-                rotation_value_name = "R_rotation_L"
             elif fingerIndex == 4:
                 position_value_name = "P_L"
-                ik_position_value_name = "PP_L"
-                ik_pivot_bone_name = 'Pinky_IK_pivot_L'
-                rotation_value_name = "P_rotation_L"
 
             finger_position = twiceLerp(
                 hand_state=hand_state,
@@ -105,40 +99,19 @@ def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> Non
                 valueType="position",
                 fret=fret,
                 stringIndex=stringIndex)
-            finger_IK_pivot_position = twiceLerp(
-                hand_state=hand_state,
-                value=ik_position_value_name,
-                valueType="position",
-                fret=fret,
-                stringIndex=stringIndex)
-            ik_pivot_bone_position = twiceLerp(
-                hand_state=hand_state,
-                value=ik_pivot_bone_name,
-                valueType="position",
-                fret=fret,
-                stringIndex=stringIndex)
-            finger_rotation = twiceLerp(
-                hand_state=hand_state,
-                value=rotation_value_name,
-                valueType="rotation",
-                fret=fret,
-                stringIndex=stringIndex)
 
             # 如果手指没有按下，那么手指位置会稍微上移
-            if press == 0:
-                finger_position -= normal * 0.005
+            if press == PRESSSTATE['Open']:
+                finger_position -= normal * 0.007
 
             fingerInfos[position_value_name] = finger_position.tolist()
-            fingerInfos[ik_position_value_name] = finger_IK_pivot_position.tolist()
-            fingerInfos[ik_pivot_bone_name] = ik_pivot_bone_position.tolist()
-            fingerInfos[rotation_value_name] = finger_rotation.tolist()
 
         hand_position = twiceLerp(
             hand_state=hand_state,
             value="H_L",
             valueType="position",
             fret=barre,
-            stringIndex=index_finger_string_number)
+            stringIndex=max_finger_string_index)
 
         fingerInfos["H_L"] = hand_position.tolist()
 

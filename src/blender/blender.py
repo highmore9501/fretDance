@@ -6,16 +6,12 @@ import json
 animation = r"G:\fretDance\output\Aguado_12valses_Op1_No2_animation.json"
 
 all_controllers = [
-    "R_L", "RP_L", "R_rotation_L",
-    "M_L", "MP_L", "M_rotation_L",
-    "I_L", "IP_L", "I_rotation_L",
-    "P_L", "PP_L", "P_rotation_L",
+    "R_L", "M_L", "I_L", "P_L",
     "H_L", "HP_L", "H_rotation_Y_L",
     "T_L", "TP_L", "T_rotation_L"
 ]
 
-all_ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
-                      "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
+all_ik_pivot_bones = ["Thumb_IK_pivot_L"]
 armature = "Kamisato IK_arm"
 
 # 读取json文件
