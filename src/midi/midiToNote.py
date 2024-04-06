@@ -16,10 +16,14 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
 
     result = []
     note = []
-    time: int = 0
+    real_time: float = 0
+    bpm: float = 100
 
     for message in midTrack:
-        time += message.time
+        if message.type == 'set_tempo':
+            bpm = message.tempo2bpm(message.tempo)
+        ticks = message.time
+
         if message.type == 'note_on' and message.time == 0 and message.channel not in muteChannel:
             note.append(message.note)
         else:
@@ -27,8 +31,9 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
                 continue
             # 将note里的元素按大小排序
             notes = sorted(note)
-            beat: float = time / tick_per_beat
-            result.append({"notes": notes, "beat": beat})
+            beat = ticks / tick_per_beat
+            real_time += beat / (bpm / 60)
+            result.append({"notes": notes, "real_time": real_time})
             note = []
     return result
 

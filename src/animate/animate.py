@@ -5,7 +5,7 @@ from ..blender.blenderRecords import NORMAL_P2, NORMAL_P0, NORMAL_P3
 from ..hand.LeftFinger import PRESSSTATE
 
 
-def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> None:
+def hand2Animation(recorder: str, animation: str, FPS: float) -> None:
     """
     :params recorder: the path of the recorder file
     :params animation: the path of the file store information for animation
@@ -28,13 +28,12 @@ def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> Non
 
     for i in range(len(handDicts)):
         item = handDicts[i]
-        next_beat = None
+        next_time = None
         if i != len(handDicts) - 1:
             next_item = handDicts[i + 1]
-            next_beat = next_item["beat"]
-        beat = item["beat"]
-        time = beat / BPM * 60
-        frame = time * FPS
+            next_time = next_item["real_time"]
+        real_time = item["real_time"]
+        frame = real_time * FPS
 
         leftHand = item["leftHand"]
         fingerInfos = {}
@@ -168,8 +167,7 @@ def hand2Animation(recorder: str, animation: str, BPM: float, FPS: float) -> Non
             "fingerInfos": fingerInfos
         })
 
-        if next_beat:
-            next_time = next_beat / BPM * 60
+        if next_time:
             next_frame = next_time * FPS
             if frame + 2 < next_frame:
                 data_for_animation.append({

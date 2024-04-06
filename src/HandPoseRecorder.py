@@ -11,13 +11,13 @@ class HandPoseRecorder():
         self.handPoseList = []
         self.currentEntropy = 0.0
         self.entropys = [0.0]
-        self.beats = [0.0]
+        self.real_time = [0.0]
 
-    def addHandPose(self, handPose: LeftHand, entropy: float, beat: float) -> None:
+    def addHandPose(self, handPose: LeftHand, entropy: float, real_time: float) -> None:
         self.handPoseList.append(handPose)
         self.currentEntropy += entropy
         self.entropys.append(self.currentEntropy)
-        self.beats.append(beat)
+        self.real_time.append(real_time)
         # if beat == 2.5:
         #     self.handPoseList[-2].output(True)
         #     handPose.output(True)
@@ -29,20 +29,20 @@ class HandPoseRecorder():
     def outputCurrent(self, showOpenFinger: bool = False) -> None:
         if len(self.handPoseList) > 0:
             print("Entropy: ", self.currentEntropy)
-            print("Beat: ", self.beats[-1])
+            print("real_time: ", self.real_time[-1])
             self.handPoseList[-1].output(showOpenFinger)
 
     def output(self, showOpenFinger: bool = False) -> None:
         for i in range(1, len(self.handPoseList)):
             print("Entropy: ", self.entropys[i])
-            print("Beat: ", self.beats[i])
+            print("real_time: ", self.real_time[i])
             self.handPoseList[i].output(showOpenFinger)
 
     def save(self, jsonFilePath: str):
         handsDict = []
         for i in range(1, len(self.handPoseList)):
             handInfo = []
-            beat = self.beats[i]
+            real_time = self.real_time[i]
             leftHand = self.handPoseList[i]
             for finger in leftHand.fingers:
                 fingerIndex = finger._fingerIndex
@@ -57,7 +57,7 @@ class HandPoseRecorder():
                 })
 
             handsDict.append({
-                "beat": beat,
+                "real_time": real_time,
                 "leftHand": handInfo
             })
 
