@@ -85,6 +85,9 @@ def convertNotesToChord(notes: List[int], guitar: Guitar) -> List[Dict[str, int]
             fret = guitarString.getFretByNote(note)
             if fret is False:
                 continue
+            # 低音弦的超高把位是无法按的
+            if guitarStringIndex > 2 and fret > 12:
+                continue
             # 如果当前音符在当前弦上有位置，那么记录下来
             possiblePositions.append({
                 "index": guitarStringIndex,
@@ -128,8 +131,7 @@ def convertChordTofingerPositions(chord: List[Tuple[Dict[str, int]]]) -> List[Li
     result = []
     fingerList = [1, 2, 3, 4]
 
-    chordList = list(chord)
-    for combination in generate_combinations_iter(chordList, fingerList):
+    for combination in generate_combinations_iter(chord, fingerList):
         if verifyValidCombination(combination) and combination not in result:
             result.append(combination)
 
@@ -162,22 +164,49 @@ def verifyValidCombination(combination: List[Dict[str, int]]) -> bool:
     """
     verify if a combination is valid. 验证组合是否有效
     """
+    # 去掉combination里不包含手指的元素
+    combination = list(filter(lambda x: "finger" in x, combination))
+
+    if len(combination) < 2:
+        return True
+
+    # 将combinations按照finger排序
+    combination = sorted(combination, key=lambda x: x["finger"])
+
     # if finger is smaller and fret is bigger, return false. 如果finger值小的手指，而Fret值反而大，返回false。
     for i in range(len(combination) - 1):
         if "finger" in combination[i+1] and "finger" in combination[i] and combination[i]["finger"] > combination[i + 1]["finger"] and combination[i]["fret"] < combination[i + 1]["fret"]:
             return False
         if "finger" in combination[i+1] and "finger" in combination[i] and combination[i]["finger"] < combination[i + 1]["finger"] and combination[i]["fret"] > combination[i + 1]["fret"]:
             return False
+        # 如果出现非食指的跨弦横按，返回false
+        if "finger" in combination[i+1] and "finger" in combination[i] and combination[i]["finger"] == combination[i + 1]["finger"] and combination[i]["fret"] == combination[i + 1]["fret"]:
+            if combination[i]["finger"] != 1 and abs(combination[i]["index"]-combination[i+1]["index"]) > 1:
+                return False
 
-    # if the same finger has different fret, return false. 如果同一个finger值有对应不同的fret，返回false。
+    # 将List转化成对象
     fingerFretDict = {}
     for note in combination:
-        if "finger" in note:
-            if note["finger"] in fingerFretDict:
-                if fingerFretDict[note["finger"]] != note["fret"]:
-                    return False
+        if note["finger"] in fingerFretDict:
+            # 如果同一个手指按了不同的品，返回false
+            if fingerFretDict[note["finger"]]["fret"] != note["fret"]:
+                return False
             else:
-                fingerFretDict[note["finger"]] = note["fret"]
+                fingerFretDict[note["finger"]] = {
+                    "fret": note["fret"],
+                    "string": note["index"]
+                }
+
+    # 如果中指和无名指都在按弦而且两者相差大于1，返回false
+    if "2" in fingerFretDict and "3" in fingerFretDict and fingerFretDict["3"]["fret"]-1 > fingerFretDict["2"]["fret"]:
+        return False
+    # 如果食指和中指都在按弦而且两者相差大于1，返回false
+    if "1" in fingerFretDict and "2" in fingerFretDict and fingerFretDict["2"]["fret"]-1 > fingerFretDict["1"]["fret"]:
+        return False
+    # 如果食指和无名指都在按弦而且两者相差大于1，返回false
+    if "3" in fingerFretDict and "4" in fingerFretDict and fingerFretDict["4"]["fret"]-1 > fingerFretDict["3"]["fret"] and abs(fingerFretDict["4"]["string"]-fingerFretDict["3"]["string"]) > 1:
+        return False
+
     # if no above situation, return true. 以上情况都没有发生，返回true.
     return True
 

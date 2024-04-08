@@ -4,6 +4,7 @@ import copy
 from typing import List
 from ..utils.utils import print_strikethrough
 from ..utils.fretDistanceDict import FRET_DISTANCE_DICT
+import itertools
 
 
 class LeftHand():
@@ -221,7 +222,7 @@ class LeftHand():
             newHand = LeftHand(tmpFingers)
             return newHand, entropy
 
-        # 先遍历所有fingerPosition，判断出当前手型的把位
+        # 先遍历所有fingerPosition，判断出下一个手型的把位
         newHandPosition = 0
         minFingerIndex = 4
         for fingerPosition in fingerPositions:
@@ -333,18 +334,20 @@ class LeftHand():
                 if tmpFinger.press != PRESSSTATE["Open"]:
                     entropy += self.fingerDistanceTofretboard
                     tmpFinger.press = PRESSSTATE["Open"]
-                tmpFinger.stringIndex = 2
-                tmpFinger.fret = newHandPosition + tmpFinger._fingerIndex - 1
                 openFingers.append(tmpFinger)
 
         conflictFinger = []
         if len(openFingers) != 0 and len(pressedFingers) != 0:
             # 寻找两个数列中是否存在stringIndex和fret都相同的手指，如果有，就将openFinger在品格上反向移动一格以解决冲突
-            for openFinger in openFingers:
-                for pressedFinger in pressedFingers:
-                    if openFinger.stringIndex == pressedFinger.stringIndex and openFinger.fret == pressedFinger.fret:
-                        openFinger.fret += openFinger._fingerIndex - pressedFinger._fingerIndex
-                        conflictFinger.append(openFinger)
+            for openFinger, pressedFinger in itertools.product(openFingers, pressedFingers):
+                if openFinger.stringIndex == pressedFinger.stringIndex and openFinger.fret == pressedFinger.fret:
+                    openFinger.fret += openFinger._fingerIndex - pressedFinger._fingerIndex
+                    conflictFinger.append(openFinger)
+                # 如果第一个手指是食指，第二个手指是中指，且两个手指在同一品上，并且两个手指并没有同时按下，移动未按的手指以解决冲突
+                # 之所以要有这个判断，是因为这两指的位置决定了手掌旋转的角度，所以除非是两指都需要按弦，否则不应该在同一个品位上
+                if pressedFinger.fret == openFinger.fret and (pressedFinger._fingerIndex == 1 and openFinger._fingerIndex == 2 or pressedFinger._fingerIndex == 2 and openFinger._fingerIndex == 1):
+                    openFinger.fret += 1 if openFinger._fingerIndex == 2 else - 1
+                    conflictFinger.append(openFinger)
 
         # 用现在的手指状态生成新的LeftHand，返回它以及消耗
         nextLeftFingerList = pressedFingers + openFingers

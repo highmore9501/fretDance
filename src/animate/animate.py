@@ -73,13 +73,11 @@ def hand2Animation(recorder: str, animation: str, FPS: float) -> None:
             stringIndex = data["fingerInfo"]["stringIndex"]
             fret = data["fingerInfo"]["fret"]
             press = data["fingerInfo"]["press"]
-            if press == PRESSSTATE['Open']:
-                stringIndex -= 0.5
 
             max_finger_string_index = max(max_finger_string_index, stringIndex)
 
-            # 这里是计算当前手型的把位，如果当前手型没有任何手指是按下的，那么把位不会变
-            if press != 0 and fingerIndex < min_press_fingerIndex:
+            # 这里是计算当前手型的把位
+            if fingerIndex < min_press_fingerIndex:
                 min_press_fingerIndex = fingerIndex
                 barre = max(fret - fingerIndex+1, 1)
 
@@ -92,6 +90,12 @@ def hand2Animation(recorder: str, animation: str, FPS: float) -> None:
             elif fingerIndex == 4:
                 position_value_name = "P_L"
 
+            if press == PRESSSTATE['Open']:
+                if stringIndex > 2:
+                    stringIndex -= 0.5
+                else:
+                    stringIndex += 0.5
+
             finger_position = twiceLerp(
                 hand_state=hand_state,
                 value=position_value_name,
@@ -101,7 +105,7 @@ def hand2Animation(recorder: str, animation: str, FPS: float) -> None:
 
             # 如果手指没有按下，那么手指位置会稍微上移
             if press == PRESSSTATE['Open']:
-                finger_position -= normal * 0.007
+                finger_position -= normal * 0.008
 
             fingerInfos[position_value_name] = finger_position.tolist()
 

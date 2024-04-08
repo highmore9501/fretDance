@@ -1,4 +1,5 @@
 from .hand.LeftHand import LeftHand
+import copy
 import json
 
 
@@ -18,10 +19,6 @@ class HandPoseRecorder():
         self.currentEntropy += entropy
         self.entropys.append(self.currentEntropy)
         self.real_time.append(real_time)
-        # if beat == 2.5:
-        #     self.handPoseList[-2].output(True)
-        #     handPose.output(True)
-        #     print("Entropy: ", self.currentEntropy)
 
     def currentHandPose(self) -> LeftHand:
         return self.handPoseList[-1]
@@ -77,24 +74,26 @@ class HandPoseRecordPool():
         self.size = size
 
     def readyForRecord(self) -> None:
-        self.preHandPoseRecordPool = self.curHandPoseRecordPool
+        self.preHandPoseRecordPool = copy.deepcopy(self.curHandPoseRecordPool)
         self.curHandPoseRecordPool = []
 
     def append(self, handPoseRecorder: HandPoseRecorder) -> None:
-        # if the pool is full and the entropy of the new handPoseRecorder is greater than the entropy of the last element in the pool, return directly. 如果池子已经满了，而且新进入的handPoseRecorder的entropy比池子中的最后一个元素的entropy还要大，直接返回。
-        if len(self.curHandPoseRecordPool) >= self.size and handPoseRecorder.currentEntropy >= self.curHandPoseRecordPool[-1].currentEntropy:
+        current_size = len(self.curHandPoseRecordPool)
+        current_HandPoseRecord_is_largest = current_size > 0 and handPoseRecorder.currentEntropy >= self.curHandPoseRecordPool[
+            -1].currentEntropy
+        # if the pool is full and the entropy of the new handPoseRecorder is greater than the entropy of the last element in the pool, return directly.
+        if current_size == self.size and current_HandPoseRecord_is_largest:
             return None
 
-        # insert the new handPoseRecorder into the curHandPoseRecordPool at the appropriate position. 将新加入的handPoseRecorder加入到curHandPoseRecordPool中的适当位置。
-        if len(self.curHandPoseRecordPool) == 0 or handPoseRecorder.currentEntropy < self.curHandPoseRecordPool[-1].currentEntropy:
+        # insert the new handPoseRecorder into the curHandPoseRecordPool at the appropriate position.
+        if current_size == 0 or (current_size < self.size and current_HandPoseRecord_is_largest):
             self.curHandPoseRecordPool.append(handPoseRecorder)
-        # search the elements in the queue, find the first element whose entropy is greater than the entropy of the new handPoseRecorder, and insert the new handPoseRecorder into the position of this element. 查询队列中的元素，找到第一个entropy比新加入的handPoseRecorder的entropy大的元素，将新加入的handPoseRecorder插入到这个元素的位置。
         else:
             for i in range(len(self.curHandPoseRecordPool)):
                 if handPoseRecorder.currentEntropy < self.curHandPoseRecordPool[i].currentEntropy:
                     self.curHandPoseRecordPool.insert(i, handPoseRecorder)
                     break
 
-        # if the length of curHandPoseRecordPool is greater than size, pop the last element. 如果curHandPoseRecordPool的长度超过size，将最后一个元素弹出。
+        # if the length of curHandPoseRecordPool is greater than size, pop the last element.
         if len(self.curHandPoseRecordPool) > self.size:
             self.curHandPoseRecordPool.pop()
