@@ -1,9 +1,11 @@
 from typing import List, Dict, Tuple
 from ..guitar.Guitar import Guitar
 from numpy import array
+import numpy as np
 from .fretDistanceDict import FRET_DISTANCE_DICT
-from ..blender.blenderRecords import NORMAL_P1, NORMAL_P2, NORMAL_P0, NORMAL_P3, INNER_P0, INNER_P1, INNER_P2, INNER_P3, OUTER_P0, OUTER_P1, OUTER_P2, OUTER_P3
+from ..blender.blenderRecords import NORMAL_P1, NORMAL_P2, NORMAL_P0, NORMAL_P3, INNER_P0, INNER_P1, INNER_P2, INNER_P3, OUTER_P0, OUTER_P1, OUTER_P2, OUTER_P3, RIGHT_HAND_01, RIGHT_HAND_02, RIGHT_HAND_03, RIGHT_HAND_04, RIGHT_HAND_05, RIGHT_HAND_00
 import itertools
+from ..hand.RightHand import RightHand
 
 KEYNOTES: dict = {
     "C": 48,
@@ -259,9 +261,195 @@ def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringInde
     return p_final
 
 
-if __name__ == "__main__":
-    result = [
-        {'index': 2, 'fret': 0}
-    ]
+def caculateRightHandFingers(positions: list, usedRightFingers: list):
+    fingerMoveDistanceWhilePlay = 0.003
+    ready = {}
+    played = {}
 
-    print(verifyValidCombination(result))
+    hand_dict = rightHandDict(positions[2])
+    H_R = hand_dict["H_R"]["position"]
+    HP_R = hand_dict["HP_R"]["position"]
+    H_rotation_X_R = hand_dict["H_rotation_X_R"]["rotation"]
+    H_rotation_Y_R = hand_dict["H_rotation_Y_R"]["rotation"]
+    ready['H_R'] = H_R
+    ready['HP_R'] = HP_R
+    ready['H_rotation_X_R'] = H_rotation_X_R
+    ready['H_rotation_Y_R'] = H_rotation_Y_R
+    played['H_R'] = H_R
+    played['HP_R'] = HP_R
+    played['H_rotation_X_R'] = H_rotation_X_R
+    played['H_rotation_Y_R'] = H_rotation_Y_R
+
+    t_dict = rightHandDict(positions[0])
+    T_R = t_dict["T_R"]["position"]
+    T_rotation_R = t_dict["T_rotation_R"]["rotation"]
+    ready['T_R'] = T_R
+    ready['T_rotation_R'] = T_rotation_R
+
+    T_R_played = T_R.copy()
+    if "p" in usedRightFingers:
+        vector_T = t_dict["vector.T"]["rotation"]
+        fingerMoveVector = rotate_vector(vector_T)
+        T_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        T_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        T_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    played['T_R'] = T_R_played
+    played['T_rotation_R'] = T_rotation_R
+
+    i_dict = rightHandDict(positions[1])
+    I_R = i_dict["M_R"]["position"]
+    I_rotation_R = i_dict["M_rotation_R"]["rotation"]
+    ready['I_R'] = I_R
+    ready['I_rotation_R'] = I_rotation_R
+
+    I_R_played = I_R.copy()
+    if "i" in usedRightFingers:
+        vector_I = i_dict["vector.I"]["rotation"]
+        fingerMoveVector = rotate_vector(vector_I)
+        I_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        I_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        I_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    played['I_R'] = I_R_played
+    played['I_rotation_R'] = I_rotation_R
+
+    m_dict = rightHandDict(positions[2])
+    M_R = m_dict["M_R"]["position"]
+    M_rotation_R = m_dict["M_rotation_R"]["rotation"]
+    ready['M_R'] = M_R
+    ready['M_rotation_R'] = M_rotation_R
+
+    M_R_played = M_R.copy()
+    if "m" in usedRightFingers:
+        vector_M = m_dict["vector.M"]["rotation"]
+        fingerMoveVector = rotate_vector(vector_M)
+        M_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        M_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        M_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    played['M_R'] = M_R_played
+    played['M_rotation_R'] = M_rotation_R
+
+    r_dict = rightHandDict(positions[3])
+    R_R = r_dict["R_R"]["position"]
+    R_rotation_R = r_dict["R_rotation_R"]["rotation"]
+    ready['R_R'] = R_R
+    ready['R_rotation_R'] = R_rotation_R
+
+    R_R_played = R_R.copy()
+    if "a" in usedRightFingers:
+        vector_R = r_dict["vector.R"]["rotation"]
+        fingerMoveVector = rotate_vector(vector_R)
+        R_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        R_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        R_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    played['R_R'] = R_R_played
+    played['R_rotation_R'] = R_rotation_R
+
+    p_dict = rightHandDict(positions[3])
+    P_R = p_dict["P_R"]["position"]
+    P_rotation_R = p_dict["P_rotation_R"]["rotation"]
+    ready['P_R'] = P_R
+    ready['P_rotation_R'] = P_rotation_R
+    played['P_R'] = P_R
+    played['P_rotation_R'] = P_rotation_R
+
+    return ready, played
+
+
+def rightHandDict(index: int) -> Dict:
+    if index == 0:
+        return RIGHT_HAND_00
+    elif index == 5:
+        return RIGHT_HAND_05
+    elif index == 4:
+        return RIGHT_HAND_04
+    elif index == 3:
+        return RIGHT_HAND_03
+    elif index == 2:
+        return RIGHT_HAND_02
+    elif index == 1:
+        return RIGHT_HAND_01
+    else:
+        KeyError("index out of range")
+
+
+def rotate_vector(euler_angles: list):
+    vector = np.array([1, 0, 0])
+    # 旋转值已经是弧度，无需转换
+    a = euler_angles[0]
+    b = euler_angles[1]
+    c = euler_angles[2]
+
+    # 创建旋转矩阵
+    Rx = np.array([[1, 0, 0], [0, np.cos(a), -np.sin(a)],
+                   [0, np.sin(a), np.cos(a)]])
+    Ry = np.array([[np.cos(b), 0, np.sin(b)], [
+        0, 1, 0], [-np.sin(b), 0, np.cos(b)]])
+    Rz = np.array([[np.cos(c), -np.sin(c), 0],
+                   [np.sin(c), np.cos(c), 0], [0, 0, 1]])
+
+    # 修改旋转矩阵的计算顺序
+    R = np.dot(Rx, np.dot(Ry, Rz))
+
+    # 将旋转矩阵应用到向量上
+    rotated_vector = np.dot(R, vector)
+
+    return rotated_vector
+
+
+def finger_string_generator(allFingers: List[str], allStrings: List[int], usedStrings: List[int]):
+    if usedStrings == []:
+        for result in finger_string_generator2(allFingers, allStrings):
+            yield result
+
+    for finger, usedString in itertools.product(allFingers, usedStrings):
+        newStrings = usedStrings.copy()
+        newStrings.remove(usedString)
+        newAllStrings = allStrings.copy()
+        newAllStrings.remove(usedString)
+        newAllFingers = allFingers.copy()
+        newAllFingers.remove(finger)
+        for result in finger_string_generator(newAllFingers, newAllStrings, newStrings):
+            yield [{
+                "finger": finger,
+                "string": usedString
+            }] + result
+
+
+def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
+    if allFingers == []:
+        yield []
+        return
+
+    for finger, string in itertools.product(allFingers, allStrings):
+        newAllStrings = allStrings.copy()
+        newAllStrings.remove(string)
+        newAllFingers = allFingers.copy()
+        newAllFingers.remove(finger)
+        for result in finger_string_generator2(newAllFingers, newAllStrings):
+            yield [{
+                "finger": finger,
+                "string": string
+            }] + result
+
+
+def generatePossibleRightHands(
+        usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
+    possibleRightHands = []
+    for result in finger_string_generator(allFingers, allstrings, usedStrings):
+        rightFingerPositions = sort_fingers(result)
+        usedFingers = get_usedFingers(result, usedStrings)
+        newRightHand = RightHand(usedFingers, rightFingerPositions)
+        if newRightHand.validateRightHand():
+            possibleRightHands.append(newRightHand)
+
+    return possibleRightHands
+
+
+def sort_fingers(finger_list: List[object]):
+    order = {'p': 0, 'i': 1, 'm': 2, 'a': 3}
+    sorted_list = sorted(finger_list, key=lambda x: order[x['finger']])
+    return [item['string'] for item in sorted_list]
+
+
+def get_usedFingers(finger_list: List[object], usedStrings: List[int]):
+    return [item['finger'] for item in finger_list if item['string'] in usedStrings]

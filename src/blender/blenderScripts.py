@@ -120,7 +120,7 @@ def compare_LR_groups():
 
 def export_controller_info():
     collections = ['PositionControllers',
-                   'RotationControllers', 'PivotControllers']
+                   'RotationControllers', 'PivotControllers', 'RightFingerVector']
 
     ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
                       "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
@@ -133,7 +133,7 @@ def export_controller_info():
         # 遍历所有collection里的的物体
         for obj in bpy.data.collections[collection].objects:
             obj_name = obj.name
-            if collection != "RotationControllers":
+            if collection != "RotationControllers" and collection != 'RightFingerVector':
                 # 位置控制器
                 obj_info = obj.location
                 result[obj_name] = {
@@ -165,26 +165,26 @@ def export_controller_info():
 
 
 def import_controller_info(data):
-    all_controllers = [
-        "R_L", "RP_L", "R_rotation_L",
-        "M_L", "MP_L", "M_rotation_L",
-        "I_L", "IP_L", "I_rotation_L",
-        "P_L", "PP_L", "P_rotation_L",
-        "H_L", "HP_L", "H_rotation_X_L", "H_rotation_Y_L",
-        "T_L", "TP_L", "T_rotation_L"
-    ]
+    collections = ['PositionControllers',
+                   'RotationControllers', 'PivotControllers', 'RightFingerVector']
 
-    all_ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
-                          "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
+    ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
+                      "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
+
     armature = "Kamisato IK_arm"
 
-    for controller in all_controllers:
-        obj = bpy.data.objects[controller]
-        value = data[controller]
-        if "rotation" in controller:
-            obj.rotation_euler = value["rotation"]
-        else:
-            obj.location = value["position"]
+    for collection in collections:
+        for obj in bpy.data.collections[collection].objects:
+            obj_name = obj.name
+            try:
+                if collection != "RotationControllers" and collection != "RightFingerVector":
+                    # 位置控制器
+                    obj.location = data[obj_name]["position"]
+                else:
+                    # 旋转控制器
+                    obj.rotation_euler = data[obj_name]["rotation"]
+            except:
+                pass
 
     # 选中armature
     bpy.context.view_layer.objects.active = bpy.data.objects[armature]
@@ -193,7 +193,7 @@ def import_controller_info(data):
     # 遍历所有骨骼
     for bone in bpy.context.object.pose.bones:
         bone_name = bone.name
-        if bone_name in all_ik_pivot_bones:
+        if bone_name in ik_pivot_bones:
             try:
                 bone_info = data[bone_name]
                 bone.location = bone_info["position"]

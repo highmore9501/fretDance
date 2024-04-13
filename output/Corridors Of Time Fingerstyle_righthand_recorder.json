@@ -1,0 +1,1946 @@
+[
+  {
+    "real_time": 0,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 0.0,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 0.6,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 0.8999999999999999,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 1.2,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 1.5,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 1.8,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 2.1,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 2.4,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 2.6999999999999997,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 2.9999999999999996,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 3.2999999999999994,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 3.599999999999999,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 3.899999999999999,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 4.199999999999999,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 4.499999999999999,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 4.799999999999999,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 5.099999999999999,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 5.399999999999999,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 5.699999999999998,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 5.999999999999998,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 6.299999999999998,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 6.599999999999998,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 6.899999999999998,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 7.1999999999999975,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 7.499999999999997,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 7.799999999999997,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 8.099999999999998,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 8.699999999999998,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 9.299999999999997,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 9.599999999999998,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 9.899999999999999,
+    "rightHand": {
+      "usedFingers": ["i", "a"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 10.2,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 10.5,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 10.8,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 11.400000000000002,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 12.000000000000004,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 12.600000000000005,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 12.900000000000006,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 13.200000000000006,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 13.800000000000008,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 14.100000000000009,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 14.40000000000001,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 15.00000000000001,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 15.300000000000011,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 15.600000000000012,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 16.200000000000014,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 16.500000000000014,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 16.800000000000015,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 17.400000000000016,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 17.700000000000017,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 18.000000000000018,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 18.60000000000002,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 19.20000000000002,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 19.800000000000022,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 20.100000000000023,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 20.400000000000023,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 21.000000000000025,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 21.600000000000026,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 22.200000000000028,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 22.50000000000003,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 22.80000000000003,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 23.40000000000003,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 23.70000000000003,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 24.000000000000032,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 24.600000000000033,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 24.900000000000034,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 25.200000000000035,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 25.800000000000036,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 26.100000000000037,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 26.400000000000038,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 27.00000000000004,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 27.30000000000004,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 28.200000000000042,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 28.500000000000043,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 28.800000000000043,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 29.100000000000044,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 29.400000000000045,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 29.700000000000045,
+    "rightHand": {
+      "usedFingers": ["i", "a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 31.80000000000005,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 31.95000000000005,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 32.10000000000005,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 32.40000000000005,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 33.00000000000004,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 33.15000000000004,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 33.30000000000004,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 33.60000000000004,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 33.900000000000034,
+    "rightHand": {
+      "usedFingers": ["p", "i", "m", "a"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 34.20000000000003,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 34.50000000000003,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 35.10000000000003,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 35.70000000000003,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 35.85000000000003,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 36.00000000000003,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 36.15000000000003,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 36.300000000000026,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 36.60000000000002,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 36.90000000000002,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 37.20000000000002,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 37.500000000000014,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 37.80000000000001,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 38.10000000000001,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 38.400000000000006,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 38.7,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 39.0,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 39.3,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 39.9,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 40.5,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 41.1,
+    "rightHand": {
+      "usedFingers": ["i", "a"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 41.4,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 41.699999999999996,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 41.99999999999999,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 42.29999999999999,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 42.59999999999999,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 42.899999999999984,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 43.19999999999998,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 43.799999999999976,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 44.39999999999998,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 45.299999999999976,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 46.199999999999974,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 46.49999999999997,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 46.79999999999997,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 47.39999999999996,
+    "rightHand": {
+      "usedFingers": ["i", "a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 47.69999999999996,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 48.59999999999996,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 50.99999999999996,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 51.299999999999955,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 51.899999999999956,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 52.49999999999996,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 52.799999999999955,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 53.39999999999995,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 53.99999999999995,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 54.29999999999995,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 54.89999999999994,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 55.79999999999994,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 56.39999999999994,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 57.29999999999993,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 57.59999999999993,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 57.89999999999993,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 58.199999999999925,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 58.49999999999992,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 58.79999999999992,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 59.39999999999991,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 59.69999999999991,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 60.5999999999999,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 60.8999999999999,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 61.199999999999896,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 61.79999999999989,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 62.09999999999989,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 62.999999999999886,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 63.59999999999989,
+    "rightHand": {
+      "usedFingers": ["p", "i"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 64.49999999999989,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 65.39999999999988,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 65.99999999999987,
+    "rightHand": {
+      "usedFingers": ["p", "i"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 66.89999999999986,
+    "rightHand": {
+      "usedFingers": ["p", "i", "m"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 69.29999999999984,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 71.69999999999982,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 72.59999999999981,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 73.1999999999998,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 74.0999999999998,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 74.99999999999979,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 75.29999999999978,
+    "rightHand": {
+      "usedFingers": ["p", "i"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 76.49999999999977,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 78.89999999999975,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 81.29999999999973,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 82.19999999999972,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 82.49999999999972,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 83.6999999999997,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 84.5999999999997,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 84.8999999999997,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 85.49999999999969,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 86.09999999999968,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [4, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 88.49999999999966,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 90.29999999999964,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 90.89999999999964,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 91.79999999999963,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 92.39999999999962,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 93.29999999999961,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 94.1999999999996,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 94.4999999999996,
+    "rightHand": {
+      "usedFingers": ["p", "i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 95.69999999999959,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 98.09999999999957,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 100.49999999999955,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 101.39999999999954,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 3, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 101.99999999999953,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 102.59999999999953,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 102.89999999999952,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 103.19999999999952,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 103.49999999999952,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 103.79999999999951,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 104.09999999999951,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 105.5999999999995,
+    "rightHand": {
+      "usedFingers": ["p", "i"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 106.19999999999949,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 106.49999999999949,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 106.79999999999949,
+    "rightHand": {
+      "usedFingers": ["p", "i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 107.09999999999948,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [4, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 107.39999999999948,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 107.69999999999948,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 2, 0],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 107.99999999999947,
+    "rightHand": {
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 108.29999999999947,
+    "rightHand": {
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 108.59999999999947,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 108.89999999999947,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 109.19999999999946,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 109.79999999999946,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 110.09999999999945,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 110.39999999999945,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 110.99999999999945,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 111.29999999999944,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 111.59999999999944,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 112.19999999999943,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 112.49999999999943,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 112.79999999999943,
+    "rightHand": {
+      "usedFingers": ["p", "a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 113.09999999999943,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 113.39999999999942,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 113.69999999999942,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 113.99999999999942,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 114.59999999999941,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 115.1999999999994,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 115.7999999999994,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 116.0999999999994,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 116.3999999999994,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 116.99999999999939,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 117.59999999999938,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 1],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 118.19999999999938,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 118.49999999999937,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 118.79999999999937,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 119.09999999999937,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 119.39999999999937,
+    "rightHand": {
+      "usedFingers": ["i", "a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 119.69999999999936,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 119.99999999999936,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 120.29999999999936,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 120.39999999999935,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 0],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 120.49999999999935,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 120.59999999999934,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 120.89999999999934,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 1, 0],
+      "rightHandPosition": 1
+    }
+  },
+  {
+    "real_time": 121.19999999999933,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 121.49999999999933,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 2, 1],
+      "rightHandPosition": 2
+    }
+  },
+  {
+    "real_time": 121.79999999999933,
+    "rightHand": {
+      "usedFingers": ["a"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 122.09999999999933,
+    "rightHand": {
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 122.39999999999932,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 122.69999999999932,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 122.99999999999932,
+    "rightHand": {
+      "usedFingers": ["p"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  },
+  {
+    "real_time": 123.29999999999932,
+    "rightHand": {
+      "usedFingers": ["i"],
+      "rightFingerPositions": [5, 4, 3, 2],
+      "rightHandPosition": 3
+    }
+  }
+]
