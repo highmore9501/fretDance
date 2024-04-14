@@ -125,7 +125,9 @@ class RightHandRecorder():
             handInfo = {
                 "usedFingers": rightHand.usedFingers,
                 "rightFingerPositions": rightHand.rightFingerPositions,
-                "rightHandPosition": rightHand.rightHandPosition
+                "rightHandPosition": rightHand.rightHandPosition,
+                "afterPlayedRightHandPosition": rightHand.afterPlayedRightHandPosition,
+                "afterPlayedRightFingerPositions": rightHand.afterPlayedRightFingerPositions
             }
 
             handsDict.append({
@@ -135,7 +137,7 @@ class RightHandRecorder():
 
         with open(jsonFilePath, 'w') as f:
             json.dump(handsDict, f)
-    
+
     def output(self):
         print("Entropy: ", self.currentEntropy)
         for i in range(1, len(self.handPoseList)):

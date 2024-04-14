@@ -1,3 +1,4 @@
+import copy
 import json
 from numpy import array, linalg, cross
 from ..utils.utils import twiceLerp, caculateRightHandFingers
@@ -198,18 +199,25 @@ def rightHand2Animation(recorder: str, animation: str, FPS: float) -> None:
             right_hand = data["rightHand"]
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
+            afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
 
-            ready, played = caculateRightHandFingers(
-                rightFingerPositions, usedFingers)
+            ready = caculateRightHandFingers(
+                rightFingerPositions, usedFingers, isAfterPlayed=False)
+
+            played = caculateRightHandFingers(
+                afterPlayedRightFingerPositions, usedFingers, isAfterPlayed=True)
 
             data_for_animation.append({
                 "frame": frame,
-                "fingerInfos": ready,
+                "fingerInfos": copy.deepcopy(ready),
             })
             data_for_animation.append({
                 "frame": frame + 1,
-                "fingerInfos": played,
+                "fingerInfos": copy.deepcopy(played),
             })
+
+            ready = None
+            played = None
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)

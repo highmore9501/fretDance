@@ -1,3 +1,4 @@
+import copy
 from typing import List, Dict, Tuple
 from ..guitar.Guitar import Guitar
 from numpy import array
@@ -261,115 +262,92 @@ def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringInde
     return p_final
 
 
-def caculateRightHandFingers(positions: list, usedRightFingers: list):
+def caculateRightHandFingers(positions: list, usedRightFingers: list, isAfterPlayed: bool = False) -> Dict:
     fingerMoveDistanceWhilePlay = 0.003
-    ready = {}
-    played = {}
+    result = {}
 
     hand_dict = rightHandDict(positions[2])
     H_R = hand_dict["H_R"]["position"]
     HP_R = hand_dict["HP_R"]["position"]
     H_rotation_X_R = hand_dict["H_rotation_X_R"]["rotation"]
     H_rotation_Y_R = hand_dict["H_rotation_Y_R"]["rotation"]
-    ready['H_R'] = H_R
-    ready['HP_R'] = HP_R
-    ready['H_rotation_X_R'] = H_rotation_X_R
-    ready['H_rotation_Y_R'] = H_rotation_Y_R
-    played['H_R'] = H_R
-    played['HP_R'] = HP_R
-    played['H_rotation_X_R'] = H_rotation_X_R
-    played['H_rotation_Y_R'] = H_rotation_Y_R
+    result['H_R'] = H_R
+    result['HP_R'] = HP_R
+    result['H_rotation_X_R'] = H_rotation_X_R
+    result['H_rotation_Y_R'] = H_rotation_Y_R
 
     t_dict = rightHandDict(positions[0])
     T_R = t_dict["T_R"]["position"]
     T_rotation_R = t_dict["T_rotation_R"]["rotation"]
-    ready['T_R'] = T_R
-    ready['T_rotation_R'] = T_rotation_R
-
-    T_R_played = T_R.copy()
-    if "p" in usedRightFingers:
+    if isAfterPlayed and "p" in usedRightFingers:
         vector_T = t_dict["vector.T"]["rotation"]
         fingerMoveVector = rotate_vector(vector_T)
-        T_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        T_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        T_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
-    played['T_R'] = T_R_played
-    played['T_rotation_R'] = T_rotation_R
+        T_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        T_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        T_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    result['T_R'] = T_R
+    result['T_rotation_R'] = T_rotation_R
 
     i_dict = rightHandDict(positions[1])
-    I_R = i_dict["M_R"]["position"]
-    I_rotation_R = i_dict["M_rotation_R"]["rotation"]
-    ready['I_R'] = I_R
-    ready['I_rotation_R'] = I_rotation_R
-
-    I_R_played = I_R.copy()
-    if "i" in usedRightFingers:
+    I_R = i_dict["I_R"]["position"]
+    I_rotation_R = i_dict["I_rotation_R"]["rotation"]
+    if isAfterPlayed and "i" in usedRightFingers:
         vector_I = i_dict["vector.I"]["rotation"]
         fingerMoveVector = rotate_vector(vector_I)
-        I_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        I_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        I_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
-    played['I_R'] = I_R_played
-    played['I_rotation_R'] = I_rotation_R
+        I_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        I_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        I_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    result['I_R'] = I_R
+    result['I_rotation_R'] = I_rotation_R
 
     m_dict = rightHandDict(positions[2])
     M_R = m_dict["M_R"]["position"]
     M_rotation_R = m_dict["M_rotation_R"]["rotation"]
-    ready['M_R'] = M_R
-    ready['M_rotation_R'] = M_rotation_R
-
-    M_R_played = M_R.copy()
-    if "m" in usedRightFingers:
+    if isAfterPlayed and "m" in usedRightFingers:
         vector_M = m_dict["vector.M"]["rotation"]
         fingerMoveVector = rotate_vector(vector_M)
-        M_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        M_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        M_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
-    played['M_R'] = M_R_played
-    played['M_rotation_R'] = M_rotation_R
+        M_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        M_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        M_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    result['M_R'] = M_R
+    result['M_rotation_R'] = M_rotation_R
 
     r_dict = rightHandDict(positions[3])
     R_R = r_dict["R_R"]["position"]
     R_rotation_R = r_dict["R_rotation_R"]["rotation"]
-    ready['R_R'] = R_R
-    ready['R_rotation_R'] = R_rotation_R
-
-    R_R_played = R_R.copy()
-    if "a" in usedRightFingers:
+    if isAfterPlayed and "a" in usedRightFingers:
         vector_R = r_dict["vector.R"]["rotation"]
         fingerMoveVector = rotate_vector(vector_R)
-        R_R_played[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        R_R_played[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        R_R_played[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
-    played['R_R'] = R_R_played
-    played['R_rotation_R'] = R_rotation_R
+        R_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
+        R_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
+        R_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+    result['R_R'] = R_R
+    result['R_rotation_R'] = R_rotation_R
 
     p_dict = rightHandDict(positions[3])
     P_R = p_dict["P_R"]["position"]
     P_rotation_R = p_dict["P_rotation_R"]["rotation"]
-    ready['P_R'] = P_R
-    ready['P_rotation_R'] = P_rotation_R
-    played['P_R'] = P_R
-    played['P_rotation_R'] = P_rotation_R
+    result['P_R'] = P_R
+    result['P_rotation_R'] = P_rotation_R
 
-    return ready, played
+    return result
 
 
 def rightHandDict(index: int) -> Dict:
     if index == 0:
-        return RIGHT_HAND_00
+        return copy.deepcopy(RIGHT_HAND_00)
     elif index == 5:
-        return RIGHT_HAND_05
+        return copy.deepcopy(RIGHT_HAND_05)
     elif index == 4:
-        return RIGHT_HAND_04
+        return copy.deepcopy(RIGHT_HAND_04)
     elif index == 3:
-        return RIGHT_HAND_03
+        return copy.deepcopy(RIGHT_HAND_03)
     elif index == 2:
-        return RIGHT_HAND_02
+        return copy.deepcopy(RIGHT_HAND_02)
     elif index == 1:
-        return RIGHT_HAND_01
+        return copy.deepcopy(RIGHT_HAND_01)
     else:
-        KeyError("index out of range")
+        raise KeyError("index out of range")
 
 
 def rotate_vector(euler_angles: list):
