@@ -118,7 +118,7 @@ def compare_LR_groups():
     print(diff)
 
 
-def export_controller_info():
+def export_controller_info(isLeftHand: bool = True):
     collections = ['PositionControllers',
                    'RotationControllers', 'PivotControllers', 'RightFingerVector']
 
@@ -133,18 +133,22 @@ def export_controller_info():
         # 遍历所有collection里的的物体
         for obj in bpy.data.collections[collection].objects:
             obj_name = obj.name
-            if collection != "RotationControllers" and collection != 'RightFingerVector':
-                # 位置控制器
-                obj_info = obj.location
-                result[obj_name] = {
-                    "position": [obj_info.x, obj_info.y, obj_info.z],
-                }
-            else:
-                # 旋转控制器
-                obj_info = obj.rotation_euler
-                result[obj_name] = {
-                    "rotation": [obj_info.x, obj_info.y, obj_info.z],
-                }
+            if (isLeftHand and obj_name.endswith("_L")) or (not isLeftHand and obj_name.endswith("_R")):
+                try:
+                    if collection != "RotationControllers" and collection != 'RightFingerVector':
+                        # 位置控制器
+                        obj_info = obj.location
+                        result[obj_name] = {
+                            "position": [obj_info.x, obj_info.y, obj_info.z],
+                        }
+                    else:
+                        # 旋转控制器
+                        obj_info = obj.rotation_euler
+                        result[obj_name] = {
+                            "rotation": [obj_info.x, obj_info.y, obj_info.z],
+                        }
+                except:
+                    pass
 
     # 选中armature
     bpy.context.view_layer.objects.active = bpy.data.objects[armature]
@@ -202,6 +206,48 @@ def import_controller_info(data):
 
     # 切换到object mode
     bpy.ops.object.mode_set(mode='OBJECT')
+
+
+def export_positions(collection):
+    result = {}
+    for obj in bpy.data.collections[collection].objects:
+        obj_name = obj.name
+        obj_info = obj.location
+        result[obj_name] = {
+            "position": [obj_info.x, obj_info.y, obj_info.z],
+        }
+    print(result)
+
+
+def animateObject(obj, prefix):
+    for i in range(6):
+        key = prefix + str(i)
+        target_obj = bpy.data.objects.get(key)
+        if target_obj:
+            bpy.context.scene.frame_set(i*5)
+            # Convert the target object's location to world coordinates
+            world_location = target_obj.matrix_world.to_translation()
+            obj.location = world_location
+            obj.keyframe_insert(data_path="location")
+
+
+def animateRightHandTest():
+    collection_name = "PositionControllers"
+
+    for obj in bpy.data.collections[collection_name].objects:
+        obj_name = obj.name
+        if not obj_name.endswith("_R"):
+            continue
+        if obj_name.startswith("I"):
+            animateObject(obj, 'i')
+        elif obj_name.startswith("M"):
+            animateObject(obj, 'm')
+        elif obj_name.startswith("R"):
+            animateObject(obj, 'a')
+        elif obj_name.startswith("P"):
+            animateObject(obj, 'ch')
+        elif obj_name.startswith("T"):
+            animateObject(obj, 'p')
 
 
 if __name__ == "__main__":

@@ -8,11 +8,10 @@ import math
 left_hand_animation = r"G:\fretDance\output\Corridors Of Time Fingerstyle_lefthand_animation.json"
 right_hand_animation = r"G:\fretDance\output\Corridors Of Time Fingerstyle_righthand_animation.json"
 
-all_ik_pivot_bones = ["Thumb_IK_pivot_L"]
 left_finger_bones = ["DEF_IndexFinger3_L",
                      "DEF_MiddleFinger3_L",
                      "DEF_RingFinger3_L",
-                     "DEF_LittleFinger3_L", "DEF_Thumb2_L"]
+                     "DEF_LittleFinger3_L",]
 right_finger_bones = ["DEF_IndexFinger3_R",
                       "DEF_MiddleFinger3_R",
                       "DEF_RingFinger3_R",
@@ -28,7 +27,7 @@ bpy.ops.object.mode_set(mode='EDIT')
 
 # 遍历所有骨骼
 for bone in bpy.context.object.data.edit_bones:
-    if bone.name in all_ik_pivot_bones or bone.name in left_finger_bones or bone.name in right_finger_bones:
+    if bone.name in left_finger_bones or bone.name in right_finger_bones:
         rolls[bone.name] = bone.roll
 
 
@@ -76,10 +75,6 @@ def animate_left_hand(left_hand_animation: str):
 
             for bone in bpy.context.object.pose.bones:
                 bone_name = bone.name
-                if bone_name in all_ik_pivot_bones:
-                    bone.location = fingerInfos[bone_name]
-                    bone.keyframe_insert(data_path="location")
-
                 if bone_name in left_finger_bones:
                     if "Thumb" in bone_name:
                         direction = LeftThumbDirection
