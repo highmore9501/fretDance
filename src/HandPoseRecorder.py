@@ -126,7 +126,6 @@ class RightHandRecorder():
                 "usedFingers": rightHand.usedFingers,
                 "rightFingerPositions": rightHand.rightFingerPositions,
                 "rightHandPosition": rightHand.rightHandPosition,
-                "afterPlayedRightHandPosition": rightHand.afterPlayedRightHandPosition,
                 "afterPlayedRightFingerPositions": rightHand.afterPlayedRightFingerPositions
             }
 

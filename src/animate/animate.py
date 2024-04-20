@@ -1,6 +1,6 @@
 import copy
 import json
-from numpy import array, linalg, cross
+from numpy import array, linalg, cross, random
 from ..utils.utils import twiceLerp, caculateRightHandFingers
 from ..blender.blenderRecords import NORMAL_P2, NORMAL_P0, NORMAL_P3
 from ..hand.LeftFinger import PRESSSTATE
@@ -135,6 +135,10 @@ def animatedLeftHand(item: object, normal: array):
         fret=barre,
         stringIndex=max_finger_string_index)
 
+    # 来一个随机大小为0.0005的随机移动
+    random_move = random.rand(3) * 0.001
+    hand_position += random_move
+
     fingerInfos["H_L"] = hand_position.tolist()
 
     hand_IK_pivot_position = twiceLerp(
@@ -177,14 +181,6 @@ def animatedLeftHand(item: object, normal: array):
         stringIndex=index_finger_string_number)
     fingerInfos["TP_L"] = thumb_IK_pivot_position.tolist()
 
-    thumb_rotation = twiceLerp(
-        hand_state=hand_state,
-        value="T_rotation_L",
-        valueType="rotation",
-        fret=barre,
-        stringIndex=index_finger_string_number)
-    fingerInfos["T_rotation_L"] = thumb_rotation.tolist()
-
     return fingerInfos
 
 
@@ -199,13 +195,14 @@ def rightHand2Animation(recorder: str, animation: str, FPS: float) -> None:
             right_hand = data["rightHand"]
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
+            rightHandPosition = right_hand["rightHandPosition"]
             afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
 
             ready = caculateRightHandFingers(
-                rightFingerPositions, usedFingers, isAfterPlayed=False)
+                rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
 
             played = caculateRightHandFingers(
-                afterPlayedRightFingerPositions, usedFingers, isAfterPlayed=True)
+                afterPlayedRightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
 
             data_for_animation.append({
                 "frame": frame,

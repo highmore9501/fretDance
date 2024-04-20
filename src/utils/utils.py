@@ -4,7 +4,7 @@ from ..guitar.Guitar import Guitar
 from numpy import array
 import numpy as np
 from .fretDistanceDict import FRET_DISTANCE_DICT
-from ..blender.blenderRecords import NORMAL_P1, NORMAL_P2, NORMAL_P0, NORMAL_P3, INNER_P0, INNER_P1, INNER_P2, INNER_P3, OUTER_P0, OUTER_P1, OUTER_P2, OUTER_P3, RIGHT_HAND_01, RIGHT_HAND_02, RIGHT_HAND_03, RIGHT_HAND_04, RIGHT_HAND_05, RIGHT_HAND_00
+from ..blender.blenderRecords import NORMAL_P1, NORMAL_P2, NORMAL_P0, NORMAL_P3, INNER_P0, INNER_P1, INNER_P2, INNER_P3, OUTER_P0, OUTER_P1, OUTER_P2, OUTER_P3, RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS
 import itertools
 from ..hand.RightHand import RightHand
 
@@ -262,92 +262,60 @@ def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringInde
     return p_final
 
 
-def caculateRightHandFingers(positions: list, usedRightFingers: list, isAfterPlayed: bool = False) -> Dict:
-    fingerMoveDistanceWhilePlay = 0.003
+def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
+    fingerMoveDistanceWhilePlay = 0.0045
     result = {}
 
-    hand_dict = rightHandDict(positions[2])
-    H_R = hand_dict["H_R"]["position"]
-    HP_R = hand_dict["HP_R"]["position"]
-    H_rotation_X_R = hand_dict["H_rotation_X_R"]["rotation"]
-    H_rotation_Y_R = hand_dict["H_rotation_Y_R"]["rotation"]
+    hand_index = f"h{rightHandPosition}"
+    H_R = RIGHT_HAND_POSITIONS[hand_index]['position'].copy()
+    # 来一个随机大小为0.0005的随机移动
+    random_move = np.random.rand(3) * 0.001
+    H_R[0] += random_move[0]
+    H_R[1] += random_move[1]
+    H_R[2] += random_move[2]
     result['H_R'] = H_R
-    result['HP_R'] = HP_R
-    result['H_rotation_X_R'] = H_rotation_X_R
-    result['H_rotation_Y_R'] = H_rotation_Y_R
 
-    t_dict = rightHandDict(positions[0])
-    T_R = t_dict["T_R"]["position"]
-    T_rotation_R = t_dict["T_rotation_R"]["rotation"]
+    t_index = f"p{positions[0]}"
+    T_R = RIGHT_HAND_POSITIONS[t_index]['position'].copy()
     if isAfterPlayed and "p" in usedRightFingers:
-        vector_T = t_dict["vector.T"]["rotation"]
-        fingerMoveVector = rotate_vector(vector_T)
-        T_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        T_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        T_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+        move = RIGHT_HAND_DIRECTIONS[f"T_line"]['direction']
+        T_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        T_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        T_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['T_R'] = T_R
-    result['T_rotation_R'] = T_rotation_R
 
-    i_dict = rightHandDict(positions[1])
-    I_R = i_dict["I_R"]["position"]
-    I_rotation_R = i_dict["I_rotation_R"]["rotation"]
+    i_index = f"i{positions[1]}"
+    I_R = RIGHT_HAND_POSITIONS[i_index]['position'].copy()
     if isAfterPlayed and "i" in usedRightFingers:
-        vector_I = i_dict["vector.I"]["rotation"]
-        fingerMoveVector = rotate_vector(vector_I)
-        I_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        I_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        I_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+        move = RIGHT_HAND_DIRECTIONS[f"I_line"]['direction']
+        I_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        I_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        I_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['I_R'] = I_R
-    result['I_rotation_R'] = I_rotation_R
 
-    m_dict = rightHandDict(positions[2])
-    M_R = m_dict["M_R"]["position"]
-    M_rotation_R = m_dict["M_rotation_R"]["rotation"]
+    m_index = f"m{positions[2]}"
+    M_R = RIGHT_HAND_POSITIONS[m_index]['position'].copy()
     if isAfterPlayed and "m" in usedRightFingers:
-        vector_M = m_dict["vector.M"]["rotation"]
-        fingerMoveVector = rotate_vector(vector_M)
-        M_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        M_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        M_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+        move = RIGHT_HAND_DIRECTIONS[f"M_line"]['direction']
+        M_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        M_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        M_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['M_R'] = M_R
-    result['M_rotation_R'] = M_rotation_R
 
-    r_dict = rightHandDict(positions[3])
-    R_R = r_dict["R_R"]["position"]
-    R_rotation_R = r_dict["R_rotation_R"]["rotation"]
+    r_index = f"a{positions[3]}"
+    R_R = RIGHT_HAND_POSITIONS[r_index]['position'].copy()
     if isAfterPlayed and "a" in usedRightFingers:
-        vector_R = r_dict["vector.R"]["rotation"]
-        fingerMoveVector = rotate_vector(vector_R)
-        R_R[0] += fingerMoveVector[0] * fingerMoveDistanceWhilePlay
-        R_R[1] += fingerMoveVector[1] * fingerMoveDistanceWhilePlay
-        R_R[2] += fingerMoveVector[2] * fingerMoveDistanceWhilePlay
+        move = RIGHT_HAND_DIRECTIONS[f"P_line"]['direction']
+        R_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        R_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        R_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['R_R'] = R_R
-    result['R_rotation_R'] = R_rotation_R
 
-    p_dict = rightHandDict(positions[3])
-    P_R = p_dict["P_R"]["position"]
-    P_rotation_R = p_dict["P_rotation_R"]["rotation"]
+    p_index = f"ch{positions[3]}"
+    P_R = RIGHT_HAND_POSITIONS[p_index]['position']
     result['P_R'] = P_R
-    result['P_rotation_R'] = P_rotation_R
 
     return result
-
-
-def rightHandDict(index: int) -> Dict:
-    if index == 0:
-        return copy.deepcopy(RIGHT_HAND_00)
-    elif index == 5:
-        return copy.deepcopy(RIGHT_HAND_05)
-    elif index == 4:
-        return copy.deepcopy(RIGHT_HAND_04)
-    elif index == 3:
-        return copy.deepcopy(RIGHT_HAND_03)
-    elif index == 2:
-        return copy.deepcopy(RIGHT_HAND_02)
-    elif index == 1:
-        return copy.deepcopy(RIGHT_HAND_01)
-    else:
-        raise KeyError("index out of range")
 
 
 def rotate_vector(euler_angles: list):
@@ -416,7 +384,8 @@ def generatePossibleRightHands(
     for result in finger_string_generator(allFingers, allstrings, usedStrings):
         rightFingerPositions = sort_fingers(result)
         usedFingers = get_usedFingers(result, usedStrings)
-        newRightHand = RightHand(usedFingers, rightFingerPositions)
+        newRightHand = RightHand(
+            usedFingers, rightFingerPositions)
         if newRightHand.validateRightHand():
             possibleRightHands.append(newRightHand)
 

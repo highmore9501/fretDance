@@ -4,8 +4,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -14,8 +13,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -24,8 +22,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -34,8 +31,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -44,8 +40,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -54,8 +49,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -64,8 +58,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -74,8 +67,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -84,8 +76,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -94,8 +85,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -104,8 +94,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -114,8 +103,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -124,8 +112,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -134,8 +121,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -144,8 +130,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -154,8 +139,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -165,7 +149,6 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -174,8 +157,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -184,8 +166,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -194,8 +175,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -204,8 +184,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -214,8 +193,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -224,8 +202,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -234,8 +211,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -244,8 +220,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -254,8 +229,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -264,8 +238,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -274,8 +247,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -284,8 +256,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -295,7 +266,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -305,7 +275,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -314,8 +283,7 @@
     "rightHand": {
       "usedFingers": ["i", "m"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 1, 1]
     }
   },
@@ -324,8 +292,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -334,8 +301,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -344,8 +310,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -354,8 +319,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -364,8 +328,7 @@
     "rightHand": {
       "usedFingers": ["i", "m"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 1, 1]
     }
   },
@@ -374,8 +337,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -384,8 +346,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -394,8 +355,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -404,18 +364,16 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 14.100000000000009,
     "rightHand": {
       "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -425,7 +383,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -435,37 +392,33 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 15.300000000000011,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 15.600000000000012,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 16.200000000000014,
     "rightHand": {
       "usedFingers": ["p", "a"],
-      "rightFingerPositions": [5, 3, 2, 0],
+      "rightFingerPositions": [5, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -474,8 +427,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -485,7 +437,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -495,137 +446,123 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 17.700000000000017,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 18.000000000000018,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 18.60000000000002,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 19.20000000000002,
     "rightHand": {
-      "usedFingers": ["m", "a"],
-      "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
-      "afterPlayedRightFingerPositions": [5, 4, 3, 1]
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 3, 1, 1]
     }
   },
   {
     "real_time": 19.800000000000022,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 4, 3, 0],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 20.100000000000023,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 20.400000000000023,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 21.000000000000025,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 21.600000000000026,
     "rightHand": {
-      "usedFingers": ["m", "a"],
-      "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
-      "afterPlayedRightFingerPositions": [5, 4, 3, 1]
+      "usedFingers": ["i", "m"],
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 3, 1, 1]
     }
   },
   {
     "real_time": 22.200000000000028,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 4, 3, 0],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 3, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 22.50000000000003,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 22.80000000000003,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 23.40000000000003,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "rightFingerPositions": [5, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -635,7 +572,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -645,7 +581,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -655,37 +590,33 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 24.900000000000034,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 25.200000000000035,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 25.800000000000036,
     "rightHand": {
       "usedFingers": ["p", "a"],
-      "rightFingerPositions": [5, 3, 2, 0],
+      "rightFingerPositions": [5, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -694,8 +625,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -705,7 +635,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -715,7 +644,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -725,7 +653,6 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -734,8 +661,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -744,8 +670,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -754,8 +679,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -764,8 +688,7 @@
     "rightHand": {
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -774,8 +697,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -784,8 +706,7 @@
     "rightHand": {
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -794,8 +715,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -804,8 +724,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -814,8 +733,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -824,8 +742,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -834,8 +751,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -844,8 +760,7 @@
     "rightHand": {
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -854,8 +769,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -864,8 +778,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -874,8 +787,7 @@
     "rightHand": {
       "usedFingers": ["p", "i", "m", "a"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 1, 0]
     }
   },
@@ -884,8 +796,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -894,8 +805,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -904,8 +814,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -914,8 +823,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -924,8 +832,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -934,8 +841,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -944,8 +850,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -954,8 +859,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -964,8 +868,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -974,8 +877,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -984,8 +886,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -994,8 +895,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1004,8 +904,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1014,8 +913,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1024,8 +922,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1034,8 +931,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1044,8 +940,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1054,8 +949,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1064,8 +958,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1075,7 +968,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1085,7 +977,6 @@
       "usedFingers": ["i", "a"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1095,7 +986,6 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1104,8 +994,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1114,8 +1003,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1124,8 +1012,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [3, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
@@ -1134,8 +1021,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1144,8 +1030,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1154,89 +1039,80 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 43.799999999999976,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 44.39999999999998,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 45.299999999999976,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 46.199999999999974,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 46.49999999999997,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 46.79999999999997,
     "rightHand": {
       "usedFingers": ["m"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 47.39999999999996,
     "rightHand": {
       "usedFingers": ["i", "a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
   {
     "real_time": 47.69999999999996,
     "rightHand": {
       "usedFingers": ["i", "m"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
   {
@@ -1245,7 +1121,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1255,7 +1130,6 @@
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1265,7 +1139,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1275,7 +1148,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1285,8 +1157,7 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
@@ -1294,78 +1165,70 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 53.39999999999995,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 53.99999999999995,
     "rightHand": {
-      "usedFingers": ["p", "i"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "usedFingers": ["p", "m"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 54.29999999999995,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 54.89999999999994,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 55.79999999999994,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 56.39999999999994,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 57.29999999999993,
     "rightHand": {
       "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1375,7 +1238,6 @@
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1385,7 +1247,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -1394,29 +1255,26 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 58.49999999999992,
     "rightHand": {
       "usedFingers": ["m"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 58.79999999999992,
     "rightHand": {
       "usedFingers": ["m"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
@@ -1424,8 +1282,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -1434,8 +1291,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -1444,29 +1300,26 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 60.8999999999999,
     "rightHand": {
       "usedFingers": ["m"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 61.199999999999896,
     "rightHand": {
       "usedFingers": ["m"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
@@ -1474,8 +1327,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1484,8 +1336,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1494,8 +1345,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1504,8 +1354,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1515,7 +1364,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1525,7 +1373,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1534,8 +1381,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1544,8 +1390,7 @@
     "rightHand": {
       "usedFingers": ["p", "i", "a"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 1]
     }
   },
@@ -1554,8 +1399,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 1]
     }
   },
@@ -1564,8 +1408,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 1]
     }
   },
@@ -1574,8 +1417,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 1]
     }
   },
@@ -1584,8 +1426,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 1]
     }
   },
@@ -1594,8 +1435,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 1]
     }
   },
@@ -1604,9 +1444,8 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 4, 3, 0],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
@@ -1614,8 +1453,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1625,7 +1463,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1634,8 +1471,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -1644,48 +1480,43 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 82.19999999999972,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "usedFingers": ["m"],
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 82.49999999999972,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 83.6999999999997,
     "rightHand": {
       "usedFingers": ["p"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
   {
     "real_time": 84.5999999999997,
     "rightHand": {
       "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightFingerPositions": [5, 3, 2, 1],
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1694,8 +1525,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1704,8 +1534,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1715,7 +1544,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1725,7 +1553,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1735,7 +1562,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1745,7 +1571,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1755,7 +1580,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1765,7 +1589,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1775,7 +1598,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1785,8 +1607,7 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
@@ -1794,8 +1615,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [4, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1805,7 +1625,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1815,7 +1634,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1825,7 +1643,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1835,7 +1652,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1845,7 +1661,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1854,8 +1669,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1864,8 +1678,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 4, 3, 1],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1875,18 +1688,16 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 103.49999999999952,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [4, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
@@ -1894,8 +1705,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1904,8 +1714,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -1914,8 +1723,7 @@
     "rightHand": {
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1925,7 +1733,6 @@
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -1935,7 +1742,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1945,7 +1751,6 @@
       "usedFingers": ["p", "i"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1955,7 +1760,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -1965,7 +1769,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -1974,8 +1777,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1984,8 +1786,7 @@
     "rightHand": {
       "usedFingers": ["i", "m"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -1994,8 +1795,7 @@
     "rightHand": {
       "usedFingers": ["p", "m"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2004,8 +1804,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2014,8 +1813,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2024,8 +1822,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2034,8 +1831,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2044,8 +1840,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2054,8 +1849,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2064,38 +1858,34 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 4, 3, 0],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 111.29999999999944,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 111.59999999999944,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 112.19999999999943,
     "rightHand": {
       "usedFingers": ["p", "a"],
-      "rightFingerPositions": [5, 3, 2, 0],
+      "rightFingerPositions": [5, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 2, 1, 0]
     }
   },
@@ -2104,8 +1894,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -2115,7 +1904,6 @@
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -2125,7 +1913,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 3, 2, 1]
     }
   },
@@ -2135,138 +1922,124 @@
       "usedFingers": ["a"],
       "rightFingerPositions": [5, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
   {
     "real_time": 113.69999999999942,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 113.99999999999942,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 114.59999999999941,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 115.1999999999994,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 115.7999999999994,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 0],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 116.0999999999994,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 116.3999999999994,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 116.99999999999939,
     "rightHand": {
-      "usedFingers": ["i"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["p"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 117.59999999999938,
     "rightHand": {
-      "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 1],
+      "usedFingers": ["m"],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 3, 2, 1]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 118.19999999999938,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 3, 2, 0],
+      "rightFingerPositions": [3, 2, 1, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 118.49999999999937,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 118.79999999999937,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
     "real_time": 119.09999999999937,
     "rightHand": {
       "usedFingers": ["a"],
-      "rightFingerPositions": [5, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
-      "afterPlayedRightFingerPositions": [5, 2, 1, 0]
+      "rightFingerPositions": [3, 2, 1, 0],
+      "rightHandPosition": 2,
+      "afterPlayedRightFingerPositions": [3, 2, 1, 0]
     }
   },
   {
@@ -2274,8 +2047,7 @@
     "rightHand": {
       "usedFingers": ["p", "a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2284,8 +2056,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2294,8 +2065,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2304,8 +2074,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2314,8 +2083,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2324,8 +2092,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2334,8 +2101,7 @@
     "rightHand": {
       "usedFingers": ["a"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2344,8 +2110,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2354,8 +2119,7 @@
     "rightHand": {
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2364,8 +2128,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 2, 1, 0],
-      "rightHandPosition": 1,
-      "afterPlayedRightHandPosition": 1,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 2, 1, 0]
     }
   },
@@ -2375,7 +2138,6 @@
       "usedFingers": ["m"],
       "rightFingerPositions": [4, 3, 2, 0],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -2385,7 +2147,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -2395,7 +2156,6 @@
       "usedFingers": ["p"],
       "rightFingerPositions": [4, 3, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [4, 3, 2, 1]
     }
   },
@@ -2405,7 +2165,6 @@
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 2, 1],
       "rightHandPosition": 2,
-      "afterPlayedRightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2414,8 +2173,7 @@
     "rightHand": {
       "usedFingers": ["p"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   },
@@ -2424,8 +2182,7 @@
     "rightHand": {
       "usedFingers": ["i"],
       "rightFingerPositions": [5, 4, 3, 2],
-      "rightHandPosition": 3,
-      "afterPlayedRightHandPosition": 3,
+      "rightHandPosition": 2,
       "afterPlayedRightFingerPositions": [5, 4, 3, 2]
     }
   }

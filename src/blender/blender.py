@@ -35,11 +35,29 @@ for bone in bpy.context.object.data.edit_bones:
 bpy.ops.object.mode_set(mode='OBJECT')
 
 
+def correct_finger_roll(finger_bones: list[str]):
+    # 选中armature
+    bpy.context.view_layer.objects.active = bpy.data.objects[armature]
+    # 切换到pose mode
+    bpy.ops.object.mode_set(mode='POSE')
+
+    for bone in bpy.context.object.pose.bones:
+        bone_name = bone.name
+        if bone_name in finger_bones:
+            start_bone_name = bone_name.replace("3", "1")
+            start_bone_name = start_bone_name.replace("2", "1")
+            start_bone_name = start_bone_name.replace("DEF_", "")
+            end_bone_name = bone_name.replace("DEF_", "")
+            angel = rotate_finger_angle_by_normal(
+                start_bone_name, end_bone_name)
+            bone.rotation_euler[1] = angel
+            bone.keyframe_insert(data_path="rotation_euler")
+
+    # 切换到object mode
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+
 def animate_left_hand(left_hand_animation: str):
-    FretBoardNormal = get_vector_from_obj("FretBoardNormal")
-    LeftThumbDirection = get_vector_from_obj("LeftThumbDirection")
-    current_H_L = pre_H_L = mathutils.Vector((0, 0, 0))
-    angels = {}
     # 读取json文件
     with open(left_hand_animation, "r") as f:
         handDicts = json.load(f)
@@ -62,42 +80,15 @@ def animate_left_hand(left_hand_animation: str):
                     else:
                         obj.location = value
                         obj.keyframe_insert(data_path="location")
-                    if fingerInfo == "H_L":
-                        current_H_L = mathutils.Vector(
-                            (value[0], value[1], value[2]))
                 except:
                     pass
 
-            # 选中armature
-            bpy.context.view_layer.objects.active = bpy.data.objects[armature]
-            # 切换到pose mode
-            bpy.ops.object.mode_set(mode='POSE')
-
-            for bone in bpy.context.object.pose.bones:
-                bone_name = bone.name
-                if bone_name in left_finger_bones:
-                    if "Thumb" in bone_name:
-                        direction = LeftThumbDirection
-                    else:
-                        direction = FretBoardNormal
-                    start_bone_name = bone_name.replace("3", "1")
-                    start_bone_name = start_bone_name.replace("2", "1")
-                    start_bone_name = start_bone_name.replace("DEF_", "")
-                    end_bone_name = bone_name.replace("DEF_", "")
-                    angel = rotate_finger_angle_by_normal(
-                        start_bone_name, end_bone_name, direction)
-                    bone.rotation_euler[1] = angel
-                    angels[bone_name] = bone.rotation_euler[1]
-                    bone.keyframe_insert(data_path="rotation_euler")
-
-            # 切换到object mode
-            bpy.ops.object.mode_set(mode='OBJECT')
+            correct_finger_roll(left_finger_bones)
 
 
-def animate_right_hand(left_hand_animation: str):
-    FretBoardNormal = get_vector_from_obj("FretBoardNormal")
-    RightThumbDirection = get_vector_from_obj("RightThumbDirection")
-    with open(left_hand_animation, "r") as f:
+def animate_right_hand(right_hand_animation: str):
+    # 读取json文件
+    with open(right_hand_animation, "r") as f:
         handDicts = json.load(f)
 
         for hand in handDicts:
@@ -112,39 +103,15 @@ def animate_right_hand(left_hand_animation: str):
                 try:
                     obj = bpy.data.objects[fingerInfo]
                     value = fingerInfos[fingerInfo]
-                    if "rotation" in fingerInfo:
-                        obj.rotation_euler = value
-                        obj.keyframe_insert(data_path="rotation_euler")
-                    else:
-                        obj.location = value
-                        obj.keyframe_insert(data_path="location")
+                    obj.location = value
+                    obj.keyframe_insert(data_path="location")
                 except:
                     pass
 
-            # 选中armature
-            bpy.context.view_layer.objects.active = bpy.data.objects[armature]
-            # 切换到pose mode
-            bpy.ops.object.mode_set(mode='POSE')
-            # 遍历所有骨骼
-            for bone in bpy.context.object.pose.bones:
-                bone_name = bone.name
-                if bone_name in left_finger_bones:
-                    if "Thumb" in bone_name:
-                        direction = RightThumbDirection
-                    else:
-                        direction = FretBoardNormal
-                    start_bone_name = bone_name.replace("3", "1")
-                    start_bone_name = start_bone_name.replace("2", "1")
-                    angel = rotate_finger_angle_by_normal(
-                        start_bone_name, bone_name, direction)
-                    bone.rotation_euler[1] += angel
-                    bone.keyframe_insert(data_path="rotation_euler")
-
-            # 切换到object mode
-            bpy.ops.object.mode_set(mode='OBJECT')
+            correct_finger_roll(right_finger_bones)
 
 
-def rotate_finger_angle_by_normal(start_bone_name: str, end_bone_name: str, normal: mathutils.Vector) -> float:
+def rotate_finger_angle_by_normal(start_bone_name: str, end_bone_name: str) -> float:
 
     # 获取骨骼对象
     start_bone = bpy.context.active_object.pose.bones[start_bone_name]

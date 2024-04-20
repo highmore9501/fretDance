@@ -1,5 +1,6 @@
 # 一些在blender里跑的工具脚本
 import bpy
+import mathutils
 
 
 def clone_deform_bones():
@@ -212,9 +213,24 @@ def export_positions(collection):
     result = {}
     for obj in bpy.data.collections[collection].objects:
         obj_name = obj.name
-        obj_info = obj.location
+        obj_info = obj.matrix_world.to_translation()
         result[obj_name] = {
             "position": [obj_info.x, obj_info.y, obj_info.z],
+        }
+    print(result)
+
+
+def export_directions(collection):
+    result = {}
+    for obj in bpy.data.collections[collection].objects:
+        obj_name = obj.name
+        rotation_vector = mathutils.Vector((0, 0, 1))  # Z-axis vector
+        rotation_vector.rotate(obj.rotation_euler)
+        unit_vector = rotation_vector.normalized()
+        if not obj_name.startswith('T'):
+            unit_vector = -unit_vector
+        result[obj_name] = {
+            "direction": [unit_vector.x, unit_vector.y, unit_vector.z],
         }
     print(result)
 
