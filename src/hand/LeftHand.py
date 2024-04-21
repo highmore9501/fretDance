@@ -136,11 +136,16 @@ class LeftHand():
         """
         if len(self.fingers) == 0:
             return False
-        if len(self.fingers) == 1:
-            return True
 
         sortedFingers = sorted(self.fingers, key=lambda x: x._fingerIndex)
+        # 如果在低把位，不能出现小拇指或者无名指延展两个品格的情况
+        if self.handPosition < 10 and (sortedFingers[-1].fret - sortedFingers[-2].fret > 1 or sortedFingers[-2].fret - sortedFingers[-3].fret > 1):
+            return False
+
+        bigger_fret_counter = 0
         for i in range(len(sortedFingers)-1):
+            if abs(sortedFingers[i].fret - sortedFingers[i+1].fret) > 1:
+                bigger_fret_counter += 1
             minIndexFingerIsHigher = sortedFingers[i]._fingerIndex < sortedFingers[i +
                                                                                    1]._fingerIndex and sortedFingers[i].fret > sortedFingers[i+1].fret
             if minIndexFingerIsHigher:
@@ -166,6 +171,9 @@ class LeftHand():
             if minFingerIsOuter:
                 return False
 
+        if bigger_fret_counter > 1:
+            return False
+
         return True
 
     def calculateHandPosition(self) -> int:
@@ -174,15 +182,10 @@ class LeftHand():
         :return: hand position, which means the fret number of index finger. 手的位置，也就是食指所在的品格
         """
         handPosition = 0
-        minFingerIndex = 4
         for finger in self.fingers:
-            if 0 < finger._fingerIndex < minFingerIndex:
-                minFingerIndex = finger._fingerIndex
+            if finger._fingerIndex == 1 and finger.fret > 1:
                 handPosition = finger.fret
 
-        handPosition -= (minFingerIndex - 1)
-        if handPosition < 1:
-            handPosition = 1
         return handPosition
 
     def generateNextHands(self, guitar: Guitar, fingerPositions: List[tuple[str, int]]) -> tuple['LeftHand', float]:
@@ -334,6 +337,12 @@ class LeftHand():
                 if tmpFinger.press != PRESSSTATE["Open"]:
                     entropy += self.fingerDistanceTofretboard
                     tmpFinger.press = PRESSSTATE["Open"]
+                # 没有被使用的手指要向原始位置回归一点
+                fretIsTooLarge = tmpFinger.fret-self.handPosition > tmpFinger._fingerIndex
+                if fretIsTooLarge:
+                    tmpFinger.fret += -1
+                stringIsTooLarge = tmpFinger.stringIndex > 2
+                tmpFinger.stringIndex += -1 if stringIsTooLarge else 1
                 openFingers.append(tmpFinger)
 
         conflictFinger = []

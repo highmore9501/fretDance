@@ -1,11 +1,13 @@
+import copy
 import json
-from numpy import array, linalg, cross
+from src.midi.midiToNote import calculate_frame
+from numpy import array, linalg, cross, random
 from ..utils.utils import twiceLerp, caculateRightHandFingers
 from ..blender.blenderRecords import NORMAL_P2, NORMAL_P0, NORMAL_P3
 from ..hand.LeftFinger import PRESSSTATE
 
 
-def leftHand2Animation(recorder: str, animation: str, FPS: float) -> None:
+def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
     """
     :params recorder: the path of the recorder file
     :params animation: the path of the file store information for animation
@@ -29,22 +31,27 @@ def leftHand2Animation(recorder: str, animation: str, FPS: float) -> None:
 
     for i in range(len(handDicts)):
         item = handDicts[i]
-        next_time = None
+        next_tick = None
         if i != len(handDicts) - 1:
             next_item = handDicts[i + 1]
-            next_time = next_item["real_time"]
-        real_time = item["real_time"]
-        frame = real_time * FPS
+            next_tick = next_item["real_tick"]
+        real_tick = item["real_tick"]
+        frame = calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick)
 
         # 计算左手的动画信息
         fingerInfos = animatedLeftHand(item, normal)
+        data_for_animation.append({
+            "frame": frame,
+            "fingerInfos": fingerInfos
+        })
 
         # 这里是计算左手按弦需要保持的时间
-        if next_time:
-            next_frame = next_time * FPS
+        if next_tick:
+            next_frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, next_tick)
             if frame + 2 < next_frame:
                 data_for_animation.append({
-                    "frame": next_frame-2,
+                    "frame": next_frame-3,
                     "fingerInfos": fingerInfos
                 })
 
@@ -134,6 +141,10 @@ def animatedLeftHand(item: object, normal: array):
         fret=barre,
         stringIndex=max_finger_string_index)
 
+    # 来一个随机大小为0.0005的随机移动
+    random_move = random.rand(3) * 0.001
+    hand_position += random_move
+
     fingerInfos["H_L"] = hand_position.tolist()
 
     hand_IK_pivot_position = twiceLerp(
@@ -176,40 +187,41 @@ def animatedLeftHand(item: object, normal: array):
         stringIndex=index_finger_string_number)
     fingerInfos["TP_L"] = thumb_IK_pivot_position.tolist()
 
-    thumb_rotation = twiceLerp(
-        hand_state=hand_state,
-        value="T_rotation_L",
-        valueType="rotation",
-        fret=barre,
-        stringIndex=index_finger_string_number)
-    fingerInfos["T_rotation_L"] = thumb_rotation.tolist()
-
     return fingerInfos
 
 
-def rightHand2Animation(recorder: str, animation: str, FPS: float) -> None:
+def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
     data_for_animation = []
     with open(recorder, "r") as f:
         handDicts = json.load(f)
 
         for data in handDicts:
-            real_time = data["real_time"]
-            frame = real_time * FPS
+            real_tick = data["real_tick"]
+            frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, real_tick)
             right_hand = data["rightHand"]
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
+            rightHandPosition = right_hand["rightHandPosition"]
+            afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
 
-            ready, played = caculateRightHandFingers(
-                rightFingerPositions, usedFingers)
+            ready = caculateRightHandFingers(
+                rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
+
+            played = caculateRightHandFingers(
+                afterPlayedRightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
 
             data_for_animation.append({
                 "frame": frame,
-                "fingerInfos": ready,
+                "fingerInfos": copy.deepcopy(ready),
             })
             data_for_animation.append({
                 "frame": frame + 1,
-                "fingerInfos": played,
+                "fingerInfos": copy.deepcopy(played),
             })
+
+            ready = None
+            played = None
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
