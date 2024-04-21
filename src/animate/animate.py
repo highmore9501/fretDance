@@ -1,12 +1,13 @@
 import copy
 import json
+from src.midi.midiToNote import calculate_frame
 from numpy import array, linalg, cross, random
 from ..utils.utils import twiceLerp, caculateRightHandFingers
 from ..blender.blenderRecords import NORMAL_P2, NORMAL_P0, NORMAL_P3
 from ..hand.LeftFinger import PRESSSTATE
 
 
-def leftHand2Animation(recorder: str, animation: str, FPS: float) -> None:
+def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
     """
     :params recorder: the path of the recorder file
     :params animation: the path of the file store information for animation
@@ -30,22 +31,27 @@ def leftHand2Animation(recorder: str, animation: str, FPS: float) -> None:
 
     for i in range(len(handDicts)):
         item = handDicts[i]
-        next_time = None
+        next_tick = None
         if i != len(handDicts) - 1:
             next_item = handDicts[i + 1]
-            next_time = next_item["real_time"]
-        real_time = item["real_time"]
-        frame = real_time * FPS
+            next_tick = next_item["real_tick"]
+        real_tick = item["real_tick"]
+        frame = calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick)
 
         # 计算左手的动画信息
         fingerInfos = animatedLeftHand(item, normal)
+        data_for_animation.append({
+            "frame": frame,
+            "fingerInfos": fingerInfos
+        })
 
         # 这里是计算左手按弦需要保持的时间
-        if next_time:
-            next_frame = next_time * FPS
+        if next_tick:
+            next_frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, next_tick)
             if frame + 2 < next_frame:
                 data_for_animation.append({
-                    "frame": next_frame-2,
+                    "frame": next_frame-3,
                     "fingerInfos": fingerInfos
                 })
 
@@ -184,14 +190,15 @@ def animatedLeftHand(item: object, normal: array):
     return fingerInfos
 
 
-def rightHand2Animation(recorder: str, animation: str, FPS: float) -> None:
+def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
     data_for_animation = []
     with open(recorder, "r") as f:
         handDicts = json.load(f)
 
         for data in handDicts:
-            real_time = data["real_time"]
-            frame = real_time * FPS
+            real_tick = data["real_tick"]
+            frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, real_tick)
             right_hand = data["rightHand"]
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]

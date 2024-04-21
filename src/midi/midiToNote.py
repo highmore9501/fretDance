@@ -3,25 +3,49 @@ from typing import List
 import random
 
 
-def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[int] = [17]) -> List[dict]:
+def calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick) -> int:
+    total_frames = 0
+    for i in range(len(tempo_changes)):
+        track, tempo, time = tempo_changes[i]
+        if time > real_tick:
+            break
+        next_time = tempo_changes[i + 1][2] if i + \
+            1 < len(tempo_changes) else real_tick
+        seconds = (next_time - time) * tempo / (ticks_per_beat * 1000000)
+        frames = seconds * FPS
+        total_frames += frames
+    return total_frames
+
+
+def get_tempo_changes(midiFilePath: str):
+    midFile = MidiFile(midiFilePath)
+    tick_per_beat: int = midFile.ticks_per_beat
+    tempo_changes = []
+    for i, track in enumerate(midFile.tracks):
+        absolute_time = 0
+        for msg in track:
+            absolute_time += msg.time
+            if msg.type == 'set_tempo':
+                tempo_changes.append((i, msg.tempo, absolute_time))
+    return tempo_changes, tick_per_beat
+
+
+def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[int] = [17]) -> object:
     """
     :param muteChannel: channels need to filter out, normally it is drum channel. 需要过滤掉的通道，一般是打击乐通道
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :return: notes and beat in the midi file. 返回midi文件中的音符和拍子
     """
     midFile = MidiFile(midiFilePath)
-    tick_per_beat: int = midFile.ticks_per_beat
-    midTrack = MidiFile(midiFilePath).tracks[useChannel]
-    print(midTrack)
+    print(midFile)
 
-    result = []
+    midTrack = MidiFile(midiFilePath).tracks[useChannel]
+
+    notes_map = []
     note = []
-    real_time: float = 0
-    bpm: float = 100
+    real_tick: float = 0
 
     for message in midTrack:
-        if message.type == 'set_tempo':
-            bpm = message.tempo2bpm(message.tempo)
         ticks = message.time
 
         if message.type == 'note_on' and message.time == 0 and message.channel not in muteChannel:
@@ -31,11 +55,11 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
                 continue
             # 将note里的元素按大小排序
             notes = sorted(note)
-            beat = ticks / tick_per_beat
-            real_time += beat / (bpm / 60)
-            result.append({"notes": notes, "real_time": real_time})
+            real_tick += ticks
+            notes_map.append({"notes": notes, "real_tick": real_tick})
             note = []
-    return result
+
+    return notes_map
 
 
 def processedNotes(chordNotes: list[int]) -> list[int]:

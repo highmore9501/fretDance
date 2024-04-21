@@ -163,4 +163,4 @@ def get_vector_from_obj(obj_name: str) -> mathutils.Vector:
 
 
 animate_left_hand(left_hand_animation)
-# animate_right_hand(right_hand_animation)
+animate_right_hand(right_hand_animation)

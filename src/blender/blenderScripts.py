@@ -266,5 +266,17 @@ def animateRightHandTest():
             animateObject(obj, 'p')
 
 
+def caculateLocalPosition(obj_name: str, armature: str, target_bone: str):
+    # 获取骨骼对象
+    bone = bpy.data.objects[armature].pose.bones[target_bone]
+
+    # 获取对象
+    obj = bpy.data.objects[obj_name]
+
+    # 计算对象在骨骼的坐标系里的location
+    position = bone.matrix.inverted() @ obj.location
+    print(position)
+
+
 if __name__ == "__main__":
     pass
