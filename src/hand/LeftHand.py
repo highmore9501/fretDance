@@ -184,7 +184,7 @@ class LeftHand():
         handPosition = 0
         for finger in self.fingers:
             if finger._fingerIndex == 1 and finger.fret > 1:
-                handPosition = finger.fret
+                handPosition = finger.fret-1
 
         return handPosition
 

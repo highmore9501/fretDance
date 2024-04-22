@@ -70,7 +70,7 @@ class RightHand():
 
         hand_diff = abs(self.rightHandPosition -
                         otherRightHand.rightHandPosition)
-        diff += 5*hand_diff
+        diff += hand_diff
 
         return diff
 

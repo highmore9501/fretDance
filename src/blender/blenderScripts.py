@@ -220,6 +220,22 @@ def export_positions(collection):
     print(result)
 
 
+def export_local_positions(obj, armature_name: str, bone_name: str):
+    import numpy as np
+    armature = bpy.data.objects[armature_name]
+    bone = armature.pose.bones[bone_name]
+    result = {}
+    for key, value in obj.items():
+        if key in ['H_L', 'HP_L',  'T_L', 'TP_L']:
+            position = np.array(value['position'])
+            # 将位置向量转换到骨骼的本地坐标系
+            local_position = bone.matrix.inverted() @ mathutils.Vector(position)
+            # 更新位置值
+            result[key] = [local_position.x,
+                           local_position.y, local_position.z]
+    print(result)
+
+
 def export_directions(collection):
     result = {}
     for obj in bpy.data.collections[collection].objects:
@@ -276,6 +292,22 @@ def caculateLocalPosition(obj_name: str, armature: str, target_bone: str):
     # 计算对象在骨骼的坐标系里的location
     position = bone.matrix.inverted() @ obj.location
     print(position)
+
+
+def add_random_rotation():
+    import random
+    import bpy
+    import mathutils
+
+    # 获取所有选中的骨骼
+    selected_bones = bpy.context.selected_pose_bones_from_active_object
+
+    for pose_bone in selected_bones:
+        # 设置当前激活的对象和骨骼
+        pose_bone.rotation_mode = 'XYZ'
+
+        pose_bone.rotation_euler = mathutils.Euler(
+            [random.random()*0.05, random.random()*0.05, random.random()*0.05])
 
 
 if __name__ == "__main__":

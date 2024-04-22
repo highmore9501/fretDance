@@ -2,8 +2,8 @@ import copy
 import json
 from src.midi.midiToNote import calculate_frame
 from numpy import array, linalg, cross, random
-from ..utils.utils import twiceLerp, caculateRightHandFingers
-from ..blender.blenderRecords import NORMAL_P2, NORMAL_P0, NORMAL_P3
+from ..utils.utils import twiceLerp, caculateRightHandFingers, twiceLerpFingers
+from ..blender.blenderRecords import LEFT_FINGER_POSITIONS
 from ..hand.LeftFinger import PRESSSTATE
 
 
@@ -14,9 +14,9 @@ def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_b
     :params BPM: the BPM of the music
     :params FPS: the FPS of the animation"""
 
-    finger_position_p0 = array(NORMAL_P0["I_L"]["position"])
-    finger_position_p1 = array(NORMAL_P3["I_L"]["position"])
-    finger_position_p2 = array(NORMAL_P2["I_L"]["position"])
+    finger_position_p0 = array(LEFT_FINGER_POSITIONS["P0"])
+    finger_position_p1 = array(LEFT_FINGER_POSITIONS["P1"])
+    finger_position_p2 = array(LEFT_FINGER_POSITIONS["P2"])
 
     # 计算finger_position_p0,finger_position_p1,finger_position_p2三点组成的平面上的法线值
     normal = cross(finger_position_p0 - finger_position_p1,
@@ -106,6 +106,18 @@ def animatedLeftHand(item: object, normal: array):
             min_press_fingerIndex = fingerIndex
             barre = max(fret - fingerIndex+1, 1)
 
+        if press == PRESSSTATE['Open']:
+            if stringIndex > 2:
+                stringIndex -= 0.5
+            else:
+                stringIndex += 0.5
+
+        finger_position = twiceLerpFingers(fret, stringIndex)
+
+        # 如果手指没有按下，那么手指位置会稍微上移
+        if press == PRESSSTATE['Open']:
+            finger_position -= normal * 0.003
+
         if fingerIndex == 1:
             position_value_name = "I_L"
         elif fingerIndex == 2:
@@ -114,23 +126,6 @@ def animatedLeftHand(item: object, normal: array):
             position_value_name = "R_L"
         elif fingerIndex == 4:
             position_value_name = "P_L"
-
-        if press == PRESSSTATE['Open']:
-            if stringIndex > 2:
-                stringIndex -= 0.5
-            else:
-                stringIndex += 0.5
-
-        finger_position = twiceLerp(
-            hand_state=hand_state,
-            value=position_value_name,
-            valueType="position",
-            fret=fret,
-            stringIndex=stringIndex)
-
-        # 如果手指没有按下，那么手指位置会稍微上移
-        if press == PRESSSTATE['Open']:
-            finger_position -= normal * 0.008
 
         fingerInfos[position_value_name] = finger_position.tolist()
 
@@ -155,14 +150,6 @@ def animatedLeftHand(item: object, normal: array):
         stringIndex=index_finger_string_number)
     fingerInfos["HP_L"] = hand_IK_pivot_position.tolist()
 
-    thumb_ik_pivot_bone_position = twiceLerp(
-        hand_state=hand_state,
-        value="Thumb_IK_pivot_L",
-        valueType="position",
-        fret=barre,
-        stringIndex=index_finger_string_number)
-    fingerInfos["Thumb_IK_pivot_L"] = thumb_ik_pivot_bone_position.tolist()
-
     hand_rotation_y = twiceLerp(
         hand_state=hand_state,
         value="H_rotation_Y_L",
@@ -170,6 +157,14 @@ def animatedLeftHand(item: object, normal: array):
         fret=barre,
         stringIndex=index_finger_string_number)
     fingerInfos["H_rotation_Y_L"] = hand_rotation_y.tolist()
+
+    hand_rotation_x = twiceLerp(
+        hand_state=hand_state,
+        value="H_rotation_X_L",
+        valueType="rotation",
+        fret=barre,
+        stringIndex=index_finger_string_number)
+    fingerInfos["H_rotation_X_L"] = hand_rotation_x.tolist()
 
     thumb_position = twiceLerp(
         hand_state=hand_state,

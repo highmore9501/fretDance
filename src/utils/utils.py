@@ -4,7 +4,7 @@ from ..guitar.Guitar import Guitar
 from numpy import array
 import numpy as np
 from .fretDistanceDict import FRET_DISTANCE_DICT
-from ..blender.blenderRecords import NORMAL_P1, NORMAL_P2, NORMAL_P0, NORMAL_P3, INNER_P0, INNER_P1, INNER_P2, INNER_P3, OUTER_P0, OUTER_P1, OUTER_P2, OUTER_P3, RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS
+from ..blender.blenderRecords import RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS, LEFT_FINGER_POSITIONS, OUTER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_POSITIONS, OUTER_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_ROTATIONS
 import itertools
 from ..hand.RightHand import RightHand
 
@@ -225,35 +225,56 @@ def print_strikethrough(text):
     return f"\033[9m{text}\033[0m"
 
 
-def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int | float, isFinger: bool = True) -> array:
-    if hand_state == "OUTER":
-        data0 = OUTER_P0[value]
-        data1 = OUTER_P1[value]
-        data2 = OUTER_P2[value]
-        data3 = OUTER_P3[value]
-    elif hand_state == "INNER":
-        data0 = INNER_P0[value]
-        data1 = INNER_P1[value]
-        data2 = INNER_P2[value]
-        data3 = INNER_P3[value]
-    else:
-        data0 = NORMAL_P0[value]
-        data1 = NORMAL_P1[value]
-        data2 = NORMAL_P2[value]
-        data3 = NORMAL_P3[value]
-
-    # p0和p1实际上并不是空品，而是1品;而p2和p3是12品
-    p0 = array(data0[valueType])
-    p1 = array(data1[valueType])
-    p2 = array(data2[valueType])
-    p3 = array(data3[valueType])
+def twiceLerpFingers(fret: int, stringIndex: int) -> Dict:
+    p0 = array(LEFT_FINGER_POSITIONS["P0"])
+    p1 = array(LEFT_FINGER_POSITIONS["P1"])
+    p2 = array(LEFT_FINGER_POSITIONS["P2"])
+    p3 = array(LEFT_FINGER_POSITIONS["P3"])
 
     fret_query_string = "0-"+str(fret)
     fret_value = FRET_DISTANCE_DICT[fret_query_string]
-    if isFinger:
-        p0_fret = FRET_DISTANCE_DICT["0-1"]
-        p2_fret = FRET_DISTANCE_DICT["0-12"]
-        fret_value = (fret_value - p0_fret) / (p2_fret - p0_fret)
+
+    p0_fret = FRET_DISTANCE_DICT["0-1"]
+    p2_fret = FRET_DISTANCE_DICT["0-12"]
+    fret_value = (fret_value - p0_fret) / (p2_fret - p0_fret)
+
+    p_fret_0 = p0 + (p2 - p0) * fret_value
+    p_fret_1 = p1 + (p3 - p1) * fret_value
+
+    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+
+    return p_final
+
+
+def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
+    DATA_DICT = None
+    if valueType == 'position':
+        if hand_state == "OUTER":
+            DATA_DICT = OUTER_LEFT_HAND_POSITIONS
+        elif hand_state == "INNER":
+            DATA_DICT = INNER_LEFT_HAND_POSITIONS
+        else:
+            DATA_DICT = NORMAL_LEFT_HAND_POSITIONS
+    if valueType == 'rotation':
+        if hand_state == "OUTER":
+            DATA_DICT = OUTER_LEFT_HAND_ROTATIONS
+        elif hand_state == "INNER":
+            DATA_DICT = INNER_LEFT_HAND_ROTATIONS
+        else:
+            DATA_DICT = NORMAL_LEFT_HAND_ROTATIONS
+
+    # p0和p1实际上并不是空品，而是1品;而p2和p3是12品
+    p0 = array(DATA_DICT["P0"][value])
+    p1 = array(DATA_DICT["P1"][value])
+    p2 = array(DATA_DICT["P2"][value])
+    p3 = array(DATA_DICT["P3"][value])
+
+    fret_query_string = "0-"+str(fret)
+    fret_value = FRET_DISTANCE_DICT[fret_query_string]
+
+    p0_fret = FRET_DISTANCE_DICT["0-1"]
+    p2_fret = FRET_DISTANCE_DICT["0-12"]
+    fret_value = (fret_value - p0_fret) / (p2_fret - p0_fret)
 
     p_fret_0 = p0 + (p2 - p0) * fret_value
     p_fret_1 = p1 + (p3 - p1) * fret_value
