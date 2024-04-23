@@ -1,44 +1,45 @@
 ## FretDance
 
-Automatically completes the finger arrangement of guitar music scores, minimizing the movement trajectory of the left hand.
+Convert the original MIDI file into a guitar tablature fingering arrangement that minimizes the movement trajectories of both hands. Ultimately, present the performance animation in Blender.
 
-### Running Instructions
+### How to run
 
-1. Install the virtual environment by running `python -m venv .venv`
-2. Activate the virtual environment by running `source .venv/bin/activate`. For Windows, use `.\.venv\Scripts\activate`
-3. Install dependencies by running `pip install -r requirements.txt`
-4. Open `FretDancer.ipynb` and set the kernel to `.venv`
-5. You can set `midiFilePath` to your own MIDI file path, then run the notebook.
-6. In the final `output` method, setting the parameter to `True` will output the positions of fingers that are not pressing strings. If it is not set, the default behavior is to not display the positions of these fingers.
-7. After the code in the notebook finishes running, a JSON file with a `_animation` suffix should be obtained in the `output` folder.
-8. Open the `Kamisato_guitar.blender` file in `.src\blender`, copy the code from `blender.py` into the Blender script window, modify the path value of the JSON file, and then run the script to generate the animation.
+- Install a virtual environment and run `python -m venv .venv`
+- Activate the virtual environment by running `source .venv/bin/activate`. For Windows, it is `.\.venv\Scripts\activate`
+- Install dependencies by running `pip install -r requirements.txt`
+- Open `FretDancer.ipynb`, set the kernel to `.venv`
+- You can set `midiFilePath` to your own MIDI file path, then run it
+- In the final `output` method, set the parameter to `True` to output the positions of fingers that are not pressing strings. If not set, it defaults to not showing the positions of fingers that are not pressing strings.
+- After the code in the notebook runs, there should be a JSON file with a `_animation` suffix in the output folder.
+- Open the `Kamisato_guitar.blender` file in `.src\blender`, copy the code from `blender.py` into Blender's script window, modify the path value of the JSON file, and then run the script to generate the animation.
 
 ### Simple working principle
 
-1. First, read all the notes from the midi file and treat the simultaneously sounding notes as a chord, and record the time of that chord, which is `time`.
+1. Read all notes from the MIDI file, treat simultaneously sounding notes as chords, and record the time of the chord.
 2. Convert each chord into possible positions on the guitar.
-3. Consider which fingers to use to press each note, generating all possible fingering shapes.
-4. Calculate the cost of transitioning from the current hand shape to the new hand shape.
-5. Each time a hand shape is iterated, a recorder is generated to record all previous hand shapes and the cost of reaching the current hand shape. For example, if you start with hand shape a and move to the next chord, there may be three hand shapes b1, b2, b3, then three recorders will be generated to record the costs of a->b1, a->b2, and a->b3, respectively. If you continue to the next step, there may be nine recorders for a->b1->c1, a->b1->c2, a->b1->c3, a->b2->c1, a->b2->c2, a->b2->c3, a->b3->c1, a->b3->c2, and a->b3->c3, respectively.
-6. Obviously, you will find that the expansion speed of the recorder is exponential, so we need to prune. The pruning method is to set an upper limit on the number of recorders for each generation, keeping only a certain number of recorders with the smallest cost values, and discarding the others. In the project, we use HandPoseRecordPool to control the number of recorders.
-7. Finally, we just need to find a recorder with the smallest cost value and output the recorded hand shape sequence, which is the optimal solution we are looking for.
+3. Consider which finger to use to press each note, generating all possible fingering hand shapes.
+4. Calculate the cost of transitioning from the current hand shape to a new hand shape.
+5. Each time a hand shape is iterated, a recorder is generated to record all previous hand shapes and the cost of reaching the current hand shape. For example, at the beginning there is only one hand shape, and pressing the next note may result in 6 new hand shapes, so 6 recorders will be generated. Each recorder records the cost from the original hand shape to the new hand shape. Then when pressing the next note, iterate these 6 new hand shapes again, generating new recorders, and so on.
+6. Obviously, you will find that the growth rate of recorders is exponential, so we need pruning. The pruning method is to set an upper limit on the number of recorders for each generation, keeping only a certain number of recorders with the smallest cost values, while discarding other recorders. In the project, we use the size attribute of HandPoseRecordPool to control the number of recorders.
+7. Finally, we just need to find a recorder with the smallest cost value, and then output the recorded hand shape sequence from it, which is the optimal solution we are looking for.
+8. With the optimal solution for the left hand, we can calculate the optimal solution for the right hand based on this. According to the string to be played each time, calculate the position of the right hand shape and which finger is more scientific to play. The calculation principle is similar to the previous calculation of the left hand shape, which is also continuous iteration, and then controlling the total number of descendants, finally finding the optimal solution.
 
-### Generating Animation
+### Generating animations
 
-Now that we have all the finger information for each `time`, we can generate animation by calculating and converting this information into keyframe data that controls the hands and arms in a Blender file.
+Since we already have all the finger information for each time, we can convert this information into keyframe information for controlling hands and arms in Blender files through a series of calculations, thus generating animations.
 
-The principle of animation generation is as follows:
+The basic principles of animation generation are as follows:
 
-1. In the Blender file, read the hand's controllers information at the four extreme positions on the guitar fretboard. These four extreme positions are the 1st string at the 1st fret, the 6th string at the 1st fret, the 1st string at the 12th fret, and the 6th string at the 12th fret.
-2. At each of these extreme positions, there are three possible palm angles, corresponding to the NORMAL state when the index finger and middle finger do not press the same fret, the INNER state when the index finger and middle finger press the same fret and the index finger points inward, and the OUTER state when the index finger and middle finger press the same fret and the index finger points outward.
-3. By judging the hand's controllers information for each `time` and interpolating through the above extreme positions and corresponding hand shape data, we can obtain a series of controller information for each keyframe, thereby generating the animation.
+1. On the Blender file, read the hand shape information at the four extreme positions of the guitar panel. These four extreme positions are the 1st fret 1st string, 1st fret 6th string, 12th fret 1st string, and 12th fret 6th string.
+2. At the above four extreme positions, there are three possible palm angles, corresponding to the NORMAL state when the index finger and middle finger do not press the same fret, the INNER state when the index finger and middle finger press the same fret and the index finger points inward, and the OUTER state when the index finger and middle finger press the same fret and the index finger points outward.
+3. By judging the hand shape information at each time, and then interpolating among the data of these extreme positions and corresponding hand shapes, we can obtain a series of controller information for each keyframe, thereby generating animations.
+4. The principle of the right hand animation is to determine several possible parking positions for the right palm near the sound hole, and find some possible finger contact positions on the six strings. Each time you want to play, place the corresponding palm and fingers on these playing positions.
 
-In the Blender folder, there are some scripts that run in Blender specifically for this purpose.
+In the Blender folder, there are some scripts that run in Blender, which serve the above purposes.
 
-### Additional Information
+### Other
 
-The purpose of this project is not to generate tabs for human consumption, as traditional tabs only record the movements of the left hand fingers that need to press the strings. However, they lack information about the positions of the unused left hand fingers.
-
-Of course, for humans, this is not a significant issue, as people naturally move their unused fingers to a comfortable position. However, when considering the generation of animations, where the position information of each finger in every keyframe is required, traditional tabs are insufficient.
-
-Therefore, the goal of this project is to output a sequence containing information about all fingers for each beat, providing enough information for potential animation generation.
+The purpose of this project is not to output tabs for humans to read, because traditional tabs only record the movement of the left hand fingers that need to be pressed, but lack recording of the positions of the unused left hand fingers.
+Of course, for humans, this does not matter, because humans will naturally move their unused fingers to places they feel appropriate.
+However, when considering animation generation, which requires the position information of each finger at each keyframe, traditional tabs are not enough.
+Therefore, the goal of this project is to output a sequence containing all finger information for each beat, so as to provide sufficient information for possible animation generation.
