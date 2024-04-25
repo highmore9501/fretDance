@@ -6,14 +6,26 @@ import random
 def calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick) -> int:
     total_frames = 0
     for i in range(len(tempo_changes)):
-        track, tempo, time = tempo_changes[i]
-        if time > real_tick:
+        current_track, current_tempo, current_time = tempo_changes[i]
+
+        # 如果当前的时间已经超过了real_tick，那么就停止计算
+        if current_time > real_tick:
             break
-        next_time = tempo_changes[i + 1][2] if i + \
-            1 < len(tempo_changes) else real_tick
-        seconds = (next_time - time) * tempo / (ticks_per_beat * 1000000)
+
+        # 获取下一个时间点，如果没有下一个时间点，或者下一个时间点超过了real_tick，那么就使用real_tick
+        next_time = min(tempo_changes[i + 1][2] if i + 1 <
+                        len(tempo_changes) else real_tick, real_tick)
+
+        # 计算当前时间点和下一个时间点之间的秒数
+        seconds = (next_time - current_time) * \
+            current_tempo / (ticks_per_beat * 1000000)
+
+        # 将秒数转换为帧数
         frames = seconds * FPS
+
+        # 累加帧数
         total_frames += frames
+
     return total_frames
 
 

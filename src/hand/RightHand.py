@@ -8,20 +8,21 @@ rightFingers = {
 }
 
 handPositionToFingerPositions = {
-    0: {"p": (0, 1), "i": (0, 3), "m": (0, 3), "a": (0, 3)},
-    1: {"p": (1, 3), "i": (0, 4), "m": (0, 4), "a": (0, 4)},
-    2: {"p": (3, 5), "i": (1, 4), "m": (0, 5), "a": (0, 5)},
-    3: {"p": (4, 5), "i": (2, 5), "m": (1, 5), "a": (1, 5)}
+    0: {"p": (1, 2), "i": (0, 1), "m": (0, 1), "a": (0, 1)},
+    1: {"p": (2, 4), "i": (0, 2), "m": (0, 1), "a": (0, 1)},
+    2: {"p": (3, 5), "i": (1, 3), "m": (0, 2), "a": (0, 2)},
+    3: {"p": (4, 5), "i": (3, 5), "m": (2, 4), "a": (2, 4)}
 }
 
 
 class RightHand():
-    def __init__(self, usedFingers: List[str], rightFingerPositions: List[int]):
+    def __init__(self, usedFingers: List[str], rightFingerPositions: List[int], isArpeggio: bool = False):
         self.usedFingers = usedFingers
         self.rightFingerPositions = rightFingerPositions
         # 手掌的位置由右手中指的位置来决定
         self.rightHandPosition = self.caculateHandPosition()
         self.afterPlayed()
+        self.isArpeggio = isArpeggio
 
     def caculateHandPosition(self) -> int:
         results = [2, 1, 0, 3]

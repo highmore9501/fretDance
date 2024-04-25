@@ -210,8 +210,10 @@ def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, tick
                 "frame": frame,
                 "fingerInfos": copy.deepcopy(ready),
             })
+
+            elapsed_frame = 3 if usedFingers == [] else 1
             data_for_animation.append({
-                "frame": frame + 1,
+                "frame": frame + elapsed_frame,
                 "fingerInfos": copy.deepcopy(played),
             })
 

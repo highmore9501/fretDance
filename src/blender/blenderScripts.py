@@ -209,11 +209,14 @@ def import_controller_info(data):
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
-def export_positions(collection):
+def export_positions(collection: str, armature_name: str, bone_name: str):
+    armature = bpy.data.objects[armature_name]
+    bone = armature.pose.bones[bone_name]
+    bone_matrix_inv = bone.matrix.inverted()
     result = {}
     for obj in bpy.data.collections[collection].objects:
         obj_name = obj.name
-        obj_info = obj.matrix_world.to_translation()
+        obj_info = bone_matrix_inv @ obj.matrix_world.to_translation()
         result[obj_name] = {
             "position": [obj_info.x, obj_info.y, obj_info.z],
         }
@@ -236,7 +239,10 @@ def export_local_positions(obj, armature_name: str, bone_name: str):
     print(result)
 
 
-def export_directions(collection):
+def export_directions(collection: str, armature_name: str, bone_name: str):
+    armature = bpy.data.objects[armature_name]
+    bone = armature.pose.bones[bone_name]
+    bone_matrix_inv = bone.matrix.inverted()
     result = {}
     for obj in bpy.data.collections[collection].objects:
         obj_name = obj.name
@@ -245,8 +251,10 @@ def export_directions(collection):
         unit_vector = rotation_vector.normalized()
         if not obj_name.startswith('T'):
             unit_vector = -unit_vector
+        # Transform the direction vector to the bone's local coordinate system
+        local_direction = bone_matrix_inv.to_3x3() @ unit_vector
         result[obj_name] = {
-            "direction": [unit_vector.x, unit_vector.y, unit_vector.z],
+            "direction": [local_direction.x, local_direction.y, local_direction.z],
         }
     print(result)
 

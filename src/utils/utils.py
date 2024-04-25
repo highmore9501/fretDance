@@ -4,9 +4,10 @@ from ..guitar.Guitar import Guitar
 from numpy import array
 import numpy as np
 from .fretDistanceDict import FRET_DISTANCE_DICT
-from ..blender.blenderRecords import RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS, LEFT_FINGER_POSITIONS, OUTER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_POSITIONS, OUTER_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_ROTATIONS
+from ..blender.blenderRecords import RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS, LEFT_FINGER_POSITIONS, OUTER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_POSITIONS, OUTER_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_ROTATIONS, RIGHT_PIVOT_POSITIONS
 import itertools
 from ..hand.RightHand import RightHand
+from ..hand.LeftHand import LeftHand
 
 KEYNOTES: dict = {
     "C": 48,
@@ -287,7 +288,9 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
     fingerMoveDistanceWhilePlay = 0.0045
     result = {}
 
-    hand_index = f"h{rightHandPosition}"
+    isArpeggio = usedRightFingers == [] and isAfterPlayed
+
+    hand_index = "h_end" if isArpeggio else f"h{rightHandPosition}"
     H_R = RIGHT_HAND_POSITIONS[hand_index]['position'].copy()
     # 来一个随机大小为0.0005的随机移动
     random_move = np.random.rand(3) * 0.001
@@ -296,7 +299,7 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
     H_R[2] += random_move[2]
     result['H_R'] = H_R
 
-    t_index = f"p{positions[0]}"
+    t_index = "p_end" if isArpeggio else f"p{positions[0]}"
     T_R = RIGHT_HAND_POSITIONS[t_index]['position'].copy()
     if isAfterPlayed and "p" in usedRightFingers:
         move = RIGHT_HAND_DIRECTIONS[f"T_line"]['direction']
@@ -305,7 +308,7 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
         T_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['T_R'] = T_R
 
-    i_index = f"i{positions[1]}"
+    i_index = "i_end" if isArpeggio else f"i{positions[1]}"
     I_R = RIGHT_HAND_POSITIONS[i_index]['position'].copy()
     if isAfterPlayed and "i" in usedRightFingers:
         move = RIGHT_HAND_DIRECTIONS[f"I_line"]['direction']
@@ -314,7 +317,7 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
         I_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['I_R'] = I_R
 
-    m_index = f"m{positions[2]}"
+    m_index = "m_end" if isArpeggio else f"m{positions[2]}"
     M_R = RIGHT_HAND_POSITIONS[m_index]['position'].copy()
     if isAfterPlayed and "m" in usedRightFingers:
         move = RIGHT_HAND_DIRECTIONS[f"M_line"]['direction']
@@ -323,7 +326,7 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
         M_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['M_R'] = M_R
 
-    r_index = f"a{positions[3]}"
+    r_index = "a_end" if isArpeggio else f"a{positions[3]}"
     R_R = RIGHT_HAND_POSITIONS[r_index]['position'].copy()
     if isAfterPlayed and "a" in usedRightFingers:
         move = RIGHT_HAND_DIRECTIONS[f"P_line"]['direction']
@@ -332,9 +335,12 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
         R_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['R_R'] = R_R
 
-    p_index = f"ch{positions[3]}"
+    p_index = "ch_end" if isArpeggio else f"ch{positions[3]}"
     P_R = RIGHT_HAND_POSITIONS[p_index]['position']
     result['P_R'] = P_R
+
+    result['TP_R'] = RIGHT_PIVOT_POSITIONS['TP_R']['position']
+    result['HP_R'] = RIGHT_PIVOT_POSITIONS['HP_R']['position']
 
     return result
 
@@ -402,13 +408,20 @@ def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
 def generatePossibleRightHands(
         usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
     possibleRightHands = []
-    for result in finger_string_generator(allFingers, allstrings, usedStrings):
-        rightFingerPositions = sort_fingers(result)
-        usedFingers = get_usedFingers(result, usedStrings)
+    if len(usedStrings) > 3:
+        usedFingers = []
+        rightFingerPositions = [5, 3, 3, 2]
         newRightHand = RightHand(
-            usedFingers, rightFingerPositions)
-        if newRightHand.validateRightHand():
-            possibleRightHands.append(newRightHand)
+            usedFingers, rightFingerPositions, isArpeggio=True)
+        possibleRightHands.append(newRightHand)
+    else:
+        for result in finger_string_generator(allFingers, allstrings, usedStrings):
+            rightFingerPositions = sort_fingers(result)
+            usedFingers = get_usedFingers(result, usedStrings)
+            newRightHand = RightHand(
+                usedFingers, rightFingerPositions)
+            if newRightHand.validateRightHand():
+                possibleRightHands.append(newRightHand)
 
     return possibleRightHands
 
