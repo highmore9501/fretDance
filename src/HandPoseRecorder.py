@@ -63,43 +63,6 @@ class HandPoseRecorder():
             json.dump(handsDict, f)
 
 
-class HandPoseRecordPool():
-    """
-    a pool including hand pose recorders. 包含手势记录器的池子
-    :param size: size of the pool. 池子的大小
-    """
-
-    def __init__(self, size: int = 10) -> None:
-        self.curHandPoseRecordPool = []
-        self.preHandPoseRecordPool = []
-        self.size = size
-
-    def readyForRecord(self) -> None:
-        self.preHandPoseRecordPool = copy.deepcopy(self.curHandPoseRecordPool)
-        self.curHandPoseRecordPool = []
-
-    def append(self, handPoseRecorder: HandPoseRecorder) -> None:
-        current_size = len(self.curHandPoseRecordPool)
-        current_HandPoseRecord_is_largest = current_size > 0 and handPoseRecorder.currentEntropy >= self.curHandPoseRecordPool[
-            -1].currentEntropy
-        # if the pool is full and the entropy of the new handPoseRecorder is greater than the entropy of the last element in the pool, return directly.
-        if current_size == self.size and current_HandPoseRecord_is_largest:
-            return None
-
-        # insert the new handPoseRecorder into the curHandPoseRecordPool at the appropriate position.
-        if current_size == 0 or (current_size < self.size and current_HandPoseRecord_is_largest):
-            self.curHandPoseRecordPool.append(handPoseRecorder)
-        else:
-            for i in range(len(self.curHandPoseRecordPool)):
-                if handPoseRecorder.currentEntropy < self.curHandPoseRecordPool[i].currentEntropy:
-                    self.curHandPoseRecordPool.insert(i, handPoseRecorder)
-                    break
-
-        # if the length of curHandPoseRecordPool is greater than size, pop the last element.
-        if len(self.curHandPoseRecordPool) > self.size:
-            self.curHandPoseRecordPool.pop()
-
-
 class RightHandRecorder():
     def __init__(self) -> None:
         self.handPoseList = []
@@ -145,7 +108,7 @@ class RightHandRecorder():
             self.handPoseList[i].output()
 
 
-class RightHandRecordPool():
+class HandPoseRecordPool():
     """
     a pool including hand pose recorders. 包含手势记录器的池子
     :param size: size of the pool. 池子的大小
@@ -160,23 +123,24 @@ class RightHandRecordPool():
         self.preHandPoseRecordPool = copy.deepcopy(self.curHandPoseRecordPool)
         self.curHandPoseRecordPool = []
 
-    def append(self, handPoseRecorder: RightHandRecorder) -> None:
+    def check_insert_index(self, entropy: float) -> int:
         current_size = len(self.curHandPoseRecordPool)
-        current_HandPoseRecord_is_largest = current_size > 0 and handPoseRecorder.currentEntropy >= self.curHandPoseRecordPool[
+        current_HandPoseRecord_is_largest = current_size > 0 and entropy >= self.curHandPoseRecordPool[
             -1].currentEntropy
-        # if the pool is full and the entropy of the new handPoseRecorder is greater than the entropy of the last element in the pool, return directly.
         if current_size == self.size and current_HandPoseRecord_is_largest:
-            return None
+            return -1
 
-        # insert the new handPoseRecorder into the curHandPoseRecordPool at the appropriate position.
         if current_size == 0 or (current_size < self.size and current_HandPoseRecord_is_largest):
-            self.curHandPoseRecordPool.append(handPoseRecorder)
-        else:
-            for i in range(len(self.curHandPoseRecordPool)):
-                if handPoseRecorder.currentEntropy < self.curHandPoseRecordPool[i].currentEntropy:
-                    self.curHandPoseRecordPool.insert(i, handPoseRecorder)
-                    break
+            return current_size
 
-        # if the length of curHandPoseRecordPool is greater than size, pop the last element.
+        for i in range(current_size):
+            if entropy < self.curHandPoseRecordPool[i].currentEntropy:
+                return i
+
+    def insert_new_hand_pose_recorder(self, newHandPoseRecorder, index):
+        # 插入新的元素
+        self.curHandPoseRecordPool.insert(index, newHandPoseRecorder)
+
+        # 如果插入后的大小超过了 self.size，移除最后一个元素
         if len(self.curHandPoseRecordPool) > self.size:
             self.curHandPoseRecordPool.pop()

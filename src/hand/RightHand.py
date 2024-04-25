@@ -24,23 +24,33 @@ class RightHand():
         self.afterPlayed()
         self.isArpeggio = isArpeggio
 
-    def caculateHandPosition(self) -> int:
+    def caculateHandPosition(self, rightFingerPositions=None) -> int:
+        if rightFingerPositions == None:
+            rightFingerPositions = self.rightFingerPositions
+
         results = [2, 1, 0, 3]
         for hand_position in results:
             for finger in ['p', 'i', 'm', 'a']:
                 min_pos, max_pos = handPositionToFingerPositions[hand_position][finger]
-                if not min_pos <= self.rightFingerPositions[rightFingers[finger]] <= max_pos:
+                if not min_pos <= rightFingerPositions[rightFingers[finger]] <= max_pos:
                     break
             else:
                 return hand_position
         return -1  # 返回-1表示没有找到满足条件的hand_position
 
-    def validateRightHand(self) -> bool:
+    def validateRightHand(self, usedFingers=None, rightFingerPositions=None) -> bool:
+        if rightFingerPositions == None:
+            rightFingerPositions = self.rightFingerPositions
+        if usedFingers == None:
+            usedFingers = self.usedFingers
+
         usedString = []
-        if self.rightHandPosition == -1:
+        rightHandPosition = self.caculateHandPosition(rightFingerPositions)
+
+        if rightHandPosition == -1:
             return False
-        for finger in self.usedFingers:
-            usedString.append(self.rightFingerPositions[rightFingers[finger]])
+        for finger in usedFingers:
+            usedString.append(rightFingerPositions[rightFingers[finger]])
             # 检测是否有pima以外的手指
             if finger not in rightFingers:
                 return False
@@ -51,7 +61,7 @@ class RightHand():
 
         for i in range(3):
             # 检测手指的位置是否从左到右递减
-            if self.rightFingerPositions[i] < self.rightFingerPositions[i+1]:
+            if rightFingerPositions[i] < rightFingerPositions[i+1]:
                 return False
 
         return True

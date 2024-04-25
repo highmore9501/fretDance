@@ -138,14 +138,17 @@ class LeftHand():
         print(f'把位：{self.handPosition}')
         print("-------------------------------")
 
-    def verifyValid(self) -> bool:
+    def verifyValid(self, all_fingers=None) -> bool:
         """
         verify if the hand is valid. 验证手型是否合法
         """
-        if len(self.fingers) == 0:
+        if all_fingers == None:
+            all_fingers = self.fingers
+
+        if len(all_fingers) == 0:
             return False
 
-        sortedFingers = sorted(self.fingers, key=lambda x: x._fingerIndex)
+        sortedFingers = sorted(all_fingers, key=lambda x: x._fingerIndex)
         # 如果在低把位，不能出现小拇指或者无名指延展两个品格的情况
         if self.handPosition < 10 and (sortedFingers[-1].fret - sortedFingers[-2].fret > 1 or sortedFingers[-2].fret - sortedFingers[-3].fret > 1):
             return False
@@ -264,17 +267,16 @@ class LeftHand():
 
         all_fingers = pressed_fingers + empty_fingers + open_fingers
 
-        newHand = LeftHand(all_fingers, self.getMaxFingerDistance)
-
-        if not newHand.verifyValid():
+        if not self.verifyValid(all_fingers):
             return None, None
 
-        diff = self.caculateDiff(newHand, pressed_finger_indexs, guitar)
-        return newHand, diff
+        diff = self.caculateDiff(
+            all_fingers, newHandPosition, pressed_finger_indexs, guitar)
+        return all_fingers, diff
 
-    def caculateDiff(self, newHand: 'LeftHand', pressed_finger_indexs: List[int], guitar: Guitar) -> float:
+    def caculateDiff(self, all_fingers, newHandPosition,  pressed_finger_indexs: List[int], guitar: Guitar) -> float:
         entropy = 0
-        hand_position_diff = abs(self.handPosition - newHand.handPosition)
+        hand_position_diff = abs(self.handPosition - newHandPosition)
         # 如果要换把，首先要抬指
         if hand_position_diff > 0:
             for finger in self.fingers:
@@ -286,7 +288,7 @@ class LeftHand():
             old_finger = next(
                 (finger for finger in self.fingers if finger._fingerIndex == index), None)
             new_finger = next(
-                (finger for finger in newHand.fingers if finger._fingerIndex == index), None)
+                (finger for finger in all_fingers if finger._fingerIndex == index), None)
 
             if old_finger is not None and new_finger is not None:
                 entropy += old_finger.distanceTo(guitar, new_finger)
