@@ -107,6 +107,7 @@ def animatedLeftHand(item: object, normal: array):
             min_press_fingerIndex = fingerIndex
             barre = max(fret - fingerIndex+1, 1)
 
+        # 不按弦的手指会稍微移动，以避免和按弦的手指挤在一起
         if press == PRESSSTATE['Open']:
             if stringIndex > 2:
                 stringIndex -= 0.5
@@ -114,7 +115,7 @@ def animatedLeftHand(item: object, normal: array):
                 stringIndex += 0.5
 
         # 如果手指有横按的情况，并且遍历到的stringIndex比之前计算过的要大，那么需要重新计算手指的位置
-        need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and press > 1
+        need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and 5 > press > 1
 
         if press < 2 or need_recaculate:
             finger_position = twiceLerpFingers(fret, stringIndex)

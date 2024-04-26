@@ -30,7 +30,7 @@ class LeftHand():
 
     def reArrangeFingers(self) -> None:
         """
-        rearrange the fingers. 重新排列手指
+        rearrange the fingers. 将所有fret为0的手指设置为抬起，并重新计算它所在的fret
         """
         for finger in self.fingers:
             if finger._fingerIndex != 0 and finger.fret == 0:
@@ -230,6 +230,7 @@ class LeftHand():
         # 生成按弦手指
         pressed_fingers = []
         pressed_finger_indexs = []
+        pressed_string_indexs = []
         for fingerPosition in fingerPositions:
             finger_index = fingerPosition.get('finger', -1)
             if finger_index == -1:
@@ -245,10 +246,13 @@ class LeftHand():
                 press_state = "Partial_barre_3_strings"
             else:
                 return None, None
+
+            string_index = fingerPosition['index']
             pressed_finger = LeftFinger(
-                finger_index, guitar.guitarStrings[fingerPosition['index']], fingerPosition['fret'], press_state)
+                finger_index, guitar.guitarStrings[string_index], fingerPosition['fret'], press_state)
             pressed_fingers.append(pressed_finger)
             pressed_finger_indexs.append(finger_index)
+            pressed_string_indexs.append(string_index)
 
         # 下面计算当前的把位，就是食指应该在的品格
         newHandPosition -= (minFingerIndex - 1)
@@ -256,13 +260,28 @@ class LeftHand():
             newHandPosition = 1
 
         open_fingers = []
+
+        # 筛选出所有可能的保留指
+        current_used_finger_indexs = [
+            finger._fingerIndex for finger in self.fingers if (finger.press > 0 and finger.stringIndex not in pressed_string_indexs)] if newHandPosition == self.handPosition else []
+
         # 寻找并生成未按弦的手指
         for finger_index in range(1, 5):
             if finger_index not in pressed_finger_indexs:
-                defalut_string = guitar.guitarStrings[2]
-                defalut_fret = newHandPosition + finger_index - 1
+                if finger_index not in current_used_finger_indexs:
+                    defalut_string = guitar.guitarStrings[2]
+                    defalut_fret = newHandPosition + finger_index - 1
+                    press_state = "Open"
+                else:
+                    same_finger = [
+                        finger for finger in self.fingers if finger._fingerIndex == finger_index][0]
+                    defalut_string = guitar.guitarStrings[same_finger.stringIndex]
+                    defalut_fret = same_finger.fret
+                    press_state = "Keep"
+
                 open_finger = LeftFinger(
-                    finger_index, defalut_string, defalut_fret, "Open")
+                    finger_index, defalut_string, defalut_fret, press_state)
+
                 open_fingers.append(open_finger)
 
         all_fingers = pressed_fingers + empty_fingers + open_fingers

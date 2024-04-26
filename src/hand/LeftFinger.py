@@ -10,7 +10,8 @@ PRESSSTATE: dict = {
     "Pressed": 1,
     "Barre": 2,
     "Partial_barre_2_strings": 3,
-    "Partial_barre_3_strings": 4
+    "Partial_barre_3_strings": 4,
+    "Keep": 5
 }
 
 FINGERS: dict = {
@@ -62,7 +63,7 @@ class LeftFinger:
         """
         currentGuitarNotes = []
 
-        if self.press == PRESSSTATE["Pressed"]:
+        if self.press == PRESSSTATE["Pressed"] or self.press == PRESSSTATE['Keep']:
             currentGuitarNotes.append(GuitarNote(guitarString, self.fret))
         elif self.press == PRESSSTATE["Barre"]:
             for guitarString in guitarStrings:
