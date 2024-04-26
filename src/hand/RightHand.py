@@ -21,8 +21,8 @@ class RightHand():
         self.rightFingerPositions = rightFingerPositions
         # 手掌的位置由右手中指的位置来决定
         self.rightHandPosition = self.caculateHandPosition()
-        self.afterPlayed()
         self.isArpeggio = isArpeggio
+        self.afterPlayed()
 
     def caculateHandPosition(self, rightFingerPositions=None) -> int:
         if rightFingerPositions == None:
@@ -67,22 +67,26 @@ class RightHand():
         return True
 
     def caculateDiff(self, otherRightHand: "RightHand") -> int:
-        # 每只手在转化到下一个手型时，必须先将ima手指归位
         diff = 0
+        # 计算手指改变所在弦位置的情况，每有移动一根弦距就加1单位的diff
         for i in range(4):
-            diff += abs(self.afterPlayedRightFingerPositions[i] -
+            diff += abs(self.rightFingerPositions[i] -
                         otherRightHand.rightFingerPositions[i])
+
         # 检测两只手的usedFingers相同的元素个数有多少
         common_elements = set(self.usedFingers).intersection(
             set(otherRightHand.usedFingers))
         same_finger_count = len(common_elements)
 
+        # 检测重复使用的手指中有没有P指
+        if 0 in common_elements:
+            diff += 1
+            same_finger_count -= 1
+
+        # 其它重复使用的手指按3单位diff来算，也就是不鼓励除P指以外的手指重复使用
         diff += 3 * same_finger_count
 
-        hand_diff = abs(self.rightHandPosition -
-                        otherRightHand.rightHandPosition)
-        diff += hand_diff
-
+        # 不考虑手掌移动，因为手掌是由身体来带动的，它的移动比手指移动要来得轻松
         return diff
 
     def afterPlayed(self):
