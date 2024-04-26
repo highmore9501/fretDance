@@ -4,8 +4,6 @@ Convert the original MIDI file into a guitar tablature fingering arrangement tha
 
 Demo video in BiliBili: [https://www.bilibili.com/video/BV14F4m1A7xX/](https://www.bilibili.com/video/BV14F4m1A7xX/)
 
-<iframe src="//player.bilibili.com/player.html?bvid=BV14F4m1A7xX&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
-
 ### How to run
 
 - Install a virtual environment and run `python -m venv .venv`
