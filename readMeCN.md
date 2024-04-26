@@ -2,6 +2,8 @@
 
 将原始的 midi 文件，转化成吉它曲谱的指法编排，使得双手的移动轨迹最小化。并且最终在 blender 中呈现演奏动画。
 
+BiliBili 成品视频：[https://www.bilibili.com/video/BV14F4m1A7xX/](https://www.bilibili.com/video/BV14F4m1A7xX/)
+
 ### 运行方法
 
 - 安装虚拟环境，运行 `python -m venv .venv`

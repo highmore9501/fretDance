@@ -2,6 +2,8 @@
 
 Convert the original MIDI file into a guitar tablature fingering arrangement that minimizes the movement trajectories of both hands. Ultimately, present the performance animation in Blender.
 
+Demo video in BiliBili: [https://www.bilibili.com/video/BV14F4m1A7xX/](https://www.bilibili.com/video/BV14F4m1A7xX/)
+
 ### How to run
 
 - Install a virtual environment and run `python -m venv .venv`
