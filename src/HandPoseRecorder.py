@@ -12,8 +12,8 @@ class HandPoseRecorder():
     def __init__(self) -> None:
         self.handPoseList = []
         self.currentEntropy = 0.0
-        self.entropys = [0.0]
-        self.real_ticks = [0.0]
+        self.entropys = []
+        self.real_ticks = []
 
     def addHandPose(self, handPose: LeftHand, entropy: float, real_tick: float) -> None:
         self.handPoseList.append(handPose)
@@ -67,8 +67,8 @@ class RightHandRecorder():
     def __init__(self) -> None:
         self.handPoseList = []
         self.currentEntropy = 0
-        self.entropys = [0]
-        self.real_ticks = [0.0]
+        self.entropys = []
+        self.real_ticks = []
 
     def addHandPose(self, handPose: RightHand, entropy: int, real_tick: float) -> None:
         self.handPoseList.append(handPose)
