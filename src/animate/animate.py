@@ -66,39 +66,40 @@ def animatedLeftHand(item: object, normal: array):
     max_finger_string_index = 0
     index_finger_string_number = 0
 
-    # 先遍历当前所有手指，找到第一指和第二指所在的弦位置
-    index_finger_string_number = 0
+    # 用于计算第一指和第二指所在位置的变量
     index_finger_fret_number = 0
-    middle_finger_string_number = 0
     middle_finger_fret_number = 0
-    for data in leftHand:
-        fingerIndex = data["fingerIndex"]
-        if fingerIndex == 1:
-            index_finger_string_number = data["fingerInfo"]["stringIndex"]
-            index_finger_fret_number = data["fingerInfo"]["fret"]
-        if fingerIndex == 2:
-            middle_finger_string_number = data["fingerInfo"]["stringIndex"]
-            middle_finger_fret_number = data["fingerInfo"]["fret"]
-    # 判断当前应该使用哪种手型来计算
-    hand_state = None
-    if index_finger_fret_number == middle_finger_fret_number and index_finger_fret_number != 0:
-        if index_finger_string_number < middle_finger_string_number:
-            hand_state = "INNER"
-        else:
-            hand_state = "OUTER"
-    else:
-        hand_state = "NORMAL"
+
+    finger_string_numbers = {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+    }
 
     for data in leftHand:
-        min_press_fingerIndex = 4
         fingerIndex = data["fingerIndex"]
-        # skip open string. 空弦音跳过
-        if fingerIndex == -1:
-            continue
         stringIndex = data["fingerInfo"]["stringIndex"]
         fret = data["fingerInfo"]["fret"]
         press = data["fingerInfo"]["press"]
 
+        # 统计12指的实际位置，方便后面判断使用什么手型大类
+        if fingerIndex == 1:
+            index_finger_fret_number = fret
+            # 如果一指没有横按，可以直接确定它所在的弦
+            if press != 2:
+                finger_string_numbers[1] = stringIndex
+
+        if fingerIndex == 2:
+            finger_string_numbers[2] = stringIndex
+            middle_finger_fret_number = fret
+
+        min_press_fingerIndex = 4
+        # skip open string. 空弦音跳过
+        if fingerIndex == -1:
+            continue
+
+        # 计算最大的弦数，方便后面计算手的位置
         max_finger_string_index = max(max_finger_string_index, stringIndex)
 
         # 这里是计算当前手型的把位
@@ -112,7 +113,16 @@ def animatedLeftHand(item: object, normal: array):
             else:
                 stringIndex += 0.5
 
-        finger_position = twiceLerpFingers(fret, stringIndex)
+        # 如果手指有横按的情况，并且遍历到的stringIndex比之前计算过的要大，那么需要重新计算手指的位置
+        need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and press > 1
+
+        if press < 2 or need_recaculate:
+            finger_position = twiceLerpFingers(fret, stringIndex)
+        else:
+            continue
+
+        if need_recaculate:
+            finger_string_numbers[fingerIndex] = stringIndex
 
         # 如果手指没有按下，那么手指位置会稍微上移
         if press == PRESSSTATE['Open']:
@@ -128,6 +138,16 @@ def animatedLeftHand(item: object, normal: array):
             position_value_name = "P_L"
 
         fingerInfos[position_value_name] = finger_position.tolist()
+
+    # 判断当前应该使用哪种手型来计算
+    hand_state = None
+    if index_finger_fret_number == middle_finger_fret_number and index_finger_fret_number != 0:
+        if index_finger_string_number < finger_string_numbers[2]:
+            hand_state = "INNER"
+        else:
+            hand_state = "OUTER"
+    else:
+        hand_state = "NORMAL"
 
     hand_position = twiceLerp(
         hand_state=hand_state,
