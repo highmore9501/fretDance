@@ -4,6 +4,8 @@
 
 BiliBili 成品视频：[https://www.bilibili.com/video/BV14F4m1A7xX/](https://www.bilibili.com/video/BV14F4m1A7xX/)
 
+<iframe src="//player.bilibili.com/player.html?bvid=BV14F4m1A7xX&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
 ### 运行方法
 
 - 安装虚拟环境，运行 `python -m venv .venv`
