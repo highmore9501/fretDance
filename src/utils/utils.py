@@ -408,6 +408,11 @@ def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
 def generatePossibleRightHands(
         usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
     possibleRightHands = []
+    # 如果usedString内有重复元素
+    if len(usedStrings) != len(set(usedStrings)):
+        print(f"{usedStrings}内有重复元素")
+    # usedStrings元素去重
+    usedStrings = list(set(usedStrings))
     if len(usedStrings) > 3:
         usedFingers = []
         rightFingerPositions = [5, 3, 3, 2]
