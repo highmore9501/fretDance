@@ -148,6 +148,10 @@ class LeftHand():
         if len(all_fingers) == 0:
             return False
 
+        for finger in all_fingers:
+            if finger.fret > 21:
+                return False
+
         sortedFingers = sorted(all_fingers, key=lambda x: x._fingerIndex)
         # 如果在低把位，不能出现小拇指或者无名指延展两个品格的情况
         if self.handPosition < 10 and (sortedFingers[-1].fret - sortedFingers[-2].fret > 1 or sortedFingers[-2].fret - sortedFingers[-3].fret > 1):

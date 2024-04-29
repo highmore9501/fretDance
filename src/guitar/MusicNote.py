@@ -15,11 +15,10 @@ class MusicNote:
         from src.utils.utils import getCurrentKeynotes
         if hasattr(self, 'key'):
             return self.key
-        octave = self.num // 12
-        keynote = self.num % 12
+        octave = (self.num-45) // 12
         currentKeynotes = getCurrentKeynotes(octave)
         for key, value in currentKeynotes.items():
-            if value == keynote:
+            if value == self.num:
                 return key
 
     def add(self, num: int) -> 'MusicNote':

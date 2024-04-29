@@ -39,7 +39,7 @@ def getCurrentKeynotes(octave: int) -> dict:
             newkey = (key[0] + str(octave) + key[1:]).lower()
         else:
             newkey = key[0] + str(octave) + key[1:]
-        current_keynotes[newkey] = value
+        current_keynotes[newkey] = value + 12 * octave
     return current_keynotes
 
 
@@ -90,7 +90,7 @@ def convertNotesToChord(notes: List[int], guitar: Guitar) -> List[Dict[str, int]
             if fret is False:
                 continue
             # 低音弦的超高把位是无法按的
-            if guitarStringIndex > 2 and fret > 12:
+            if guitarStringIndex > 2 and fret > 16:
                 continue
             # 如果当前音符在当前弦上有位置，那么记录下来
             possiblePositions.append({
