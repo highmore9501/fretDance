@@ -105,7 +105,7 @@ def animatedLeftHand(item: object, normal: array):
         # 这里是计算当前手型的把位
         if fingerIndex < min_press_fingerIndex:
             min_press_fingerIndex = fingerIndex
-            barre = max(fret - fingerIndex+1, 1)
+            barre = max(fret - fingerIndex, 0)
 
         # 不按弦的手指会稍微移动，以避免和按弦的手指挤在一起
         if press == PRESSSTATE['Open']:
