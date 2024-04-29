@@ -117,7 +117,7 @@ def animatedLeftHand(item: object, normal: array):
         # 如果手指有横按的情况，并且遍历到的stringIndex比之前计算过的要大，那么需要重新计算手指的位置
         need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and 5 > press > 1
 
-        if press < 2 or need_recaculate:
+        if press < 2 or press == 5 or need_recaculate:
             finger_position = twiceLerpFingers(fret, stringIndex)
         else:
             continue
@@ -229,17 +229,14 @@ def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, tick
 
             data_for_animation.append({
                 "frame": frame,
-                "fingerInfos": copy.deepcopy(ready),
+                "fingerInfos": ready,
             })
 
             elapsed_frame = 3 if usedFingers == [] else 1
             data_for_animation.append({
                 "frame": frame + elapsed_frame,
-                "fingerInfos": copy.deepcopy(played),
+                "fingerInfos": played,
             })
-
-            ready = None
-            played = None
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)

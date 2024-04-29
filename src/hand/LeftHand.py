@@ -209,6 +209,8 @@ class LeftHand():
         finger_touch_string_counter = {}
         newHandPosition = 0
         minFingerIndex = 4
+        # 最小空弦音的弦的索引，用于判断食指是横按还是普通按
+        min_empty_stringIndex = 5
         for fingerPosition in fingerPositions:
             fret = fingerPosition['fret']
             finger_index = fingerPosition.get('finger', -1)
@@ -221,6 +223,8 @@ class LeftHand():
                 empty_finger = LeftFinger(
                     -1, guitar.guitarStrings[fingerPosition['index']], 0, "Open")
                 empty_fingers.append(empty_finger)
+                if min_empty_stringIndex > fingerPosition['index']:
+                    min_empty_stringIndex = fingerPosition['index']
             # 统计按弦手指的触弦总数
             else:
                 if finger_index not in finger_touch_string_counter:
@@ -231,15 +235,25 @@ class LeftHand():
         pressed_fingers = []
         pressed_finger_indexs = []
         pressed_string_indexs = []
+        current_index_finger_fret = next(
+            (finger.fret for finger in self.fingers if finger._fingerIndex == 1), 0)
         for fingerPosition in fingerPositions:
             finger_index = fingerPosition.get('finger', -1)
+            fret = fingerPosition['fret']
+            string_index = fingerPosition['index']
+
             if finger_index == -1:
                 continue
+
             touch_count = finger_touch_string_counter[finger_index]
-            if touch_count == 1:
-                press_state = "Pressed"
-            elif touch_count > 1 and finger_index == 1:
+            could_barre = fret == current_index_finger_fret and finger_index == 1 and string_index < min_empty_stringIndex
+            need_barre = touch_count > 1 and finger_index == 1
+            # 先判断是否横按，并重新计算手指的位置
+            if could_barre or need_barre:
                 press_state = "Barre"
+                string_index = min_empty_stringIndex - 1
+            elif touch_count == 1:
+                press_state = "Pressed"
             elif touch_count == 2 and finger_index == 4:
                 press_state = "Partial_barre_2_strings"
             elif touch_count == 3 and finger_index == 4:
@@ -247,12 +261,14 @@ class LeftHand():
             else:
                 return None, None
 
-            string_index = fingerPosition['index']
-            pressed_finger = LeftFinger(
-                finger_index, guitar.guitarStrings[string_index], fingerPosition['fret'], press_state)
-            pressed_fingers.append(pressed_finger)
-            pressed_finger_indexs.append(finger_index)
-            pressed_string_indexs.append(string_index)
+            # 加这个判断是为了避免横按的手指被重复生成，因为横按的手指在传进来的数据中，会表现成同品但不同弦的多个位置，所以会跑两次循环
+            # 虽然每次循环的结果，最终都是一样的，但如果不加判断，会导致两个完全一样的手指信息被传递到下一个环节中
+            if finger_index not in pressed_finger_indexs:
+                pressed_finger = LeftFinger(
+                    finger_index, guitar.guitarStrings[string_index], fingerPosition['fret'], press_state)
+                pressed_fingers.append(pressed_finger)
+                pressed_finger_indexs.append(finger_index)
+                pressed_string_indexs.append(string_index)
 
         # 下面计算当前的把位，就是食指应该在的品格
         newHandPosition -= (minFingerIndex - 1)
@@ -304,15 +320,18 @@ class LeftHand():
 
         # 计算每一个手指的位移
         for index in range(1, 5):
+            distance = None
             old_finger = next(
                 (finger for finger in self.fingers if finger._fingerIndex == index), None)
             new_finger = next(
                 (finger for finger in all_fingers if finger._fingerIndex == index), None)
 
             if old_finger is not None and new_finger is not None:
-                entropy += old_finger.distanceTo(guitar, new_finger)
+                distance = old_finger.distanceTo(guitar, new_finger)
+                entropy += distance
 
-        # 计算按下手指的熵
-        entropy += len(pressed_finger_indexs) * self.fingerDistanceTofretboard
+            # 计算按下手指的熵
+            if distance is not None and new_finger.press != PRESSSTATE["Open"]:
+                entropy += self.fingerDistanceTofretboard
 
         return entropy

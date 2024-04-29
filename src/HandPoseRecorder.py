@@ -120,7 +120,7 @@ class HandPoseRecordPool():
         self.size = size
 
     def readyForRecord(self) -> None:
-        self.preHandPoseRecordPool = copy.deepcopy(self.curHandPoseRecordPool)
+        self.preHandPoseRecordPool = self.curHandPoseRecordPool[:]
         self.curHandPoseRecordPool = []
 
     def check_insert_index(self, entropy: float) -> int:
