@@ -1,6 +1,8 @@
 # 一些在blender里跑的工具脚本
 import bpy
 import mathutils
+from blenderRecords import *
+from typing import Literal
 
 
 def clone_deform_bones():
@@ -123,10 +125,11 @@ def export_controller_info(isLeftHand: bool = True):
     collections = ['PositionControllers',
                    'RotationControllers', 'PivotControllers', 'RightFingerVector']
 
-    ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
-                      "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
-
     armature = "Kamisato IK_arm"
+    base_bone_name = "cf_s_spine03"
+    base_bone = bpy.data.objects[armature].pose.bones[base_bone_name]
+    base_bone_matrix = base_bone.matrix
+    invert_base_bone_matrix = base_bone_matrix.inverted()
 
     result = {}
 
@@ -139,74 +142,51 @@ def export_controller_info(isLeftHand: bool = True):
                     if collection != "RotationControllers" and collection != 'RightFingerVector':
                         # 位置控制器
                         obj_info = obj.location
-                        result[obj_name] = {
-                            "position": [obj_info.x, obj_info.y, obj_info.z],
-                        }
+                        obj_info = invert_base_bone_matrix @ obj_info
+                        result[obj_name] = [obj_info.x, obj_info.y, obj_info.z]
                     else:
                         # 旋转控制器
                         obj_info = obj.rotation_euler
-                        result[obj_name] = {
-                            "rotation": [obj_info.x, obj_info.y, obj_info.z],
-                        }
+                        obj_info = invert_base_bone_matrix @ obj_info
+                        result[obj_name] = [obj_info.x, obj_info.y, obj_info.z]
                 except:
                     pass
-
-    # 选中armature
-    bpy.context.view_layer.objects.active = bpy.data.objects[armature]
-    # 切换到pose mode
-    bpy.ops.object.mode_set(mode='POSE')
-    # 遍历所有骨骼
-    for bone in bpy.context.object.pose.bones:
-        bone_name = bone.name
-        if bone_name in ik_pivot_bones:
-            bone_info = bone.location
-            result[bone_name] = {
-                "position": [bone_info.x, bone_info.y, bone_info.z],
-            }
-    # 切换到object mode
-    bpy.ops.object.mode_set(mode='OBJECT')
 
     print(result)
 
 
-def import_controller_info(data):
-    collections = ['PositionControllers',
-                   'RotationControllers', 'PivotControllers', 'RightFingerVector']
-
-    ik_pivot_bones = ["Pinky_IK_pivot_L", "IndexFinger_IK_pivot_L",
-                      "Ring_IK_pivot_L", "MiddleFinger_IK_pivot_L", "Thumb_IK_pivot_L"]
+def import_controller_info(position_name: str, status_name: Literal["normal", "outer", "inner"]):
+    collections = ['FingerPositionControllers',
+                   'RotationControllers', 'HandPositionControllers']
 
     armature = "Kamisato IK_arm"
+    base_bone_name = "cf_s_spine03"
+
+    base_bone = bpy.data.objects[armature].pose.bones[base_bone_name]
+    base_bone_matrix = base_bone.matrix
+
+    hand_position_dict = NORMAL_LEFT_HAND_POSITIONS if status_name == "normal" else (
+        OUTER_LEFT_HAND_POSITIONS if status_name == "outer" else INNER_LEFT_HAND_POSITIONS)
+    hand_rotation_dict = NORMAL_LEFT_HAND_ROTATIONS if status_name == "normal" else (
+        OUTER_LEFT_HAND_ROTATIONS if status_name == "outer" else INNER_LEFT_HAND_ROTATIONS)
 
     for collection in collections:
         for obj in bpy.data.collections[collection].objects:
             obj_name = obj.name
+            if obj_name.endswith("_R"):
+                continue
             try:
-                if collection != "RotationControllers" and collection != "RightFingerVector":
-                    # 位置控制器
-                    obj.location = data[obj_name]["position"]
-                else:
-                    # 旋转控制器
-                    obj.rotation_euler = data[obj_name]["rotation"]
+                if collection == "PositionControllers" and not (obj_name.startswith("T") or obj_name.startswith("P")):
+                    obj.location = base_bone_matrix @ mathutils.Vector(
+                        LEFT_FINGER_POSITIONS[position_name])
+                elif collection == "PositionControllers":
+                    obj.location = base_bone_matrix @ mathutils.Vector(
+                        hand_position_dict[position_name][obj_name])
+                elif collection == "RotationControllers":
+                    obj.rotation_euler = mathutils.Euler(
+                        hand_rotation_dict[position_name][obj_name])
             except:
                 pass
-
-    # 选中armature
-    bpy.context.view_layer.objects.active = bpy.data.objects[armature]
-    # 切换到pose mode
-    bpy.ops.object.mode_set(mode='POSE')
-    # 遍历所有骨骼
-    for bone in bpy.context.object.pose.bones:
-        bone_name = bone.name
-        if bone_name in ik_pivot_bones:
-            try:
-                bone_info = data[bone_name]
-                bone.location = bone_info["position"]
-            except:
-                pass
-
-    # 切换到object mode
-    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def export_positions(collection: str, armature_name: str, bone_name: str):

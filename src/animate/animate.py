@@ -1,10 +1,11 @@
-import copy
 import json
 from src.midi.midiToNote import calculate_frame
 from numpy import array, linalg, cross, random
-from ..utils.utils import twiceLerp, caculateRightHandFingers, twiceLerpFingers
-from ..blender.blenderRecords import LEFT_FINGER_POSITIONS
+from typing import Dict
+
 from ..hand.LeftFinger import PRESSSTATE
+from ..hand.RightHand import caculateRightHandFingers
+from ..utils.utils import get_position_by_fret
 
 
 def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
@@ -13,7 +14,7 @@ def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_b
     :params animation: the path of the file store information for animation
     :params BPM: the BPM of the music
     :params FPS: the FPS of the animation"""
-
+    from src.blender.blenderRecords import LEFT_FINGER_POSITIONS
     finger_position_p0 = array(LEFT_FINGER_POSITIONS["P0"])
     finger_position_p1 = array(LEFT_FINGER_POSITIONS["P1"])
     finger_position_p2 = array(LEFT_FINGER_POSITIONS["P2"])
@@ -62,14 +63,11 @@ def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_b
 def animatedLeftHand(item: object, normal: array):
     leftHand = item["leftHand"]
     fingerInfos = {}
-    barre = 1
+    hand_fret = 1
     max_finger_string_index = 0
     index_finger_string_number = 0
 
-    # 用于计算第一指和第二指所在位置的变量
-    index_finger_fret_number = 0
-    middle_finger_fret_number = 0
-
+    # 用于统计每个手指都在哪根弦上的dict
     finger_string_numbers = {
         1: 0,
         2: 0,
@@ -83,17 +81,6 @@ def animatedLeftHand(item: object, normal: array):
         fret = data["fingerInfo"]["fret"]
         press = data["fingerInfo"]["press"]
 
-        # 统计12指的实际位置，方便后面判断使用什么手型大类
-        if fingerIndex == 1:
-            index_finger_fret_number = fret
-            # 如果一指没有横按，可以直接确定它所在的弦
-            if press != 2:
-                finger_string_numbers[1] = stringIndex
-
-        if fingerIndex == 2:
-            finger_string_numbers[2] = stringIndex
-            middle_finger_fret_number = fret
-
         min_press_fingerIndex = 4
         # skip open string. 空弦音跳过
         if fingerIndex == -1:
@@ -105,7 +92,7 @@ def animatedLeftHand(item: object, normal: array):
         # 这里是计算当前手型的把位
         if fingerIndex < min_press_fingerIndex:
             min_press_fingerIndex = fingerIndex
-            barre = max(fret - fingerIndex, 0)
+            hand_fret = max(fret - fingerIndex + 1, 1)
 
         # 不按弦的手指会稍微移动，以避免和按弦的手指挤在一起
         if press == PRESSSTATE['Open']:
@@ -118,12 +105,10 @@ def animatedLeftHand(item: object, normal: array):
         need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and 5 > press > 1
 
         if press < 2 or press == 5 or need_recaculate:
+            finger_string_numbers[fingerIndex] = stringIndex
             finger_position = twiceLerpFingers(fret, stringIndex)
         else:
             continue
-
-        if need_recaculate:
-            finger_string_numbers[fingerIndex] = stringIndex
 
         # 如果手指没有按下，那么手指位置会稍微上移
         if press == PRESSSTATE['Open']:
@@ -141,20 +126,16 @@ def animatedLeftHand(item: object, normal: array):
         fingerInfos[position_value_name] = finger_position.tolist()
 
     # 判断当前应该使用哪种手型来计算
-    hand_state = None
-    if index_finger_fret_number == middle_finger_fret_number and index_finger_fret_number != 0:
-        if index_finger_string_number < finger_string_numbers[2]:
-            hand_state = "INNER"
-        else:
-            hand_state = "OUTER"
-    else:
-        hand_state = "NORMAL"
+    index_finger_string_number = finger_string_numbers[1]
+    differences = [
+        string - index_finger_string_number for string in finger_string_numbers.values()]
+    hand_state = max(differences, key=abs)
 
     hand_position = twiceLerp(
         hand_state=hand_state,
         value="H_L",
         valueType="position",
-        fret=barre,
+        fret=hand_fret,
         stringIndex=max_finger_string_index)
 
     # 来一个随机大小为0.0005的随机移动
@@ -167,7 +148,7 @@ def animatedLeftHand(item: object, normal: array):
         hand_state=hand_state,
         value="HP_L",
         valueType="position",
-        fret=barre,
+        fret=hand_fret,
         stringIndex=index_finger_string_number)
     fingerInfos["HP_L"] = hand_IK_pivot_position.tolist()
 
@@ -175,7 +156,7 @@ def animatedLeftHand(item: object, normal: array):
         hand_state=hand_state,
         value="H_rotation_Y_L",
         valueType="rotation",
-        fret=barre,
+        fret=hand_fret,
         stringIndex=index_finger_string_number)
     fingerInfos["H_rotation_Y_L"] = hand_rotation_y.tolist()
 
@@ -183,7 +164,7 @@ def animatedLeftHand(item: object, normal: array):
         hand_state=hand_state,
         value="H_rotation_X_L",
         valueType="rotation",
-        fret=barre,
+        fret=hand_fret,
         stringIndex=index_finger_string_number)
     fingerInfos["H_rotation_X_L"] = hand_rotation_x.tolist()
 
@@ -191,7 +172,7 @@ def animatedLeftHand(item: object, normal: array):
         hand_state=hand_state,
         value="T_L",
         valueType="position",
-        fret=barre,
+        fret=hand_fret,
         stringIndex=index_finger_string_number)
     fingerInfos["T_L"] = thumb_position.tolist()
 
@@ -199,7 +180,7 @@ def animatedLeftHand(item: object, normal: array):
         hand_state=hand_state,
         value="TP_L",
         valueType="position",
-        fret=barre,
+        fret=hand_fret,
         stringIndex=index_finger_string_number)
     fingerInfos["TP_L"] = thumb_IK_pivot_position.tolist()
 
@@ -240,3 +221,72 @@ def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, tick
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
+
+
+def twiceLerpFingers(fret: int, stringIndex: int) -> Dict:
+    from ..blender.blenderRecords import LEFT_FINGER_POSITIONS
+    p0 = array(LEFT_FINGER_POSITIONS["P0"])
+    p1 = array(LEFT_FINGER_POSITIONS["P1"])
+    p2 = array(LEFT_FINGER_POSITIONS["P2"])
+    p3 = array(LEFT_FINGER_POSITIONS["P3"])
+
+    p_fret_0 = get_position_by_fret(fret, p0, p2)
+    p_fret_1 = get_position_by_fret(fret, p1, p3)
+
+    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+
+    return p_final
+
+
+def twiceLerp(hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
+    data_dict = None
+    from ..blender.blenderRecords import OUTER_LEFT_HAND_POSITIONS, INNER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_POSITIONS, OUTER_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_ROTATIONS, NORMAL_LEFT_HAND_ROTATIONS
+
+    if valueType == "position":
+        data_dict = NORMAL_LEFT_HAND_POSITIONS
+    elif valueType == "rotation":
+        data_dict = NORMAL_LEFT_HAND_ROTATIONS
+    else:
+        print("valueType error")
+
+    p0 = array(data_dict["P0"][value])
+    p1 = array(data_dict["P1"][value])
+    p2 = array(data_dict["P2"][value])
+    p3 = array(data_dict["P3"][value])
+
+    if hand_state == 0:
+        p_fret_0 = get_position_by_fret(fret, p0, p2)
+        p_fret_1 = get_position_by_fret(fret, p1, p3)
+        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+    elif hand_state > 0:
+        if valueType == "position":
+            outer_data_dict = OUTER_LEFT_HAND_POSITIONS
+        else:
+            outer_data_dict = OUTER_LEFT_HAND_ROTATIONS
+
+        out_p0 = array(outer_data_dict["P0"][value])
+        out_p2 = array(outer_data_dict["P2"][value])
+
+        real_p0 = p0 + (out_p0 - p0) * hand_state/5
+        real_p2 = p2 + (out_p2 - p2) * hand_state/5
+
+        p_fret_0 = get_position_by_fret(fret, real_p0, real_p2)
+        p_fret_1 = get_position_by_fret(fret, p1, p3)
+        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+    else:
+        if valueType == "position":
+            inner_data_dict = INNER_LEFT_HAND_POSITIONS
+        else:
+            inner_data_dict = INNER_LEFT_HAND_ROTATIONS
+
+        inner_p1 = array(inner_data_dict["P1"][value])
+        inner_p3 = array(inner_data_dict["P3"][value])
+
+        real_P1 = p1 + (inner_p1 - p1) * abs(hand_state)/5
+        real_P3 = p3 + (inner_p3 - p3) * abs(hand_state)/5
+
+        p_fret_0 = get_position_by_fret(fret, p0, p2)
+        p_fret_1 = get_position_by_fret(fret, real_P1, real_P3)
+        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+
+    return p_final

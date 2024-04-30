@@ -1,4 +1,6 @@
-from typing import List
+from typing import List, Dict
+import itertools
+import numpy as np
 
 rightFingers = {
     "p": 0,
@@ -55,7 +57,7 @@ class RightHand():
             if finger not in rightFingers:
                 return False
 
-        # 不能有重复的弦被拨动
+        # 不能有重复的弦被拨动，除非是用P指
         if len(usedString) != len(set(usedString)):
             return False
 
@@ -124,3 +126,151 @@ class RightHand():
 
     def output(self):
         print("RightHand: ", self.usedFingers, self.rightFingerPositions)
+
+
+def finger_string_generator(allFingers: List[str], allStrings: List[int], usedStrings: List[int]):
+    if usedStrings == []:
+        for result in finger_string_generator2(allFingers, allStrings):
+            yield result
+
+    for finger, usedString in itertools.product(allFingers, usedStrings):
+        newStrings = usedStrings.copy()
+        newStrings.remove(usedString)
+        newAllStrings = allStrings.copy()
+        newAllStrings.remove(usedString)
+        newAllFingers = allFingers.copy()
+        newAllFingers.remove(finger)
+        for result in finger_string_generator(newAllFingers, newAllStrings, newStrings):
+            yield [{
+                "finger": finger,
+                "string": usedString
+            }] + result
+
+
+def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
+    if allFingers == []:
+        yield []
+        return
+
+    for finger, string in itertools.product(allFingers, allStrings):
+        newAllStrings = allStrings.copy()
+        newAllStrings.remove(string)
+        newAllFingers = allFingers.copy()
+        newAllFingers.remove(finger)
+        for result in finger_string_generator2(newAllFingers, newAllStrings):
+            yield [{
+                "finger": finger,
+                "string": string
+            }] + result
+
+
+def generatePossibleRightHands(
+        usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
+    possibleRightHands = []
+    # 如果usedString内有重复元素
+    if len(usedStrings) != len(set(usedStrings)):
+        print(f"{usedStrings}内有重复元素")
+    # usedStrings元素去重
+    usedStrings = list(set(usedStrings))
+    if len(usedStrings) > 3:
+        usedFingers = []
+        rightFingerPositions = [5, 3, 3, 2]
+        newRightHand = RightHand(
+            usedFingers, rightFingerPositions, isArpeggio=True)
+        possibleRightHands.append(newRightHand)
+    else:
+        for result in finger_string_generator(allFingers, allstrings, usedStrings):
+            result = process_p_fingers(result)
+            if result == None:
+                continue
+            rightFingerPositions = sort_fingers(result)
+            usedFingers = get_usedFingers(result, usedStrings)
+            newRightHand = RightHand(
+                usedFingers, rightFingerPositions)
+            if newRightHand.validateRightHand():
+                possibleRightHands.append(newRightHand)
+
+    return possibleRightHands
+
+
+def sort_fingers(finger_list: List[object]):
+    order = {'p': 0, 'i': 1, 'm': 2, 'a': 3}
+    sorted_list = sorted(finger_list, key=lambda x: order[x['finger']])
+    return [item['string'] for item in sorted_list]
+
+
+# 这里把p指的重复演奏进行处理，只留下可能的情况，并只留一个p指数据
+def process_p_fingers(result):
+    p_fingers = [f for f in result if f['finger'] == 'p']
+    strings = [f['string'] for f in p_fingers]
+    if abs(strings[0] - strings[1]) != 1:
+        return None
+    min_string = min(strings)
+    result.remove({'finger': 'p', 'string': min_string})
+    return result
+
+
+def get_usedFingers(finger_list: List[object], usedStrings: List[int]):
+    return [item['finger'] for item in finger_list if item['string'] in usedStrings]
+
+
+def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
+    from src.blender.blenderRecords import RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS, RIGHT_PIVOT_POSITIONS
+    fingerMoveDistanceWhilePlay = 0.0045
+    result = {}
+
+    isArpeggio = usedRightFingers == [] and isAfterPlayed
+
+    hand_index = "h_end" if isArpeggio else f"h{rightHandPosition}"
+    H_R = RIGHT_HAND_POSITIONS[hand_index]['position'].copy()
+    # 来一个随机大小为0.0005的随机移动
+    random_move = np.random.rand(3) * 0.001
+    H_R[0] += random_move[0]
+    H_R[1] += random_move[1]
+    H_R[2] += random_move[2]
+    result['H_R'] = H_R
+
+    t_index = "p_end" if isArpeggio else f"p{positions[0]}"
+    T_R = RIGHT_HAND_POSITIONS[t_index]['position'].copy()
+    if isAfterPlayed and "p" in usedRightFingers:
+        move = RIGHT_HAND_DIRECTIONS[f"T_line"]['direction']
+        T_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        T_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        T_R[2] += move[2] * fingerMoveDistanceWhilePlay
+    result['T_R'] = T_R
+
+    i_index = "i_end" if isArpeggio else f"i{positions[1]}"
+    I_R = RIGHT_HAND_POSITIONS[i_index]['position'].copy()
+    if isAfterPlayed and "i" in usedRightFingers:
+        move = RIGHT_HAND_DIRECTIONS[f"I_line"]['direction']
+        I_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        I_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        I_R[2] += move[2] * fingerMoveDistanceWhilePlay
+    result['I_R'] = I_R
+
+    m_index = "m_end" if isArpeggio else f"m{positions[2]}"
+    M_R = RIGHT_HAND_POSITIONS[m_index]['position'].copy()
+    if isAfterPlayed and "m" in usedRightFingers:
+        move = RIGHT_HAND_DIRECTIONS[f"M_line"]['direction']
+        M_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        M_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        M_R[2] += move[2] * fingerMoveDistanceWhilePlay
+    result['M_R'] = M_R
+
+    r_index = "a_end" if isArpeggio else f"a{positions[3]}"
+    R_R = RIGHT_HAND_POSITIONS[r_index]['position'].copy()
+    if isAfterPlayed and "a" in usedRightFingers:
+        move = RIGHT_HAND_DIRECTIONS[f"P_line"]['direction']
+        R_R[0] += move[0] * fingerMoveDistanceWhilePlay
+        R_R[1] += move[1] * fingerMoveDistanceWhilePlay
+        R_R[2] += move[2] * fingerMoveDistanceWhilePlay
+    result['R_R'] = R_R
+
+    p_index = "ch_end" if isArpeggio else f"ch{positions[3]}"
+    P_R = RIGHT_HAND_POSITIONS[p_index]['position']
+    result['P_R'] = P_R
+
+    result['TP_R'] = RIGHT_PIVOT_POSITIONS['TP_R']['position']
+    result['HP_R'] = RIGHT_PIVOT_POSITIONS['HP_R']['position']
+
+    return result

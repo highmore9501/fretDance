@@ -1,3 +1,19 @@
+KEYNOTES: dict = {
+    "C": 48,
+    "C#": 49,
+    "D": 50,
+    "D#": 51,
+    "E": 52,
+    "F": 53,
+    "F#": 54,
+    "G": 55,
+    "G#": 56,
+    "A": 45,
+    "A#": 46,
+    "B": 47
+}
+
+
 class MusicNote:
     """
     params:
@@ -12,7 +28,6 @@ class MusicNote:
         """
         :return: keynote such as `C`, `d`, `F1`. 返回像`C`, `d`, `F1`这样的音符
         """
-        from src.utils.utils import getCurrentKeynotes
         if hasattr(self, 'key'):
             return self.key
         octave = (self.num-45) // 12
@@ -27,3 +42,21 @@ class MusicNote:
         :param num: interval of two note, a Major Third count as 4, a Minor Third count as 3. 音程,大三度为4，小三度为3，其它类推
         """
         return MusicNote(self.num + num)
+
+
+def getCurrentKeynotes(octave: int) -> dict:
+    """
+    according to the octave, return the current keynotes. 根据八度值返回一个当前的音符字典
+    :param octave: 八度
+    :return: a dict like KEYNOTES but with diffrent octave. 一个类似KEYNOTES的字典，但是八度不同
+    """
+    current_keynotes = {}
+    for key, value in KEYNOTES.items():
+        if octave == 0:
+            newkey = key
+        elif octave > 0:
+            newkey = (key[0] + str(octave) + key[1:]).lower()
+        else:
+            newkey = key[0] + str(octave) + key[1:]
+        current_keynotes[newkey] = value + 12 * octave
+    return current_keynotes

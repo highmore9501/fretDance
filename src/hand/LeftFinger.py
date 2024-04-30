@@ -1,7 +1,7 @@
 from ..guitar.GuitarString import GuitarString
 from ..guitar.GuitarNote import GuitarNote
 from ..guitar.Guitar import Guitar
-from ..utils.fretDistanceDict import FRET_DISTANCE_DICT
+from ..utils.utils import fret_position
 from typing import List
 import math
 
@@ -93,11 +93,7 @@ class LeftFinger:
             fingerStringDistance += abs(
                 self.stringIndex - targetFinger.stringIndex) * guitar._stringDistance
         if self.fret != targetFinger.fret:
-            start_fret = min(self.fret, targetFinger.fret)
-            end_fret = max(self.fret, targetFinger.fret)
-            distance_query_name = str(start_fret) + "-" + str(end_fret)
-            distance_query_result = FRET_DISTANCE_DICT[distance_query_name]
-            fingerFretDistance += guitar._fullString * distance_query_result
+            fingerFretDistance = self.fretDistanceTo(guitar, targetFinger)
 
         distance = math.sqrt(
             math.pow(fingerStringDistance, 2) + math.pow(fingerFretDistance, 2))
@@ -113,7 +109,8 @@ class LeftFinger:
         if self.fret != targetFinger.fret:
             start_fret = min(self.fret, targetFinger.fret)
             end_fret = max(self.fret, targetFinger.fret)
-            distance_query_name = str(start_fret) + "-" + str(end_fret)
-            distance_query_result = FRET_DISTANCE_DICT[distance_query_name]
-            fingerFretDistance += guitar._fullString * distance_query_result
+            start_fret_position = fret_position(0, 0.5, start_fret)
+            end_fret_position = fret_position(0, 0.5, end_fret)
+            fingerFretDistance += guitar._fullString * \
+                abs(end_fret_position - start_fret_position)
         return fingerFretDistance

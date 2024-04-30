@@ -41,7 +41,6 @@ class LeftHand():
         """
         print current hand. 输出当前手型
         """
-        from ..utils.utils import print_strikethrough
         for finger in self.fingers:
             finger.output()
         # 计算所有手指的最小fret值
@@ -339,3 +338,7 @@ class LeftHand():
                 entropy += self.fingerDistanceTofretboard
 
         return entropy
+
+
+def print_strikethrough(text):
+    return f"\033[9m{text}\033[0m"

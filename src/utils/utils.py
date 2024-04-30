@@ -1,75 +1,7 @@
-import copy
 from typing import List, Dict, Tuple
 from ..guitar.Guitar import Guitar
-from numpy import array
 import numpy as np
-from .fretDistanceDict import FRET_DISTANCE_DICT
-from ..blender.blenderRecords import RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS, LEFT_FINGER_POSITIONS, OUTER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_POSITIONS, OUTER_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_ROTATIONS, RIGHT_PIVOT_POSITIONS
 import itertools
-from ..hand.RightHand import RightHand
-from ..hand.LeftHand import LeftHand
-
-KEYNOTES: dict = {
-    "C": 48,
-    "C#": 49,
-    "D": 50,
-    "D#": 51,
-    "E": 52,
-    "F": 53,
-    "F#": 54,
-    "G": 55,
-    "G#": 56,
-    "A": 45,
-    "A#": 46,
-    "B": 47
-}
-
-
-def getCurrentKeynotes(octave: int) -> dict:
-    """
-    according to the octave, return the current keynotes. 根据八度值返回一个当前的音符字典
-    :param octave: 八度
-    :return: a dict like KEYNOTES but with diffrent octave. 一个类似KEYNOTES的字典，但是八度不同
-    """
-    current_keynotes = {}
-    for key, value in KEYNOTES.items():
-        if octave == 0:
-            newkey = key
-        elif octave > 0:
-            newkey = (key[0] + str(octave) + key[1:]).lower()
-        else:
-            newkey = key[0] + str(octave) + key[1:]
-        current_keynotes[newkey] = value + 12 * octave
-    return current_keynotes
-
-
-def getKeynoteByValue(value: str) -> int | bool:
-    """
-    transform the note to an integer value, C is 48. 将音符转换为一个整数值，C为48
-    :param value: keynote such as `C`, `d`, `F1`. 音符，例如`C`, `d`, `F1`
-    :return: an integer value. 一个整数值
-    """
-    # 如果value在KEYNOTES中，直接返回.如果是value的大写在KEYNOTES中，说明当前值是高音，需要返回+12
-    if value in KEYNOTES:
-        return KEYNOTES[value]
-    elif value.upper() in KEYNOTES:
-        return KEYNOTES[value.upper()] + 12
-    # 如果value长度为2，并且最后一个值是一个数字
-    elif len(value) > 1 and value[1:].isdigit():
-        # 如果第一个值在KEYNOTES中，说明当前值是低音，返回-12*value[1]
-        if value[0] in KEYNOTES:
-            return KEYNOTES[value[0]] - 12 * int(value[1:])
-        elif value[0].upper() in KEYNOTES:
-            return KEYNOTES[value[0].upper()] + 12 * int(value[1:])
-    elif len(value) > 1 and value[1:-1].isdigit() and value[-1] == "#":
-        # 如果第一个值在KEYNOTES中，说明当前值是低音，返回-12*value[1]
-        if value[0] in KEYNOTES:
-            return KEYNOTES[value[0]] - 12 * int(value[1:]) + 1
-        elif value[0].upper() in KEYNOTES:
-            return KEYNOTES[value[0].upper()] + 12 * int(value[1:]) + 1
-    else:
-        print("音符格式有误：", value)
-        return False
 
 
 def convertNotesToChord(notes: List[int], guitar: Guitar) -> List[Dict[str, int]]:
@@ -215,136 +147,6 @@ def verifyValidCombination(combination: List[Dict[str, int]]) -> bool:
     return True
 
 
-def stringIndexIsUsed(index: int, notePositions: List[dict]) -> bool:
-    for position in notePositions:
-        if position["index"] == index:
-            return True
-    return False
-
-
-def print_strikethrough(text):
-    return f"\033[9m{text}\033[0m"
-
-
-def twiceLerpFingers(fret: int, stringIndex: int) -> Dict:
-    p0 = array(LEFT_FINGER_POSITIONS["P0"])
-    p1 = array(LEFT_FINGER_POSITIONS["P1"])
-    p2 = array(LEFT_FINGER_POSITIONS["P2"])
-    p3 = array(LEFT_FINGER_POSITIONS["P3"])
-
-    fret_query_string = "0-"+str(fret)
-    fret_value = FRET_DISTANCE_DICT[fret_query_string]
-
-    p0_fret = FRET_DISTANCE_DICT["0-1"]
-    p2_fret = FRET_DISTANCE_DICT["0-12"]
-    fret_value = (fret_value - p0_fret) / (p2_fret - p0_fret)
-
-    p_fret_0 = p0 + (p2 - p0) * fret_value
-    p_fret_1 = p1 + (p3 - p1) * fret_value
-
-    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
-
-    return p_final
-
-
-def twiceLerp(hand_state: str, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
-    DATA_DICT = None
-    if valueType == 'position':
-        if hand_state == "OUTER":
-            DATA_DICT = OUTER_LEFT_HAND_POSITIONS
-        elif hand_state == "INNER":
-            DATA_DICT = INNER_LEFT_HAND_POSITIONS
-        else:
-            DATA_DICT = NORMAL_LEFT_HAND_POSITIONS
-    if valueType == 'rotation':
-        if hand_state == "OUTER":
-            DATA_DICT = OUTER_LEFT_HAND_ROTATIONS
-        elif hand_state == "INNER":
-            DATA_DICT = INNER_LEFT_HAND_ROTATIONS
-        else:
-            DATA_DICT = NORMAL_LEFT_HAND_ROTATIONS
-
-    # p0和p1实际上并不是空品，而是1品;而p2和p3是12品
-    p0 = array(DATA_DICT["P0"][value])
-    p1 = array(DATA_DICT["P1"][value])
-    p2 = array(DATA_DICT["P2"][value])
-    p3 = array(DATA_DICT["P3"][value])
-
-    fret_query_string = "0-"+str(fret)
-    fret_value = FRET_DISTANCE_DICT[fret_query_string]
-
-    p0_fret = FRET_DISTANCE_DICT["0-1"]
-    p2_fret = FRET_DISTANCE_DICT["0-12"]
-    fret_value = (fret_value - p0_fret) / (p2_fret - p0_fret)
-
-    p_fret_0 = p0 + (p2 - p0) * fret_value
-    p_fret_1 = p1 + (p3 - p1) * fret_value
-    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
-
-    return p_final
-
-
-def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
-    fingerMoveDistanceWhilePlay = 0.0045
-    result = {}
-
-    isArpeggio = usedRightFingers == [] and isAfterPlayed
-
-    hand_index = "h_end" if isArpeggio else f"h{rightHandPosition}"
-    H_R = RIGHT_HAND_POSITIONS[hand_index]['position'].copy()
-    # 来一个随机大小为0.0005的随机移动
-    random_move = np.random.rand(3) * 0.001
-    H_R[0] += random_move[0]
-    H_R[1] += random_move[1]
-    H_R[2] += random_move[2]
-    result['H_R'] = H_R
-
-    t_index = "p_end" if isArpeggio else f"p{positions[0]}"
-    T_R = RIGHT_HAND_POSITIONS[t_index]['position'].copy()
-    if isAfterPlayed and "p" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"T_line"]['direction']
-        T_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        T_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        T_R[2] += move[2] * fingerMoveDistanceWhilePlay
-    result['T_R'] = T_R
-
-    i_index = "i_end" if isArpeggio else f"i{positions[1]}"
-    I_R = RIGHT_HAND_POSITIONS[i_index]['position'].copy()
-    if isAfterPlayed and "i" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"I_line"]['direction']
-        I_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        I_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        I_R[2] += move[2] * fingerMoveDistanceWhilePlay
-    result['I_R'] = I_R
-
-    m_index = "m_end" if isArpeggio else f"m{positions[2]}"
-    M_R = RIGHT_HAND_POSITIONS[m_index]['position'].copy()
-    if isAfterPlayed and "m" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"M_line"]['direction']
-        M_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        M_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        M_R[2] += move[2] * fingerMoveDistanceWhilePlay
-    result['M_R'] = M_R
-
-    r_index = "a_end" if isArpeggio else f"a{positions[3]}"
-    R_R = RIGHT_HAND_POSITIONS[r_index]['position'].copy()
-    if isAfterPlayed and "a" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"P_line"]['direction']
-        R_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        R_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        R_R[2] += move[2] * fingerMoveDistanceWhilePlay
-    result['R_R'] = R_R
-
-    p_index = "ch_end" if isArpeggio else f"ch{positions[3]}"
-    P_R = RIGHT_HAND_POSITIONS[p_index]['position']
-    result['P_R'] = P_R
-
-    result['TP_R'] = RIGHT_PIVOT_POSITIONS['TP_R']['position']
-    result['HP_R'] = RIGHT_PIVOT_POSITIONS['HP_R']['position']
-
-    return result
-
-
 def rotate_vector(euler_angles: list):
     vector = np.array([1, 0, 0])
     # 旋转值已经是弧度，无需转换
@@ -369,73 +171,18 @@ def rotate_vector(euler_angles: list):
     return rotated_vector
 
 
-def finger_string_generator(allFingers: List[str], allStrings: List[int], usedStrings: List[int]):
-    if usedStrings == []:
-        for result in finger_string_generator2(allFingers, allStrings):
-            yield result
+def get_position_by_fret(fret: int, value_1: np.array, value_12: np.array) -> np.array:
+    base_ratio = 2**(1/12)
+    value_0 = (2 * value_12 - base_ratio *
+               (2 * value_12 - value_1)) / (2 - base_ratio)
 
-    for finger, usedString in itertools.product(allFingers, usedStrings):
-        newStrings = usedStrings.copy()
-        newStrings.remove(usedString)
-        newAllStrings = allStrings.copy()
-        newAllStrings.remove(usedString)
-        newAllFingers = allFingers.copy()
-        newAllFingers.remove(finger)
-        for result in finger_string_generator(newAllFingers, newAllStrings, newStrings):
-            yield [{
-                "finger": finger,
-                "string": usedString
-            }] + result
+    return fret_position(value_0, value_12, fret)
 
 
-def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
-    if allFingers == []:
-        yield []
-        return
+def fret_position(string_start, string_middle, fret_number):
+    string_end = 2 * string_middle - string_start
+    end_to_start = string_end - string_start
 
-    for finger, string in itertools.product(allFingers, allStrings):
-        newAllStrings = allStrings.copy()
-        newAllStrings.remove(string)
-        newAllFingers = allFingers.copy()
-        newAllFingers.remove(finger)
-        for result in finger_string_generator2(newAllFingers, newAllStrings):
-            yield [{
-                "finger": finger,
-                "string": string
-            }] + result
-
-
-def generatePossibleRightHands(
-        usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
-    possibleRightHands = []
-    # 如果usedString内有重复元素
-    if len(usedStrings) != len(set(usedStrings)):
-        print(f"{usedStrings}内有重复元素")
-    # usedStrings元素去重
-    usedStrings = list(set(usedStrings))
-    if len(usedStrings) > 3:
-        usedFingers = []
-        rightFingerPositions = [5, 3, 3, 2]
-        newRightHand = RightHand(
-            usedFingers, rightFingerPositions, isArpeggio=True)
-        possibleRightHands.append(newRightHand)
-    else:
-        for result in finger_string_generator(allFingers, allstrings, usedStrings):
-            rightFingerPositions = sort_fingers(result)
-            usedFingers = get_usedFingers(result, usedStrings)
-            newRightHand = RightHand(
-                usedFingers, rightFingerPositions)
-            if newRightHand.validateRightHand():
-                possibleRightHands.append(newRightHand)
-
-    return possibleRightHands
-
-
-def sort_fingers(finger_list: List[object]):
-    order = {'p': 0, 'i': 1, 'm': 2, 'a': 3}
-    sorted_list = sorted(finger_list, key=lambda x: order[x['finger']])
-    return [item['string'] for item in sorted_list]
-
-
-def get_usedFingers(finger_list: List[object], usedStrings: List[int]):
-    return [item['finger'] for item in finger_list if item['string'] in usedStrings]
+    end_to_fret = end_to_start * 0.5**(fret_number/12)
+    fret_position = string_end - end_to_fret
+    return fret_position
