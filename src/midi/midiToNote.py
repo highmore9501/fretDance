@@ -59,6 +59,7 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
 
     for message in midTrack:
         ticks = message.time
+        real_tick += ticks
 
         if message.type == 'note_on' and message.time == 0 and message.channel not in muteChannel:
             note.append(message.note)
@@ -67,7 +68,6 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
                 continue
             # 将note里的元素按大小排序
             notes = sorted(note)
-            real_tick += ticks
             notes_map.append({"notes": notes, "real_tick": real_tick})
             note = []
 
