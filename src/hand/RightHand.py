@@ -172,7 +172,7 @@ def generatePossibleRightHands(
         print(f"{usedStrings}内有重复元素")
     # usedStrings元素去重
     usedStrings = list(set(usedStrings))
-    if len(usedStrings) > 3:
+    if len(usedStrings) > 4:
         usedFingers = []
         rightFingerPositions = [5, 3, 3, 2]
         newRightHand = RightHand(
