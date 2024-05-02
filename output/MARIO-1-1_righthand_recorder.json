@@ -1,0 +1,5152 @@
+[
+    {
+        "real_tick": 0,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 0.0
+    },
+    {
+        "real_tick": 480,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 9.99999
+    },
+    {
+        "real_tick": 720,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 14.999984999999999
+    },
+    {
+        "real_tick": 960,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 19.99998
+    },
+    {
+        "real_tick": 1440,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 29.999969999999998
+    },
+    {
+        "real_tick": 1680,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 34.999964999999996
+    },
+    {
+        "real_tick": 1920,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 39.99996
+    },
+    {
+        "real_tick": 2400,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 49.99995
+    },
+    {
+        "real_tick": 4080,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 84.999915
+    },
+    {
+        "real_tick": 4320,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 89.99991
+    },
+    {
+        "real_tick": 4560,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 94.999905
+    },
+    {
+        "real_tick": 4800,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 99.9999
+    },
+    {
+        "real_tick": 5040,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 104.999895
+    },
+    {
+        "real_tick": 5280,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 109.99989
+    },
+    {
+        "real_tick": 5520,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 114.999885
+    },
+    {
+        "real_tick": 5760,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 119.99987999999999
+    },
+    {
+        "real_tick": 6000,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 124.999875
+    },
+    {
+        "real_tick": 6480,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 134.999865
+    },
+    {
+        "real_tick": 6720,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 139.99985999999998
+    },
+    {
+        "real_tick": 6960,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 144.99985500000003
+    },
+    {
+        "real_tick": 7200,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 149.99985
+    },
+    {
+        "real_tick": 7440,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 154.999845
+    },
+    {
+        "real_tick": 7920,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 164.999835
+    },
+    {
+        "real_tick": 8160,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 169.99983
+    },
+    {
+        "real_tick": 8640,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 179.99982
+    },
+    {
+        "real_tick": 8880,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 184.99981499999998
+    },
+    {
+        "real_tick": 9360,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 194.999805
+    },
+    {
+        "real_tick": 9600,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 199.9998
+    },
+    {
+        "real_tick": 10080,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 209.99979
+    },
+    {
+        "real_tick": 10560,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 219.99978
+    },
+    {
+        "real_tick": 10800,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 224.999775
+    },
+    {
+        "real_tick": 11040,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 229.99977
+    },
+    {
+        "real_tick": 11760,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 244.99975500000002
+    },
+    {
+        "real_tick": 12000,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 249.99975
+    },
+    {
+        "real_tick": 12240,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 254.99974500000002
+    },
+    {
+        "real_tick": 12480,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 259.99974
+    },
+    {
+        "real_tick": 12720,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 264.999735
+    },
+    {
+        "real_tick": 12960,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 269.99973
+    },
+    {
+        "real_tick": 13200,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 274.999725
+    },
+    {
+        "real_tick": 13440,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 279.99971999999997
+    },
+    {
+        "real_tick": 13680,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 284.999715
+    },
+    {
+        "real_tick": 14160,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 294.999705
+    },
+    {
+        "real_tick": 14400,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 299.9997
+    },
+    {
+        "real_tick": 14640,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 304.99969500000003
+    },
+    {
+        "real_tick": 14880,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 309.99969
+    },
+    {
+        "real_tick": 15120,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 314.999685
+    },
+    {
+        "real_tick": 15600,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 324.99967499999997
+    },
+    {
+        "real_tick": 15840,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 329.99967
+    },
+    {
+        "real_tick": 16320,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 339.99966
+    },
+    {
+        "real_tick": 16560,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 344.999655
+    },
+    {
+        "real_tick": 17040,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 354.999645
+    },
+    {
+        "real_tick": 17280,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 359.99964
+    },
+    {
+        "real_tick": 17760,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 369.99962999999997
+    },
+    {
+        "real_tick": 18240,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 379.99962
+    },
+    {
+        "real_tick": 18480,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 384.99961499999995
+    },
+    {
+        "real_tick": 18720,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 389.99961
+    },
+    {
+        "real_tick": 19680,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 409.99959
+    },
+    {
+        "real_tick": 19920,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 414.999585
+    },
+    {
+        "real_tick": 20160,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 419.99958
+    },
+    {
+        "real_tick": 20400,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 424.999575
+    },
+    {
+        "real_tick": 20640,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 429.99957
+    },
+    {
+        "real_tick": 20880,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 434.99956499999996
+    },
+    {
+        "real_tick": 21120,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 439.99956
+    },
+    {
+        "real_tick": 21360,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 444.99955500000004
+    },
+    {
+        "real_tick": 21840,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 454.999545
+    },
+    {
+        "real_tick": 22080,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 459.99954
+    },
+    {
+        "real_tick": 22320,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 464.999535
+    },
+    {
+        "real_tick": 22560,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 469.99953
+    },
+    {
+        "real_tick": 22800,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 474.999525
+    },
+    {
+        "real_tick": 23040,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 479.99951999999996
+    },
+    {
+        "real_tick": 23520,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 489.99951000000004
+    },
+    {
+        "real_tick": 23760,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 494.999505
+    },
+    {
+        "real_tick": 24000,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 499.9995
+    },
+    {
+        "real_tick": 24240,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 504.99949499999997
+    },
+    {
+        "real_tick": 24480,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 509.99949000000004
+    },
+    {
+        "real_tick": 24720,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 514.9994849999999
+    },
+    {
+        "real_tick": 24960,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 519.99948
+    },
+    {
+        "real_tick": 25200,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 524.9994750000001
+    },
+    {
+        "real_tick": 25440,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 529.99947
+    },
+    {
+        "real_tick": 25680,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 534.999465
+    },
+    {
+        "real_tick": 25920,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 539.99946
+    },
+    {
+        "real_tick": 26160,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 544.999455
+    },
+    {
+        "real_tick": 27360,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 569.99943
+    },
+    {
+        "real_tick": 27600,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 574.999425
+    },
+    {
+        "real_tick": 27840,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 579.9994200000001
+    },
+    {
+        "real_tick": 28080,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 584.999415
+    },
+    {
+        "real_tick": 28320,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 589.99941
+    },
+    {
+        "real_tick": 28560,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 594.999405
+    },
+    {
+        "real_tick": 28800,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 599.9994
+    },
+    {
+        "real_tick": 29040,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 604.9993949999999
+    },
+    {
+        "real_tick": 29520,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 614.999385
+    },
+    {
+        "real_tick": 29760,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 619.99938
+    },
+    {
+        "real_tick": 30000,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 624.9993750000001
+    },
+    {
+        "real_tick": 30240,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 629.99937
+    },
+    {
+        "real_tick": 30480,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 634.999365
+    },
+    {
+        "real_tick": 30720,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 639.99936
+    },
+    {
+        "real_tick": 30960,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 644.999355
+    },
+    {
+        "real_tick": 31440,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 654.9993450000001
+    },
+    {
+        "real_tick": 31680,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 659.99934
+    },
+    {
+        "real_tick": 32160,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 669.99933
+    },
+    {
+        "real_tick": 32400,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 674.999325
+    },
+    {
+        "real_tick": 32640,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 679.99932
+    },
+    {
+        "real_tick": 33120,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 689.99931
+    },
+    {
+        "real_tick": 33360,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 694.9993049999999
+    },
+    {
+        "real_tick": 33840,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 704.999295
+    },
+    {
+        "real_tick": 34320,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 714.999285
+    },
+    {
+        "real_tick": 34560,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 719.99928
+    },
+    {
+        "real_tick": 34800,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 724.9992749999999
+    },
+    {
+        "real_tick": 35040,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 729.99927
+    },
+    {
+        "real_tick": 35280,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 734.999265
+    },
+    {
+        "real_tick": 35520,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 739.9992599999999
+    },
+    {
+        "real_tick": 36000,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 749.99925
+    },
+    {
+        "real_tick": 36240,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 754.999245
+    },
+    {
+        "real_tick": 36720,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 764.999235
+    },
+    {
+        "real_tick": 36960,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 769.9992299999999
+    },
+    {
+        "real_tick": 37200,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 774.999225
+    },
+    {
+        "real_tick": 37440,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 779.99922
+    },
+    {
+        "real_tick": 37680,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 784.999215
+    },
+    {
+        "real_tick": 37920,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 789.9992100000001
+    },
+    {
+        "real_tick": 38400,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 799.9992
+    },
+    {
+        "real_tick": 38640,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 804.999195
+    },
+    {
+        "real_tick": 38880,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 809.99919
+    },
+    {
+        "real_tick": 39120,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 814.999185
+    },
+    {
+        "real_tick": 39360,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 819.99918
+    },
+    {
+        "real_tick": 39840,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 829.99917
+    },
+    {
+        "real_tick": 40080,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                1,
+                1
+            ]
+        },
+        "frame": 834.9991650000001
+    },
+    {
+        "real_tick": 40800,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                3,
+                2
+            ],
+            "rightHandPosition": 3,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                3,
+                2
+            ]
+        },
+        "frame": 849.99915
+    },
+    {
+        "real_tick": 40920,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 852.4991474999999
+    },
+    {
+        "real_tick": 41040,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 854.999145
+    },
+    {
+        "real_tick": 41160,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 857.4991425
+    },
+    {
+        "real_tick": 41280,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 859.99914
+    },
+    {
+        "real_tick": 41400,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 862.4991375000001
+    },
+    {
+        "real_tick": 41520,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 864.999135
+    },
+    {
+        "real_tick": 41640,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 867.4991325
+    },
+    {
+        "real_tick": 41760,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 869.9991299999999
+    },
+    {
+        "real_tick": 42480,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 884.999115
+    },
+    {
+        "real_tick": 42720,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 889.9991100000001
+    },
+    {
+        "real_tick": 42960,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 894.999105
+    },
+    {
+        "real_tick": 43200,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 899.9991
+    },
+    {
+        "real_tick": 43680,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 909.99909
+    },
+    {
+        "real_tick": 43920,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 914.9990849999999
+    },
+    {
+        "real_tick": 44400,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 924.999075
+    },
+    {
+        "real_tick": 44640,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 929.99907
+    },
+    {
+        "real_tick": 44880,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 934.9990650000001
+    },
+    {
+        "real_tick": 45120,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 939.99906
+    },
+    {
+        "real_tick": 45360,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 944.999055
+    },
+    {
+        "real_tick": 45600,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 949.99905
+    },
+    {
+        "real_tick": 46080,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 959.9990399999999
+    },
+    {
+        "real_tick": 46320,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 964.999035
+    },
+    {
+        "real_tick": 46560,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 969.99903
+    },
+    {
+        "real_tick": 46800,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 974.9990249999998
+    },
+    {
+        "real_tick": 47040,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 979.9990200000001
+    },
+    {
+        "real_tick": 47520,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 989.99901
+    },
+    {
+        "real_tick": 47760,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                0
+            ]
+        },
+        "frame": 994.9990050000001
+    },
+    {
+        "real_tick": 48000,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 999.999
+    },
+    {
+        "real_tick": 48480,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1009.9989899999999
+    },
+    {
+        "real_tick": 50160,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1044.998955
+    },
+    {
+        "real_tick": 50400,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1049.9989500000001
+    },
+    {
+        "real_tick": 50640,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1054.998945
+    },
+    {
+        "real_tick": 50880,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1059.99894
+    },
+    {
+        "real_tick": 51120,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1064.9989349999998
+    },
+    {
+        "real_tick": 51360,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1069.99893
+    },
+    {
+        "real_tick": 51600,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1074.998925
+    },
+    {
+        "real_tick": 51840,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1079.99892
+    },
+    {
+        "real_tick": 52080,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1084.998915
+    },
+    {
+        "real_tick": 52320,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1089.99891
+    },
+    {
+        "real_tick": 52560,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1094.998905
+    },
+    {
+        "real_tick": 52800,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1099.9989
+    },
+    {
+        "real_tick": 53040,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1104.9988950000002
+    },
+    {
+        "real_tick": 54000,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1124.998875
+    },
+    {
+        "real_tick": 54240,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1129.99887
+    },
+    {
+        "real_tick": 54480,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1134.998865
+    },
+    {
+        "real_tick": 54720,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1139.99886
+    },
+    {
+        "real_tick": 54960,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1144.998855
+    },
+    {
+        "real_tick": 55200,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1149.99885
+    },
+    {
+        "real_tick": 55440,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1154.9988449999998
+    },
+    {
+        "real_tick": 55680,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1159.9988400000002
+    },
+    {
+        "real_tick": 55920,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1164.998835
+    },
+    {
+        "real_tick": 56160,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1169.99883
+    },
+    {
+        "real_tick": 56400,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1174.998825
+    },
+    {
+        "real_tick": 56640,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1179.99882
+    },
+    {
+        "real_tick": 56880,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1184.998815
+    },
+    {
+        "real_tick": 57120,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1189.99881
+    },
+    {
+        "real_tick": 57360,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1194.9988050000002
+    },
+    {
+        "real_tick": 57600,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1199.9988
+    },
+    {
+        "real_tick": 57840,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1204.998795
+    },
+    {
+        "real_tick": 58080,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1209.9987899999999
+    },
+    {
+        "real_tick": 58320,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1214.998785
+    },
+    {
+        "real_tick": 58560,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1219.9987800000001
+    },
+    {
+        "real_tick": 58800,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1224.998775
+    },
+    {
+        "real_tick": 59040,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1229.99877
+    },
+    {
+        "real_tick": 59280,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1234.998765
+    },
+    {
+        "real_tick": 59520,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1239.99876
+    },
+    {
+        "real_tick": 59760,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1244.9987549999998
+    },
+    {
+        "real_tick": 60000,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1249.9987500000002
+    },
+    {
+        "real_tick": 60240,
+        "rightHand": {
+            "usedFingers": [
+                "i",
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1254.998745
+    },
+    {
+        "real_tick": 60480,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1259.99874
+    },
+    {
+        "real_tick": 60720,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1264.998735
+    },
+    {
+        "real_tick": 61680,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 1284.998715
+    },
+    {
+        "real_tick": 61920,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1289.99871
+    },
+    {
+        "real_tick": 62160,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1294.998705
+    },
+    {
+        "real_tick": 62400,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 1299.9986999999999
+    },
+    {
+        "real_tick": 62640,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 1304.998695
+    },
+    {
+        "real_tick": 62880,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1309.9986900000001
+    },
+    {
+        "real_tick": 63120,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1314.998685
+    },
+    {
+        "real_tick": 63360,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1319.99868
+    },
+    {
+        "real_tick": 63600,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1324.998675
+    },
+    {
+        "real_tick": 63840,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1329.99867
+    },
+    {
+        "real_tick": 64080,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1334.998665
+    },
+    {
+        "real_tick": 64320,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1339.99866
+    },
+    {
+        "real_tick": 65280,
+        "rightHand": {
+            "usedFingers": [
+                "p",
+                "i",
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1359.99864
+    },
+    {
+        "real_tick": 65440,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1363.99864
+    },
+    {
+        "real_tick": 65600,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1367.99864
+    },
+    {
+        "real_tick": 65760,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1371.99864
+    },
+    {
+        "real_tick": 65920,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1375.99864
+    },
+    {
+        "real_tick": 66080,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1379.99864
+    },
+    {
+        "real_tick": 66240,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1383.99864
+    },
+    {
+        "real_tick": 66720,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1395.99864
+    },
+    {
+        "real_tick": 67200,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1407.99864
+    },
+    {
+        "real_tick": 67360,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                3,
+                2,
+                1
+            ]
+        },
+        "frame": 1411.99864
+    },
+    {
+        "real_tick": 67520,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1415.99864
+    },
+    {
+        "real_tick": 67680,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1419.99864
+    },
+    {
+        "real_tick": 67840,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1423.99864
+    },
+    {
+        "real_tick": 68000,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1427.99864
+    },
+    {
+        "real_tick": 68160,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1431.99864
+    },
+    {
+        "real_tick": 68640,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1443.99864
+    },
+    {
+        "real_tick": 69120,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1455.99864
+    },
+    {
+        "real_tick": 69280,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                5,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1459.99864
+    },
+    {
+        "real_tick": 69440,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1463.99864
+    },
+    {
+        "real_tick": 69600,
+        "rightHand": {
+            "usedFingers": [],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1467.99864
+    },
+    {
+        "real_tick": 69760,
+        "rightHand": {
+            "usedFingers": [
+                "i"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1471.99864
+    },
+    {
+        "real_tick": 69920,
+        "rightHand": {
+            "usedFingers": [
+                "m"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1475.99864
+    },
+    {
+        "real_tick": 70080,
+        "rightHand": {
+            "usedFingers": [
+                "p"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1479.99864
+    },
+    {
+        "real_tick": 70560,
+        "rightHand": {
+            "usedFingers": [
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1491.99864
+    },
+    {
+        "real_tick": 70720,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1495.99864
+    },
+    {
+        "real_tick": 70880,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1499.99864
+    },
+    {
+        "real_tick": 71040,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1503.99864
+    },
+    {
+        "real_tick": 72960,
+        "rightHand": {
+            "usedFingers": [
+                "m",
+                "a"
+            ],
+            "rightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ],
+            "rightHandPosition": 2,
+            "afterPlayedRightFingerPositions": [
+                4,
+                2,
+                1,
+                0
+            ]
+        },
+        "frame": 1551.99864
+    }
+]
