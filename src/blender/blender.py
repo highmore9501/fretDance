@@ -3,18 +3,13 @@ import json
 import mathutils
 
 # 从外部读取json文件
+avatar = 'rem'
+midi_name = "Corridors Of Time Fingerstyle"
 
-left_hand_animation = r"G:\fretDance\output\Corridors Of Time Fingerstyle_lefthand_animation.json"
-right_hand_animation = r"G:\fretDance\output\Corridors Of Time Fingerstyle_righthand_animation.json"
+left_hand_animation = f"G:/fretDance/output/{avatar}_{midi_name}_lefthand_animation.json"
+right_hand_animation = f"G:/fretDance/output/{avatar}_{midi_name}_righthand_animation.json"
 
-armature = "Kamisato IK_arm"
-base_bone_name = "cf_s_spine03"
-
-
-def animate_hand(animation_file: str):
-    # 先计算base_bone的矩阵
-    base_bone = bpy.data.objects[armature].pose.bones[base_bone_name]
-    base_bone_matrix = base_bone.matrix
+def animate_hand(animation_file: str):    
 
     # 读取json文件
     with open(animation_file, "r") as f:
@@ -29,16 +24,16 @@ def animate_hand(animation_file: str):
 
             # 将blender时间帧设置到frame
             bpy.context.scene.frame_set(frame)
-            insert_values(fingerInfos, base_bone_matrix)
+            insert_values(fingerInfos)
 
             # 如果当前帧和下一帧的差值大于3，则在两帧之间插入额外的帧
             if i < len(frames) - 1 and frames[i + 1] - frame > 3:
                 for extra_frame in range(frame + 1, frames[i + 1]):
                     bpy.context.scene.frame_set(extra_frame)
-                    insert_values(fingerInfos, base_bone_matrix)
+                    insert_values(fingerInfos)
 
 
-def insert_values(fingerInfos, base_bone_matrix):
+def insert_values(fingerInfos):
     # 设置每个controller的值
     for fingerInfo in fingerInfos:
         try:
@@ -49,7 +44,7 @@ def insert_values(fingerInfos, base_bone_matrix):
                 obj.keyframe_insert(data_path="rotation_euler")
             else:
                 # 把value从base_bone的坐标系转换到世界坐标系
-                value = base_bone_matrix @ mathutils.Vector(value)
+                value = mathutils.Vector(value)
                 obj.location = value
                 obj.keyframe_insert(data_path="location")
         except:

@@ -1,23 +1,24 @@
 import json
 from src.midi.midiToNote import calculate_frame
 from numpy import array, linalg, cross, random
-from typing import Dict
 
 from ..hand.LeftFinger import PRESSSTATE
 from ..hand.RightHand import caculateRightHandFingers
 from ..utils.utils import get_position_by_fret
 
 
-def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
+def leftHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
     """
     :params recorder: the path of the recorder file
     :params animation: the path of the file store information for animation
     :params BPM: the BPM of the music
     :params FPS: the FPS of the animation"""
-    from src.blender.blenderRecords import LEFT_FINGER_POSITIONS
-    finger_position_p0 = array(LEFT_FINGER_POSITIONS["P0"])
-    finger_position_p1 = array(LEFT_FINGER_POSITIONS["P1"])
-    finger_position_p2 = array(LEFT_FINGER_POSITIONS["P2"])
+    json_file = f'asset\controller_infos\{avatar}.json'
+    with open(json_file, "r") as f:
+        base_data = json.load(f)
+    finger_position_p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
+    finger_position_p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
+    finger_position_p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
 
     # 计算finger_position_p0,finger_position_p1,finger_position_p2三点组成的平面上的法线值
     normal = cross(finger_position_p0 - finger_position_p1,
@@ -40,7 +41,7 @@ def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_b
         frame = calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick)
 
         # 计算左手的动画信息
-        fingerInfos = animatedLeftHand(item, normal)
+        fingerInfos = animatedLeftHand(base_data,item, normal)
         data_for_animation.append({
             "frame": frame,
             "fingerInfos": fingerInfos
@@ -60,7 +61,7 @@ def leftHand2Animation(recorder: str, animation: str, tempo_changes, ticks_per_b
         json.dump(data_for_animation, f)
 
 
-def animatedLeftHand(item: object, normal: array):
+def animatedLeftHand(base_data:object,item: object, normal: array):
     leftHand = item["leftHand"]
     fingerInfos = {}
     hand_fret = 1
@@ -75,11 +76,11 @@ def animatedLeftHand(item: object, normal: array):
         4: 0
     }
 
-    for data in leftHand:
-        fingerIndex = data["fingerIndex"]
-        stringIndex = data["fingerInfo"]["stringIndex"]
-        fret = data["fingerInfo"]["fret"]
-        press = data["fingerInfo"]["press"]
+    for hand_data in leftHand:
+        fingerIndex = hand_data["fingerIndex"]
+        stringIndex = hand_data["fingerInfo"]["stringIndex"]
+        fret = hand_data["fingerInfo"]["fret"]
+        press = hand_data["fingerInfo"]["press"]
 
         min_press_fingerIndex = 4
         # skip open string. 空弦音跳过
@@ -106,7 +107,7 @@ def animatedLeftHand(item: object, normal: array):
 
         if press < 2 or press == 5 or need_recaculate:
             finger_string_numbers[fingerIndex] = stringIndex
-            finger_position = twiceLerpFingers(fret, stringIndex)
+            finger_position = twiceLerpFingers(base_data,fret, stringIndex)
         else:
             continue
 
@@ -132,6 +133,7 @@ def animatedLeftHand(item: object, normal: array):
     hand_state = max(differences, key=abs)
 
     hand_position = twiceLerp(
+        base_data = base_data,
         hand_state=hand_state,
         value="H_L",
         valueType="position",
@@ -145,6 +147,7 @@ def animatedLeftHand(item: object, normal: array):
     fingerInfos["H_L"] = hand_position.tolist()
 
     hand_IK_pivot_position = twiceLerp(
+        base_data = base_data,
         hand_state=hand_state,
         value="HP_L",
         valueType="position",
@@ -153,6 +156,7 @@ def animatedLeftHand(item: object, normal: array):
     fingerInfos["HP_L"] = hand_IK_pivot_position.tolist()
 
     hand_rotation_y = twiceLerp(
+        base_data = base_data,
         hand_state=hand_state,
         value="H_rotation_Y_L",
         valueType="rotation",
@@ -161,6 +165,7 @@ def animatedLeftHand(item: object, normal: array):
     fingerInfos["H_rotation_Y_L"] = hand_rotation_y.tolist()
 
     hand_rotation_x = twiceLerp(
+        base_data = base_data,
         hand_state=hand_state,
         value="H_rotation_X_L",
         valueType="rotation",
@@ -169,6 +174,7 @@ def animatedLeftHand(item: object, normal: array):
     fingerInfos["H_rotation_X_L"] = hand_rotation_x.tolist()
 
     thumb_position = twiceLerp(
+        base_data = base_data,
         hand_state=hand_state,
         value="T_L",
         valueType="position",
@@ -177,6 +183,7 @@ def animatedLeftHand(item: object, normal: array):
     fingerInfos["T_L"] = thumb_position.tolist()
 
     thumb_IK_pivot_position = twiceLerp(
+        base_data = base_data,
         hand_state=hand_state,
         value="TP_L",
         valueType="position",
@@ -187,7 +194,7 @@ def animatedLeftHand(item: object, normal: array):
     return fingerInfos
 
 
-def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
+def rightHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
     data_for_animation = []
     with open(recorder, "r") as f:
         handDicts = json.load(f)
@@ -202,10 +209,10 @@ def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, tick
             rightHandPosition = right_hand["rightHandPosition"]
             afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
 
-            ready = caculateRightHandFingers(
+            ready = caculateRightHandFingers(avatar,
                 rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
 
-            played = caculateRightHandFingers(
+            played = caculateRightHandFingers(avatar,
                 afterPlayedRightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
 
             data_for_animation.append({
@@ -223,12 +230,11 @@ def rightHand2Animation(recorder: str, animation: str, tempo_changes: list, tick
         json.dump(data_for_animation, f)
 
 
-def twiceLerpFingers(fret: int, stringIndex: int) -> Dict:
-    from ..blender.blenderRecords import LEFT_FINGER_POSITIONS
-    p0 = array(LEFT_FINGER_POSITIONS["P0"])
-    p1 = array(LEFT_FINGER_POSITIONS["P1"])
-    p2 = array(LEFT_FINGER_POSITIONS["P2"])
-    p3 = array(LEFT_FINGER_POSITIONS["P3"])
+def twiceLerpFingers(base_data:object,fret: int, stringIndex: int) -> array:
+    p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
+    p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
+    p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
+    p3 = array(base_data['LEFT_FINGER_POSITIONS']["P3"])
 
     p_fret_0 = get_position_by_fret(fret, p0, p2)
     p_fret_1 = get_position_by_fret(fret, p1, p3)
@@ -238,21 +244,23 @@ def twiceLerpFingers(fret: int, stringIndex: int) -> Dict:
     return p_final
 
 
-def twiceLerp(hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
+def twiceLerp(base_data:object,hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
     data_dict = None
-    from ..blender.blenderRecords import OUTER_LEFT_HAND_POSITIONS, INNER_LEFT_HAND_POSITIONS, NORMAL_LEFT_HAND_POSITIONS, OUTER_LEFT_HAND_ROTATIONS, INNER_LEFT_HAND_ROTATIONS, NORMAL_LEFT_HAND_ROTATIONS
 
     if valueType == "position":
-        data_dict = NORMAL_LEFT_HAND_POSITIONS
+        data_dict = base_data['NORMAL_LEFT_HAND_POSITIONS']
+        p0 = array(data_dict["P0"][value])
+        p1 = array(data_dict["P1"][value])
+        p2 = array(data_dict["P2"][value])
+        p3 = array(data_dict["P3"][value])
     elif valueType == "rotation":
-        data_dict = NORMAL_LEFT_HAND_ROTATIONS
+        data_dict = base_data["ROTATIONS"]['H_rotation_L']["Normal"]
+        p0 = array(data_dict["P0"])
+        p1 = array(data_dict["P1"])
+        p2 = array(data_dict["P2"])
+        p3 = array(data_dict["P3"])
     else:
         print("valueType error")
-
-    p0 = array(data_dict["P0"][value])
-    p1 = array(data_dict["P1"][value])
-    p2 = array(data_dict["P2"][value])
-    p3 = array(data_dict["P3"][value])
 
     if hand_state == 0:
         p_fret_0 = get_position_by_fret(fret, p0, p2)
@@ -260,12 +268,13 @@ def twiceLerp(hand_state: int, value: str, valueType: str, fret: int, stringInde
         p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
     elif hand_state > 0:
         if valueType == "position":
-            outer_data_dict = OUTER_LEFT_HAND_POSITIONS
+            outer_data_dict = base_data['OUTER_LEFT_HAND_POSITIONS']
+            out_p0 = array(outer_data_dict["P0"][value])
+            out_p2 = array(outer_data_dict["P2"][value])
         else:
-            outer_data_dict = OUTER_LEFT_HAND_ROTATIONS
-
-        out_p0 = array(outer_data_dict["P0"][value])
-        out_p2 = array(outer_data_dict["P2"][value])
+            outer_data_dict = base_data["ROTATIONS"]['H_rotation_L']["Outer"]
+            out_p0 = array(outer_data_dict["P0"])
+            out_p2 = array(outer_data_dict["P2"])
 
         real_p0 = p0 + (out_p0 - p0) * hand_state/5
         real_p2 = p2 + (out_p2 - p2) * hand_state/5
@@ -275,12 +284,13 @@ def twiceLerp(hand_state: int, value: str, valueType: str, fret: int, stringInde
         p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
     else:
         if valueType == "position":
-            inner_data_dict = INNER_LEFT_HAND_POSITIONS
+            inner_data_dict = base_data['INNER_LEFT_HAND_POSITIONS']
+            inner_p1 = array(inner_data_dict["P1"][value])
+            inner_p3 = array(inner_data_dict["P3"][value])
         else:
-            inner_data_dict = INNER_LEFT_HAND_ROTATIONS
-
-        inner_p1 = array(inner_data_dict["P1"][value])
-        inner_p3 = array(inner_data_dict["P3"][value])
+            inner_data_dict = base_data["ROTATIONS"]['H_rotation_L']["Inner"]
+            inner_p1 = array(inner_data_dict["P1"])
+            inner_p3 = array(inner_data_dict["P3"])
 
         real_P1 = p1 + (inner_p1 - p1) * abs(hand_state)/5
         real_P3 = p3 + (inner_p3 - p3) * abs(hand_state)/5

@@ -1,7 +1,5 @@
 # 一些在blender里跑的工具脚本
 import bpy
-import mathutils
-from blenderRecords import *
 from typing import Literal
 
 
@@ -29,6 +27,9 @@ def clone_deform_bones():
 
 
 def move_deform_bones():
+    """
+    useage:这个方法用于在blender中将所有的deform骨骼移动到第25层
+    """
     # 切换到pose模式
     bpy.ops.object.mode_set(mode='POSE')
 
@@ -42,6 +43,9 @@ def move_deform_bones():
 
 
 def remove_empty_vertex_group():
+    """
+    useage:这个方法用于在blender中删除没有关联的顶点组
+    """
     # 切换到对象模式
     bpy.ops.object.mode_set(mode='OBJECT')
 
@@ -62,16 +66,20 @@ def remove_empty_vertex_group():
             obj.vertex_groups.remove(vertex_group)
 
 
-def remove_non_associated_bones():
-    mesh = "Kamisato IK_mesh"
-    obj = bpy.data.objects[mesh]
+def remove_non_associated_bones(mesh_name: str, armature_name: str):
+    """
+    :param mesh_name: 网格名称
+    :param armature_name: 骨骼名称
+    useage:这个方法用于在blender中删除没有关联的骨骼。注意这个方法非常危险，执行前要想明白自己在做什么
+    """
+    
+    obj = bpy.data.objects[mesh_name]
     weight_groups_name = []
 
     # 获取所有的骨骼组
     for vertex_group in obj.vertex_groups:
         weight_groups_name.append(vertex_group.name)
 
-    armature_name = "Kamisato IK_arm"
     obj = bpy.data.objects[armature_name]
 
     bpy.ops.object.mode_set(mode='EDIT')
@@ -88,8 +96,11 @@ def remove_non_associated_bones():
     bpy.ops.object.mode_set(mode='POSE')
 
 
-def read_vertex_groups():
-    mesh = "Kamisato IK_mesh"
+def read_vertex_groups(mesh: str):
+    """
+    :param mesh: 网格名称
+    useage:这个方法用于在blender中读取左右两边的权重组
+    """
     obj = bpy.data.objects[mesh]
     weight_groups_R = []
     weight_groups_L = []
@@ -105,6 +116,9 @@ def read_vertex_groups():
 
 
 def compare_LR_groups():
+    """
+    useage:这个方法用于在blender中比较左右两边的权重组的差异
+    """
     right, left = read_vertex_groups()
     remap_R = []
     for item in right:
@@ -120,55 +134,34 @@ def compare_LR_groups():
     diff = list(set(remap_R).difference(set(remap_L)))
     print(diff)
 
+def find_non_associated_groups(armature_name: str, mesh_name: str):
+    """    
+    :param armature_name: 骨骼名称
+    :param mesh_name: 网格名称
+    useage:这个方法用于在blender中找到没有关联骨骼的权重组
+    """
+    armature = bpy.data.objects[armature_name]
+    # 获取所有的骨骼组
+    bones = []
+    for bone in armature.pose.bones:
+        bones.append(bone.name)
 
-def export_controller_info(isLeftHand: bool = True):
-    collections = ['PositionControllers',
-                   'RotationControllers', 'PivotControllers', 'RightFingerVector']
-
-    armature = "Kamisato IK_arm"
-    base_bone_name = "cf_s_spine03"
-    base_bone = bpy.data.objects[armature].pose.bones[base_bone_name]
-    base_bone_matrix = base_bone.matrix
-    invert_base_bone_matrix = base_bone_matrix.inverted()
-
-    result = {}
-
-    for collection in collections:
-        # 遍历所有collection里的的物体
-        for obj in bpy.data.collections[collection].objects:
-            obj_name = obj.name
-            if (isLeftHand and obj_name.endswith("_L")) or (not isLeftHand and obj_name.endswith("_R")):
-                try:
-                    if collection != "RotationControllers" and collection != 'RightFingerVector':
-                        # 位置控制器
-                        obj_info = obj.location
-                        obj_info = invert_base_bone_matrix @ obj_info
-                        result[obj_name] = [obj_info.x, obj_info.y, obj_info.z]
-                    else:
-                        # 旋转控制器
-                        obj_info = obj.rotation_euler
-                        obj_info = invert_base_bone_matrix @ obj_info
-                        result[obj_name] = [obj_info.x, obj_info.y, obj_info.z]
-                except:
-                    pass
-
-    print(result)
+    mesh = bpy.data.objects[mesh_name]
+    non_associated_groups = []
+    for vertex_group in mesh.vertex_groups:
+        if vertex_group.name not in bones:
+            non_associated_groups.append(vertex_group.name)
+    print(non_associated_groups)
 
 
-def import_controller_info(position_name: str, status_name: Literal["normal", "outer", "inner"]):
+def import_left_controller_info(position_name: Literal["P0", "P1", "P2","P3"], status_name: Literal["Normal", "Outer", "Inner"]):
+    """    
+    :param position_name: 位置名称
+    :param status_name: 状态名称
+    useage:这个方法用于在blender中快速将人物左手放置成某个特定的状态。这几个状态分别是，Noraml情况下的P0-P3，Outer情况下的P0和P2，Inner情况下的P1和P3
+    """
     collections = ['FingerPositionControllers',
                    'RotationControllers', 'HandPositionControllers']
-
-    armature = "Kamisato IK_arm"
-    base_bone_name = "cf_s_spine03"
-
-    base_bone = bpy.data.objects[armature].pose.bones[base_bone_name]
-    base_bone_matrix = base_bone.matrix
-
-    hand_position_dict = NORMAL_LEFT_HAND_POSITIONS if status_name == "normal" else (
-        OUTER_LEFT_HAND_POSITIONS if status_name == "outer" else INNER_LEFT_HAND_POSITIONS)
-    hand_rotation_dict = NORMAL_LEFT_HAND_ROTATIONS if status_name == "normal" else (
-        OUTER_LEFT_HAND_ROTATIONS if status_name == "outer" else INNER_LEFT_HAND_ROTATIONS)
 
     for collection in collections:
         for obj in bpy.data.collections[collection].objects:
@@ -176,113 +169,22 @@ def import_controller_info(position_name: str, status_name: Literal["normal", "o
             if obj_name.endswith("_R"):
                 continue
             try:
-                if collection == "PositionControllers" and not (obj_name.startswith("T") or obj_name.startswith("P")):
-                    obj.location = base_bone_matrix @ mathutils.Vector(
-                        LEFT_FINGER_POSITIONS[position_name])
-                elif collection == "PositionControllers":
-                    obj.location = base_bone_matrix @ mathutils.Vector(
-                        hand_position_dict[position_name][obj_name])
+                if collection == "HandPositionControllers":
+                    position_ball_name = f'{status_name}_{position_name}_{obj_name}'
+                    obj.location = bpy.data.objects[position_ball_name].location
+                elif collection == "FingerPositionControllers":
+                    position_ball_name = f'Fret_{position_name}'
+                    obj.location = bpy.data.objects[position_ball_name].location
                 elif collection == "RotationControllers":
-                    obj.rotation_euler = mathutils.Euler(
-                        hand_rotation_dict[position_name][obj_name])
-            except:
-                pass
-
-
-def export_positions(collection: str, armature_name: str, bone_name: str):
-    armature = bpy.data.objects[armature_name]
-    bone = armature.pose.bones[bone_name]
-    bone_matrix_inv = bone.matrix.inverted()
-    result = {}
-    for obj in bpy.data.collections[collection].objects:
-        obj_name = obj.name
-        obj_info = bone_matrix_inv @ obj.matrix_world.to_translation()
-        result[obj_name] = {
-            "position": [obj_info.x, obj_info.y, obj_info.z],
-        }
-    print(result)
-
-
-def export_local_positions(obj, armature_name: str, bone_name: str):
-    import numpy as np
-    armature = bpy.data.objects[armature_name]
-    bone = armature.pose.bones[bone_name]
-    result = {}
-    for key, value in obj.items():
-        if key in ['H_L', 'HP_L',  'T_L', 'TP_L']:
-            position = np.array(value['position'])
-            # 将位置向量转换到骨骼的本地坐标系
-            local_position = bone.matrix.inverted() @ mathutils.Vector(position)
-            # 更新位置值
-            result[key] = [local_position.x,
-                           local_position.y, local_position.z]
-    print(result)
-
-
-def export_directions(collection: str, armature_name: str, bone_name: str):
-    armature = bpy.data.objects[armature_name]
-    bone = armature.pose.bones[bone_name]
-    bone_matrix_inv = bone.matrix.inverted()
-    result = {}
-    for obj in bpy.data.collections[collection].objects:
-        obj_name = obj.name
-        rotation_vector = mathutils.Vector((0, 0, 1))  # Z-axis vector
-        rotation_vector.rotate(obj.rotation_euler)
-        unit_vector = rotation_vector.normalized()
-        if not obj_name.startswith('T'):
-            unit_vector = -unit_vector
-        # Transform the direction vector to the bone's local coordinate system
-        local_direction = bone_matrix_inv.to_3x3() @ unit_vector
-        result[obj_name] = {
-            "direction": [local_direction.x, local_direction.y, local_direction.z],
-        }
-    print(result)
-
-
-def animateObject(obj, prefix):
-    for i in range(6):
-        key = prefix + str(i)
-        target_obj = bpy.data.objects.get(key)
-        if target_obj:
-            bpy.context.scene.frame_set(i*5)
-            # Convert the target object's location to world coordinates
-            world_location = target_obj.matrix_world.to_translation()
-            obj.location = world_location
-            obj.keyframe_insert(data_path="location")
-
-
-def animateRightHandTest():
-    collection_name = "PositionControllers"
-
-    for obj in bpy.data.collections[collection_name].objects:
-        obj_name = obj.name
-        if not obj_name.endswith("_R"):
-            continue
-        if obj_name.startswith("I"):
-            animateObject(obj, 'i')
-        elif obj_name.startswith("M"):
-            animateObject(obj, 'm')
-        elif obj_name.startswith("R"):
-            animateObject(obj, 'a')
-        elif obj_name.startswith("P"):
-            animateObject(obj, 'ch')
-        elif obj_name.startswith("T"):
-            animateObject(obj, 'p')
-
-
-def caculateLocalPosition(obj_name: str, armature: str, target_bone: str):
-    # 获取骨骼对象
-    bone = bpy.data.objects[armature].pose.bones[target_bone]
-
-    # 获取对象
-    obj = bpy.data.objects[obj_name]
-
-    # 计算对象在骨骼的坐标系里的location
-    position = bone.matrix.inverted() @ obj.location
-    print(position)
-
+                    rotation_cone_name = f'{status_name}_{position_name}_H_rotation_L'
+                    obj.rotation_euler = bpy.data.objects[rotation_cone_name].rotation_euler
+            except Exception as e:
+                print(f"Error: {e}")
 
 def add_random_rotation():
+    """
+    useage:这个方法用于在blender中给头发和裙子添加一些摆动效果
+    """
     import random
     import bpy
     import mathutils
@@ -296,6 +198,77 @@ def add_random_rotation():
 
         pose_bone.rotation_euler = mathutils.Euler(
             [random.random()*0.05, random.random()*0.05, random.random()*0.05])
+
+def export_controller_info(file_name: str) -> None:
+    """
+    :param file_name: 输出文件名
+    useage:这个方法用于在blender中将所有的控制器的位置和旋转信息输出到json文件
+    """
+    import json
+    from collections import defaultdict
+    import mathutils
+    LeftHandPositions = bpy.data.collections['LeftHandPositions'].objects
+    RotationCones = bpy.data.collections['RotationCones'].objects
+    RightHandPositions = bpy.data.collections['RightHandPositions'].objects
+    RightHandLines = bpy.data.collections['RightHandLines'].objects
+
+    def nested_dict():
+        return defaultdict(nested_dict)
+
+    result = nested_dict()
+
+    for obj in LeftHandPositions:
+        obj_name = obj.name
+        name_parts = obj_name.split('_', 2)
+        type_name = name_parts[0]
+        position_name = name_parts[1]
+        if type_name == 'Fret':
+            result['LEFT_FINGER_POSITIONS'][position_name] = obj.location
+        elif type_name == 'Normal':
+            controller_name = name_parts[2]
+            result['NORMAL_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
+        elif type_name == 'Outer':
+            controller_name = name_parts[2]
+            result['OUTER_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
+        elif type_name == 'Inner':
+            controller_name = name_parts[2]
+            result['INNER_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
+        else:
+            print(f'Error happend. type: {type_name}, name: {obj_name}')
+    
+    for obj in RotationCones:
+        obj_name = obj.name
+        name_parts = obj_name.split('_', 2)
+        type_name = name_parts[0]
+        position_name = name_parts[1]
+        controller_name = name_parts[2]
+        result['ROTATIONS'][controller_name][type_name][position_name] = obj.rotation_euler
+
+    for obj in RightHandPositions:
+        obj_name = obj.name        
+        result['RIGHT_HAND_POSITIONS'][obj_name] = obj.location
+    
+    for obj in RightHandLines:
+        obj_name = obj.name
+        # 创建一个表示[0,0,1]的向量
+        vec = mathutils.Vector((0.0, 0.0, 1.0))
+
+        # 使用物体的矩阵世界属性来转换这个向量到世界坐标系
+        vec_world = obj.matrix_world @ vec
+
+        # 如果物体有父对象，那么再将向量从世界坐标系转换到父对象的坐标系
+        if obj.parent:
+            vec_parent = obj.parent.matrix_world.inverted() @ vec_world
+        else:
+            vec_parent = vec_world
+        
+        result['RIGHT_HAND_LINES'][obj_name] = vec_parent
+        
+    data = json.dumps(result, default=list, indent=4)
+    
+    with open(file_name, 'w') as f:
+        f.write(data)
+        print(f'Exported to {file_name}')
 
 
 if __name__ == "__main__":

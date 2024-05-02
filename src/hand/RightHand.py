@@ -1,6 +1,7 @@
 from typing import List, Dict
 import itertools
 import numpy as np
+import json
 
 rightFingers = {
     "p": 0,
@@ -167,9 +168,6 @@ def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
 def generatePossibleRightHands(
         usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
     possibleRightHands = []
-    # 如果usedString内有重复元素
-    if len(usedStrings) != len(set(usedStrings)):
-        print(f"{usedStrings}内有重复元素")
     # usedStrings元素去重
     usedStrings = list(set(usedStrings))
     if len(usedStrings) > 4:
@@ -214,15 +212,17 @@ def get_usedFingers(finger_list: List[object], usedStrings: List[int]):
     return [item['finger'] for item in finger_list if item['string'] in usedStrings]
 
 
-def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
-    from src.blender.blenderRecords import RIGHT_HAND_POSITIONS, RIGHT_HAND_DIRECTIONS, RIGHT_PIVOT_POSITIONS
+def caculateRightHandFingers(avatar:str,positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
+    json_file = f'asset\controller_infos\{avatar}.json'
+    with open(json_file, 'r') as f:
+        data = json.load(f)
     fingerMoveDistanceWhilePlay = 0.0045
     result = {}
 
     isArpeggio = usedRightFingers == [] and isAfterPlayed
 
     hand_index = "h_end" if isArpeggio else f"h{rightHandPosition}"
-    H_R = RIGHT_HAND_POSITIONS[hand_index]['position'].copy()
+    H_R = data['RIGHT_HAND_POSITIONS'][hand_index].copy()
     # 来一个随机大小为0.0005的随机移动
     random_move = np.random.rand(3) * 0.001
     H_R[0] += random_move[0]
@@ -231,46 +231,43 @@ def caculateRightHandFingers(positions: list, usedRightFingers: list, rightHandP
     result['H_R'] = H_R
 
     t_index = "p_end" if isArpeggio else f"p{positions[0]}"
-    T_R = RIGHT_HAND_POSITIONS[t_index]['position'].copy()
+    T_R = data['RIGHT_HAND_POSITIONS'][t_index].copy()
     if isAfterPlayed and "p" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"T_line"]['direction']
+        move = data['RIGHT_HAND_LINES']["T_line"]
         T_R[0] += move[0] * fingerMoveDistanceWhilePlay
         T_R[1] += move[1] * fingerMoveDistanceWhilePlay
         T_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['T_R'] = T_R
 
     i_index = "i_end" if isArpeggio else f"i{positions[1]}"
-    I_R = RIGHT_HAND_POSITIONS[i_index]['position'].copy()
+    I_R = data['RIGHT_HAND_POSITIONS'][i_index].copy()
     if isAfterPlayed and "i" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"I_line"]['direction']
+        move = data['RIGHT_HAND_LINES']["I_line"]
         I_R[0] += move[0] * fingerMoveDistanceWhilePlay
         I_R[1] += move[1] * fingerMoveDistanceWhilePlay
         I_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['I_R'] = I_R
 
     m_index = "m_end" if isArpeggio else f"m{positions[2]}"
-    M_R = RIGHT_HAND_POSITIONS[m_index]['position'].copy()
+    M_R = data['RIGHT_HAND_POSITIONS'][m_index].copy()
     if isAfterPlayed and "m" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"M_line"]['direction']
+        move = data['RIGHT_HAND_LINES']["M_line"]
         M_R[0] += move[0] * fingerMoveDistanceWhilePlay
         M_R[1] += move[1] * fingerMoveDistanceWhilePlay
         M_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['M_R'] = M_R
 
     r_index = "a_end" if isArpeggio else f"a{positions[3]}"
-    R_R = RIGHT_HAND_POSITIONS[r_index]['position'].copy()
+    R_R = data['RIGHT_HAND_POSITIONS'][r_index].copy()
     if isAfterPlayed and "a" in usedRightFingers:
-        move = RIGHT_HAND_DIRECTIONS[f"P_line"]['direction']
+        move = data['RIGHT_HAND_LINES']["R_line"]
         R_R[0] += move[0] * fingerMoveDistanceWhilePlay
         R_R[1] += move[1] * fingerMoveDistanceWhilePlay
         R_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['R_R'] = R_R
 
     p_index = "ch_end" if isArpeggio else f"ch{positions[3]}"
-    P_R = RIGHT_HAND_POSITIONS[p_index]['position']
+    P_R = data['RIGHT_HAND_POSITIONS'][p_index]
     result['P_R'] = P_R
-
-    result['TP_R'] = RIGHT_PIVOT_POSITIONS['TP_R']['position']
-    result['HP_R'] = RIGHT_PIVOT_POSITIONS['HP_R']['position']
 
     return result
