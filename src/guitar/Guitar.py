@@ -14,6 +14,7 @@ class Guitar():
         self._stringDistance = stringDistance
         self._fullString = fullString
         self.guitarStrings = guitarStrings
+        self.harm_notes = self.getHarmonicNotes()
 
     @property
     def getStringDistance(self) -> float:
@@ -22,3 +23,35 @@ class Guitar():
     @property
     def getFullString(self) -> float:
         return self._fullString
+
+    def getHarmonicNotes(self) -> int:
+        all_harm_notes = []
+        for string in self.guitarStrings:
+            base_note = string._baseNote
+            string_index = string._stringIndex
+            all_harm_notes.append({
+                "index": string_index,
+                "fret": 5,
+                "note": base_note.num + 24
+            })
+            all_harm_notes.append({
+                "index": string_index,
+                "fret": 7,
+                "note": base_note.num + 19
+            })
+            all_harm_notes.append({
+                "index": string_index,
+                "fret": 12,
+                "note": base_note.num + 12
+            })
+            all_harm_notes.append({
+                "index": string_index,
+                "fret": 4,
+                "note": base_note.num + 28
+            })
+            all_harm_notes.append({
+                "index": string_index,
+                "fret": 9,
+                "note": base_note.num + 28
+            })
+        return all_harm_notes

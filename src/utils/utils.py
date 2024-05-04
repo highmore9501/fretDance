@@ -11,24 +11,38 @@ def convertNotesToChord(notes: List[int], guitar: Guitar) -> List[Dict[str, int]
     :param guitar: guitar. 吉他
     :return: a list of possible positions on the guitar. 一个吉他上的可能位置列表
     """
+    all_harm_notes = guitar.harm_notes
     notePositions = []
     result = []
+
     for note in notes:
         possiblePositions = []
         # 从低到高开始计算在每根弦上的位置
         for guitarString in guitar.guitarStrings:
             guitarStringIndex = guitarString._stringIndex
-            fret = guitarString.getFretByNote(note)
-            if fret is False:
+            harm_notes = list(
+                filter(lambda x: x["index"] == guitarStringIndex, all_harm_notes))
+            harm_frets = [harm_note["fret"]
+                          for harm_note in harm_notes if harm_note["note"] == note]
+            normal_fret = guitarString.getFretByNote(note)
+            has_normal_fret = normal_fret is not False
+            if len(harm_frets) == 0 and not has_normal_fret:
                 continue
             # 低音弦的超高把位是无法按的
-            if guitarStringIndex > 2 and fret > 16:
+            if guitarStringIndex > 2 and normal_fret > 16 and not has_normal_fret:
                 continue
             # 如果当前音符在当前弦上有位置，那么记录下来
-            possiblePositions.append({
-                "index": guitarStringIndex,
-                "fret": fret
-            })
+            if len(harm_frets) > 0:
+                for fret in harm_frets:
+                    possiblePositions.append({
+                        "index": guitarStringIndex,
+                        "fret": fret
+                    })
+            if has_normal_fret:
+                possiblePositions.append({
+                    "index": guitarStringIndex,
+                    "fret": normal_fret
+                })
         notePositions.append(possiblePositions)
 
     # 对notePositions里所有可能的位置进行组合，确保生成的每个组合都不存在index重复的情况
