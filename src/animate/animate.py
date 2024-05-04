@@ -7,7 +7,7 @@ from ..hand.RightHand import caculateRightHandFingers
 from ..utils.utils import get_position_by_fret
 
 
-def leftHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
+def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
     """
     :params recorder: the path of the recorder file
     :params animation: the path of the file store information for animation
@@ -41,7 +41,7 @@ def leftHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes, 
         frame = calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick)
 
         # 计算左手的动画信息
-        fingerInfos = animatedLeftHand(base_data,item, normal)
+        fingerInfos = animatedLeftHand(base_data, item, normal)
         data_for_animation.append({
             "frame": frame,
             "fingerInfos": fingerInfos
@@ -61,7 +61,7 @@ def leftHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes, 
         json.dump(data_for_animation, f)
 
 
-def animatedLeftHand(base_data:object,item: object, normal: array):
+def animatedLeftHand(base_data: object, item: object, normal: array):
     leftHand = item["leftHand"]
     fingerInfos = {}
     hand_fret = 1
@@ -107,7 +107,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
 
         if press < 2 or press == 5 or need_recaculate:
             finger_string_numbers[fingerIndex] = stringIndex
-            finger_position = twiceLerpFingers(base_data,fret, stringIndex)
+            finger_position = twiceLerpFingers(base_data, fret, stringIndex)
         else:
             continue
 
@@ -133,7 +133,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     hand_state = max(differences, key=abs)
 
     hand_position = twiceLerp(
-        base_data = base_data,
+        base_data=base_data,
         hand_state=hand_state,
         value="H_L",
         valueType="position",
@@ -147,7 +147,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     fingerInfos["H_L"] = hand_position.tolist()
 
     hand_IK_pivot_position = twiceLerp(
-        base_data = base_data,
+        base_data=base_data,
         hand_state=hand_state,
         value="HP_L",
         valueType="position",
@@ -156,7 +156,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     fingerInfos["HP_L"] = hand_IK_pivot_position.tolist()
 
     hand_rotation_y = twiceLerp(
-        base_data = base_data,
+        base_data=base_data,
         hand_state=hand_state,
         value="H_rotation_Y_L",
         valueType="rotation",
@@ -165,7 +165,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     fingerInfos["H_rotation_Y_L"] = hand_rotation_y.tolist()
 
     hand_rotation_x = twiceLerp(
-        base_data = base_data,
+        base_data=base_data,
         hand_state=hand_state,
         value="H_rotation_X_L",
         valueType="rotation",
@@ -174,7 +174,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     fingerInfos["H_rotation_X_L"] = hand_rotation_x.tolist()
 
     thumb_position = twiceLerp(
-        base_data = base_data,
+        base_data=base_data,
         hand_state=hand_state,
         value="T_L",
         valueType="position",
@@ -183,7 +183,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     fingerInfos["T_L"] = thumb_position.tolist()
 
     thumb_IK_pivot_position = twiceLerp(
-        base_data = base_data,
+        base_data=base_data,
         hand_state=hand_state,
         value="TP_L",
         valueType="position",
@@ -194,7 +194,7 @@ def animatedLeftHand(base_data:object,item: object, normal: array):
     return fingerInfos
 
 
-def rightHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
+def rightHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
     data_for_animation = []
     with open(recorder, "r") as f:
         handDicts = json.load(f)
@@ -207,13 +207,13 @@ def rightHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes:
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
             rightHandPosition = right_hand["rightHandPosition"]
-            afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
+            # afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
 
             ready = caculateRightHandFingers(avatar,
-                rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
+                                             rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
 
             played = caculateRightHandFingers(avatar,
-                afterPlayedRightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
+                                              rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
 
             data_for_animation.append({
                 "frame": frame,
@@ -230,7 +230,7 @@ def rightHand2Animation(avatar:str,recorder: str, animation: str, tempo_changes:
         json.dump(data_for_animation, f)
 
 
-def twiceLerpFingers(base_data:object,fret: int, stringIndex: int) -> array:
+def twiceLerpFingers(base_data: object, fret: int, stringIndex: int) -> array:
     p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
     p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
     p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
@@ -244,7 +244,7 @@ def twiceLerpFingers(base_data:object,fret: int, stringIndex: int) -> array:
     return p_final
 
 
-def twiceLerp(base_data:object,hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
+def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
     data_dict = None
 
     if valueType == "position":
