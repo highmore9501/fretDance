@@ -184,6 +184,9 @@ def import_left_controller_info(position_name: Literal["P0", "P1", "P2", "P3"], 
 
 
 def import_right_controller_info(hand_position: int):
+    """
+    useage:这个方法用于在blender中快速将人物右手放置成某个特定的状态。方便进行下一步的微调
+    """
     collection = 'FingerPositionControllers'
     right_hand_test_positions = {
         0: {"p": 2, "i": 0, "m": 0, "a": 0},
@@ -290,7 +293,7 @@ def export_controller_info(file_name: str) -> None:
     for obj in RightHandPositions:
         obj_name = obj.name
         result['RIGHT_HAND_POSITIONS'][obj_name] = obj.location
-
+    # 因为是读取的四元旋转值，所以代表手指运动方向的五根线都需要把旋转模式改成四元数，否则读取出来的值为变为[1,0,0,0]
     for obj in RightHandLines:
         obj_name = obj.name
 
@@ -306,6 +309,55 @@ def export_controller_info(file_name: str) -> None:
     with open(file_name, 'w') as f:
         f.write(data)
         print(f'Exported to {file_name}')
+
+
+def connect_parent_to_child():
+    """
+    useage:这个方法用于在blender中将选中的骨骼的父骨骼的尾部连接到子骨骼的头部。之所以要这样做是因为blender在导入mmd模型时骨骼会出现奇怪的朝向，需要修正
+    """
+
+    # 切换到编辑模式
+    bpy.ops.object.mode_set(mode='EDIT')
+    selected_bones = bpy.context.selected_bones
+
+    # 检测所有骨骼是parent的次数
+    parent_count = {}
+    for pose_bone in selected_bones:
+        parent = pose_bone.parent
+        if parent:
+            if parent.name in parent_count:
+                parent_count[parent.name] += 1
+            else:
+                parent_count[parent.name] = 1
+
+    for pose_bone in selected_bones:
+        parent = pose_bone.parent
+        if parent and parent_count[parent.name] == 1:
+
+            parent.tail = pose_bone.head
+            # 切换回姿态模式
+
+
+def add_damped_tracks():
+    """
+    useage:这个方法用于在blender中给选中的骨骼添加damped track约束
+    """
+    # 切换到姿态模式
+    bpy.ops.object.mode_set(mode='POSE')
+
+    # 获取所有选中的骨骼
+    selected_bones = bpy.context.selected_pose_bones_from_active_object
+    target_name = 'Asuka_arm'
+    target = bpy.data.objects[target_name]
+
+    for pose_bone in selected_bones:
+
+        sub_target_bone_name = pose_bone.name.replace('hair', 'hair_dist')
+
+        # 添加damped track约束
+        pose_bone.constraints.new('DAMPED_TRACK')
+        pose_bone.constraints['Damped Track'].target = target
+        pose_bone.constraints['Damped Track'].subtarget = sub_target_bone_name
 
 
 if __name__ == "__main__":

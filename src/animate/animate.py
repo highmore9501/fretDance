@@ -262,6 +262,21 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
     else:
         print("valueType error")
 
+    """
+    当手型不为Normal，也就是hand_state不为0时，需要进行同一个品格上Normal和另一种手型之间的插值计算，另一个手型判断的依据是:
+        - 手型如果hand_state大于0就是0弦的Outer，如果hand_state小于0就是5弦的Inner
+    
+    不同于原有的两步插值计算，这个新的三步插值计算的顺序是:
+        - 先用Outer/Inner的的手型与对应的Normal手型进行插值计算，插值的依据就是hand_state的绝对值。越倾向于0就越接近Normal手型，越倾向于5就接近其它手型
+        - 用上一步计算得到的结果替换掉原本Normal手型对应的值，比如Inner会代替原来的P1和P3，Outer会代替原来的P0和P2
+        - 用上一步计算得到的结果和原来没替换掉的另外两个P值一起，通过string_index和fret值，进行两次插值计算，从而得到最终的结果
+    
+    当然还有另外一种计算的可能性，就是：
+        - 先用Normal的4个P值，先通过string_index和fret值进行两次插值计算，
+        - 然后再用插值计算的结果，以及hand_state的大小，与对应的Outer或者Inner值进行插值计算
+    
+    第二种可能性的话，非Normal手型的权重会更大，但是没有测试过这种写法的效果，因为暂时第一种写法在动画上的表现还不错
+    """
     if hand_state == 0:
         p_fret_0 = get_position_by_fret(fret, p0, p2)
         p_fret_1 = get_position_by_fret(fret, p1, p3)
