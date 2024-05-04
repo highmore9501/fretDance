@@ -51,7 +51,10 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
     midFile = MidiFile(midiFilePath)
     print(midFile)
 
-    midTrack = MidiFile(midiFilePath).tracks[useChannel]
+    try:
+        midTrack = MidiFile(midiFilePath).tracks[useChannel]
+    except:
+        midTrack = MidiFile(midiFilePath).tracks[0]
 
     notes_map = []
     note = []
