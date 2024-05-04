@@ -10,6 +10,7 @@ rightFingers = {
     "a": 3
 }
 
+# 右手在吉它上摆放有四个位置，在这四个位置上，每个手指可以接触到的弦的范围如下表所示，其中2就是常规的起始手型
 handPositionToFingerPositions = {
     0: {"p": (1, 2), "i": (0, 1), "m": (0, 1), "a": (0, 1)},
     1: {"p": (2, 4), "i": (0, 2), "m": (0, 1), "a": (0, 1)},
@@ -31,6 +32,7 @@ class RightHand():
         if rightFingerPositions == None:
             rightFingerPositions = self.rightFingerPositions
 
+        # 选择右手位置的优先顺序是2103。
         results = [2, 1, 0, 3]
         for hand_position in results:
             for finger in ['p', 'i', 'm', 'a']:
@@ -212,7 +214,7 @@ def get_usedFingers(finger_list: List[object], usedStrings: List[int]):
     return [item['finger'] for item in finger_list if item['string'] in usedStrings]
 
 
-def caculateRightHandFingers(avatar:str,positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
+def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: list, rightHandPosition: int, isAfterPlayed: bool = False) -> Dict:
     json_file = f'asset\controller_infos\{avatar}.json'
     with open(json_file, 'r') as f:
         data = json.load(f)
@@ -239,33 +241,35 @@ def caculateRightHandFingers(avatar:str,positions: list, usedRightFingers: list,
         T_R[2] += move[2] * fingerMoveDistanceWhilePlay
     result['T_R'] = T_R
 
+    # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的
     i_index = "i_end" if isArpeggio else f"i{positions[1]}"
     I_R = data['RIGHT_HAND_POSITIONS'][i_index].copy()
     if isAfterPlayed and "i" in usedRightFingers:
         move = data['RIGHT_HAND_LINES']["I_line"]
-        I_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        I_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        I_R[2] += move[2] * fingerMoveDistanceWhilePlay
+        I_R[0] -= move[0] * fingerMoveDistanceWhilePlay
+        I_R[1] -= move[1] * fingerMoveDistanceWhilePlay
+        I_R[2] -= move[2] * fingerMoveDistanceWhilePlay
     result['I_R'] = I_R
 
     m_index = "m_end" if isArpeggio else f"m{positions[2]}"
     M_R = data['RIGHT_HAND_POSITIONS'][m_index].copy()
     if isAfterPlayed and "m" in usedRightFingers:
         move = data['RIGHT_HAND_LINES']["M_line"]
-        M_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        M_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        M_R[2] += move[2] * fingerMoveDistanceWhilePlay
+        M_R[0] -= move[0] * fingerMoveDistanceWhilePlay
+        M_R[1] -= move[1] * fingerMoveDistanceWhilePlay
+        M_R[2] -= move[2] * fingerMoveDistanceWhilePlay
     result['M_R'] = M_R
 
     r_index = "a_end" if isArpeggio else f"a{positions[3]}"
     R_R = data['RIGHT_HAND_POSITIONS'][r_index].copy()
     if isAfterPlayed and "a" in usedRightFingers:
         move = data['RIGHT_HAND_LINES']["R_line"]
-        R_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        R_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        R_R[2] += move[2] * fingerMoveDistanceWhilePlay
+        R_R[0] -= move[0] * fingerMoveDistanceWhilePlay
+        R_R[1] -= move[1] * fingerMoveDistanceWhilePlay
+        R_R[2] -= move[2] * fingerMoveDistanceWhilePlay
     result['R_R'] = R_R
 
+    # ch指是不动的
     p_index = "ch_end" if isArpeggio else f"ch{positions[3]}"
     P_R = data['RIGHT_HAND_POSITIONS'][p_index]
     result['P_R'] = P_R

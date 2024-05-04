@@ -72,7 +72,7 @@ def remove_non_associated_bones(mesh_name: str, armature_name: str):
     :param armature_name: 骨骼名称
     useage:这个方法用于在blender中删除没有关联的骨骼。注意这个方法非常危险，执行前要想明白自己在做什么
     """
-    
+
     obj = bpy.data.objects[mesh_name]
     weight_groups_name = []
 
@@ -134,6 +134,7 @@ def compare_LR_groups():
     diff = list(set(remap_R).difference(set(remap_L)))
     print(diff)
 
+
 def find_non_associated_groups(armature_name: str, mesh_name: str):
     """    
     :param armature_name: 骨骼名称
@@ -154,7 +155,7 @@ def find_non_associated_groups(armature_name: str, mesh_name: str):
     print(non_associated_groups)
 
 
-def import_left_controller_info(position_name: Literal["P0", "P1", "P2","P3"], status_name: Literal["Normal", "Outer", "Inner"]):
+def import_left_controller_info(position_name: Literal["P0", "P1", "P2", "P3"], status_name: Literal["Normal", "Outer", "Inner"]):
     """    
     :param position_name: 位置名称
     :param status_name: 状态名称
@@ -181,6 +182,47 @@ def import_left_controller_info(position_name: Literal["P0", "P1", "P2","P3"], s
             except Exception as e:
                 print(f"Error: {e}")
 
+
+def import_right_controller_info(hand_position: int):
+    collection = 'FingerPositionControllers'
+    right_hand_test_positions = {
+        0: {"p": 2, "i": 0, "m": 0, "a": 0},
+        1: {"p": 3, "i": 1, "m": 1, "a": 0},
+        2: {"p": 5, "i": 2, "m": 1, "a": 0},
+        3: {"p": 5, "i": 4, "m": 3, "a": 2},
+        4: {"p": '_end', "i": '_end', "m": '_end', "a": '_end'}
+    }
+
+    finger_positions = right_hand_test_positions[hand_position]
+
+    # 设置右手位置
+    hand_position_name = f'h{hand_position}' if hand_position != 4 else 'h_end'
+    H_R = bpy.data.objects['H_R']
+    H_R.location = bpy.data.objects[hand_position_name].location
+
+    for obj in bpy.data.collections[collection].objects:
+        obj_name = obj.name
+        if obj_name.endswith("_L"):
+            continue
+        try:
+            if obj_name.startswith("I"):
+                position_ball_name = f'i{finger_positions["i"]}'
+            elif obj_name.startswith("M"):
+                position_ball_name = f'm{finger_positions["m"]}'
+            elif obj_name.startswith("R"):
+                position_ball_name = f'a{finger_positions["a"]}'
+            elif obj_name.startswith("P"):
+                position_ball_name = f'ch{finger_positions["a"]}'
+            elif obj_name.startswith("T"):
+                position_ball_name = f't{finger_positions["p"]}'
+            else:
+                print(f'Error happend. name: {obj_name}')
+            obj.location = bpy.data.objects[position_ball_name].location
+
+        except Exception as e:
+            print(f"Error: {e}")
+
+
 def add_random_rotation():
     """
     useage:这个方法用于在blender中给头发和裙子添加一些摆动效果
@@ -198,6 +240,7 @@ def add_random_rotation():
 
         pose_bone.rotation_euler = mathutils.Euler(
             [random.random()*0.05, random.random()*0.05, random.random()*0.05])
+
 
 def export_controller_info(file_name: str) -> None:
     """
@@ -235,7 +278,7 @@ def export_controller_info(file_name: str) -> None:
             result['INNER_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
         else:
             print(f'Error happend. type: {type_name}, name: {obj_name}')
-    
+
     for obj in RotationCones:
         obj_name = obj.name
         name_parts = obj_name.split('_', 2)
@@ -245,27 +288,21 @@ def export_controller_info(file_name: str) -> None:
         result['ROTATIONS'][controller_name][type_name][position_name] = obj.rotation_euler
 
     for obj in RightHandPositions:
-        obj_name = obj.name        
+        obj_name = obj.name
         result['RIGHT_HAND_POSITIONS'][obj_name] = obj.location
-    
+
     for obj in RightHandLines:
         obj_name = obj.name
-        # 创建一个表示[0,0,1]的向量
-        vec = mathutils.Vector((0.0, 0.0, 1.0))
 
-        # 使用物体的矩阵世界属性来转换这个向量到世界坐标系
-        vec_world = obj.matrix_world @ vec
+        obj_quaternion_normalized = obj.rotation_quaternion.normalized()
+        rot_matrix = obj_quaternion_normalized.to_matrix()
 
-        # 如果物体有父对象，那么再将向量从世界坐标系转换到父对象的坐标系
-        if obj.parent:
-            vec_parent = obj.parent.matrix_world.inverted() @ vec_world
-        else:
-            vec_parent = vec_world
-        
-        result['RIGHT_HAND_LINES'][obj_name] = vec_parent
-        
+        vec = rot_matrix @ mathutils.Vector((0, 0, 1))
+        print(f'{obj_name} quaternion: {vec}')
+        result['RIGHT_HAND_LINES'][obj_name] = vec
+
     data = json.dumps(result, default=list, indent=4)
-    
+
     with open(file_name, 'w') as f:
         f.write(data)
         print(f'Exported to {file_name}')
