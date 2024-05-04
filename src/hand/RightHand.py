@@ -218,7 +218,7 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
     json_file = f'asset\controller_infos\{avatar}.json'
     with open(json_file, 'r') as f:
         data = json.load(f)
-    fingerMoveDistanceWhilePlay = 0.0045
+    fingerMoveDistanceWhilePlay = 0.009
     result = {}
 
     isArpeggio = usedRightFingers == [] and isAfterPlayed
@@ -236,9 +236,9 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
     T_R = data['RIGHT_HAND_POSITIONS'][t_index].copy()
     if isAfterPlayed and "p" in usedRightFingers:
         move = data['RIGHT_HAND_LINES']["T_line"]
-        T_R[0] += move[0] * fingerMoveDistanceWhilePlay
-        T_R[1] += move[1] * fingerMoveDistanceWhilePlay
-        T_R[2] += move[2] * fingerMoveDistanceWhilePlay
+        T_R[0] += move[0] * fingerMoveDistanceWhilePlay * 0.8
+        T_R[1] += move[1] * fingerMoveDistanceWhilePlay * 0.8
+        T_R[2] += move[2] * fingerMoveDistanceWhilePlay * 0.8
     result['T_R'] = T_R
 
     # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的
