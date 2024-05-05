@@ -9,11 +9,8 @@ Demo video in BiliBili: [https://www.bilibili.com/video/BV14F4m1A7xX/](https://w
 - Install a virtual environment and run `python -m venv .venv`
 - Activate the virtual environment by running `source .venv/bin/activate`. For Windows, it is `.\.venv\Scripts\activate`
 - Install dependencies by running `pip install -r requirements.txt`
-- Open `FretDancer.ipynb`, set the kernel to `.venv`
-- You can set `midiFilePath` to your own MIDI file path, then run it
-- In the final `output` method, set the parameter to `True` to output the positions of fingers that are not pressing strings. If not set, it defaults to not showing the positions of fingers that are not pressing strings.
-- After the code in the notebook runs, there should be a JSON file with a `_animation` suffix in the output folder.
-- Open the `Kamisato_guitar.blender` file in `.src\blender`, copy the code from `blender.py` into Blender's script window, modify the path value of the JSON file, and then run the script to generate the animation.
+- Run `python main.py`, then select the avatar and midi file in the interface, set the `FPS` and the pitch of each string, and click submit to generate the json data required for the animation.
+- Open the corresponding blender file where the avatar is located, go to the `script` interface, select the `animate` file, then copy the absolute paths of the two json files generated in the previous step to the corresponding variables, and click run to generate the animation.
 
 ### Simple working principle
 

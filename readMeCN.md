@@ -9,11 +9,8 @@ BiliBili 成品视频：[https://www.bilibili.com/video/BV14F4m1A7xX/](https://w
 - 安装虚拟环境，运行 `python -m venv .venv`
 - 激活虚拟环境，运行 `source .venv/bin/activate`。如果是 windows 则为 `.\.venv\Scripts\activate`
 - 安装依赖，运行 `pip install -r requirements.txt`
-- 打开`FretDancer.ipynb`，设置内核为`.venv`
-- 可以将`midiFilePath`设置为你自己的 midi 文件路径，然后运行即可
-- 在最后的`output`方法中，设置参数为`True`，可以输出未按弦手指的位置。如果不设置，则默认为不显示未按弦手指的位置。
-- notebook 中的代码运行结束后，应该会在 output 文件夹中得到一个后缀带`_animation`的 json 文件，
-- 打开`.src\blender`中的`Kamisato_guitar.blender`文件，将`blender.py`里的代码复制到 blender 的 script 窗口中，修改 json 文件的路径值，然后运行脚本，即可生成动画。
+- 运行 `python main.py`，然后在界面中选择 avatar 和 midi 文件，设置好 `FPS`，以及各弦的音高，点击提交即可生成动画所需要的 json 数据。
+- 打开对应 avatar 所在的 blender 文件，去到`script`界面，选择`animate`文件，然后将上一步生成的两个 json 文件的绝对路径复制到对应的变量中，点击运行即可生成动画。
 
 ### 简单运行原理
 
