@@ -1,6 +1,7 @@
 from .hand.LeftHand import LeftHand
 from .hand.RightHand import RightHand
-import copy
+from src.midi.midiToNote import calculate_frame
+from typing import List
 import json
 
 
@@ -36,11 +37,14 @@ class HandPoseRecorder():
             print("real_tick: ", self.real_ticks[i])
             self.handPoseList[i].output(showOpenFinger)
 
-    def save(self, jsonFilePath: str):
+    def save(self, jsonFilePath: str, tempo_changes: List[tuple], ticks_per_beat: int, FPS: int):
+
         handsDict = []
         for i in range(1, len(self.handPoseList)):
             handInfo = []
             real_tick = self.real_ticks[i]
+            frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, real_tick)
             leftHand = self.handPoseList[i]
             for finger in leftHand.fingers:
                 fingerIndex = finger._fingerIndex
@@ -56,11 +60,12 @@ class HandPoseRecorder():
 
             handsDict.append({
                 "real_tick": real_tick,
+                "frame": frame,
                 "leftHand": handInfo
             })
 
         with open(jsonFilePath, 'w') as f:
-            json.dump(handsDict, f)
+            json.dump(handsDict, f, indent=4)
 
 
 class RightHandRecorder():
@@ -79,11 +84,13 @@ class RightHandRecorder():
     def currentHandPose(self) -> RightHand:
         return self.handPoseList[-1]
 
-    def save(self, jsonFilePath: str):
+    def save(self, jsonFilePath: str, tempo_changes: List[tuple], ticks_per_beat: int, FPS: int):
         handsDict = []
         for i in range(1, len(self.handPoseList)):
             handInfo = []
             real_tick = self.real_ticks[i]
+            frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, real_tick)
             rightHand = self.handPoseList[i]
             handInfo = {
                 "usedFingers": rightHand.usedFingers,
@@ -94,11 +101,12 @@ class RightHandRecorder():
 
             handsDict.append({
                 "real_tick": real_tick,
+                "frame": frame,
                 "rightHand": handInfo
             })
 
         with open(jsonFilePath, 'w') as f:
-            json.dump(handsDict, f)
+            json.dump(handsDict, f, indent=4)
 
     def output(self):
         print("Entropy: ", self.currentEntropy)
