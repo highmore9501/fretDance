@@ -1,6 +1,7 @@
 [
     {
         "real_tick": 0,
+        "frame": 0.0,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -11,7 +12,7 @@
                 }
             },
             {
-                "fingerIndex": 3,
+                "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 3,
                     "fret": 4,
@@ -19,34 +20,26 @@
                 }
             },
             {
-                "fingerIndex": -1,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 0,
-                    "fret": 0,
-                    "press": 0
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 1
                 }
             },
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 2,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
-                    "stringIndex": 2,
                     "fret": 3,
                     "press": 0
                 }
             }
-        ],
-        "frame": 0.0
+        ]
     },
     {
         "real_tick": 480,
+        "frame": 9.99999,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -57,7 +50,7 @@
                 }
             },
             {
-                "fingerIndex": 3,
+                "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 3,
                     "fret": 4,
@@ -68,7 +61,7 @@
                 "fingerIndex": -1,
                 "fingerInfo": {
                     "stringIndex": 0,
-                    "fret": 0,
+                    "fret": 1,
                     "press": 0
                 }
             },
@@ -76,45 +69,45 @@
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 2,
+                    "fret": 3,
                     "press": 0
                 }
             },
             {
-                "fingerIndex": 2,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 3,
-                    "press": 0
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 5
                 }
             }
-        ],
-        "frame": 7.999992
+        ]
     },
     {
         "real_tick": 720,
+        "frame": 14.999984999999999,
         "leftHand": [
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
             {
                 "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
+                    "stringIndex": 5,
+                    "fret": 5,
                     "press": 1
                 }
             },
             {
                 "fingerIndex": -1,
                 "fingerInfo": {
-                    "stringIndex": 0,
-                    "fret": 0,
+                    "stringIndex": 2,
+                    "fret": 1,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": -1,
+                "fingerInfo": {
+                    "stringIndex": 1,
+                    "fret": 1,
                     "press": 0
                 }
             },
@@ -122,30 +115,38 @@
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 2,
+                    "fret": 3,
                     "press": 0
                 }
             },
             {
                 "fingerIndex": 2,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 3,
-                    "press": 0
+                    "stringIndex": 3,
+                    "fret": 4,
+                    "press": 5
+                }
+            },
+            {
+                "fingerIndex": 4,
+                "fingerInfo": {
+                    "stringIndex": 4,
+                    "fret": 5,
+                    "press": 5
                 }
             }
-        ],
-        "frame": 11.999988
+        ]
     },
     {
         "real_tick": 960,
+        "frame": 19.99998,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 4,
                 "fingerInfo": {
                     "stringIndex": 4,
                     "fret": 5,
-                    "press": 1
+                    "press": 3
                 }
             },
             {
@@ -153,14 +154,6 @@
                 "fingerInfo": {
                     "stringIndex": 3,
                     "fret": 4,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 5,
                     "press": 1
                 }
             },
@@ -179,15 +172,23 @@
                     "fret": 3,
                     "press": 0
                 }
+            },
+            {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 5
+                }
             }
-        ],
-        "frame": 15.999984
+        ]
     },
     {
         "real_tick": 1440,
+        "frame": 29.999969999999998,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 4,
                 "fingerInfo": {
                     "stringIndex": 4,
                     "fret": 5,
@@ -211,41 +212,33 @@
                 }
             },
             {
-                "fingerIndex": 4,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 2,
+                    "stringIndex": 5,
                     "fret": 5,
                     "press": 5
                 }
             }
-        ],
-        "frame": 23.999976
+        ]
     },
     {
         "real_tick": 1680,
+        "frame": 34.999964999999996,
         "leftHand": [
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 2,
+                    "stringIndex": 4,
                     "fret": 5,
-                    "press": 1
+                    "press": 3
                 }
             },
             {
-                "fingerIndex": -1,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 0,
-                    "fret": 1,
-                    "press": 0
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 1
                 }
             },
             {
@@ -264,26 +257,26 @@
                     "press": 5
                 }
             }
-        ],
-        "frame": 27.999972
+        ]
     },
     {
         "real_tick": 1920,
+        "frame": 39.99996,
         "leftHand": [
             {
-                "fingerIndex": 2,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
+                    "stringIndex": 5,
+                    "fret": 5,
                     "press": 1
                 }
             },
             {
-                "fingerIndex": 4,
+                "fingerIndex": -1,
                 "fingerInfo": {
                     "stringIndex": 1,
-                    "fret": 5,
-                    "press": 1
+                    "fret": 1,
+                    "press": 0
                 }
             },
             {
@@ -295,41 +288,49 @@
                 }
             },
             {
-                "fingerIndex": 3,
+                "fingerIndex": 2,
+                "fingerInfo": {
+                    "stringIndex": 3,
+                    "fret": 4,
+                    "press": 5
+                }
+            },
+            {
+                "fingerIndex": 4,
                 "fingerInfo": {
                     "stringIndex": 4,
                     "fret": 5,
                     "press": 5
                 }
             }
-        ],
-        "frame": 31.999968
+        ]
     },
     {
         "real_tick": 2400,
+        "frame": 49.99995,
         "leftHand": [
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
-                    "press": 1
-                }
-            },
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 1,
+                    "stringIndex": 3,
                     "fret": 5,
                     "press": 3
+                }
+            },
+            {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 1
+                }
+            },
+            {
+                "fingerIndex": -1,
+                "fingerInfo": {
+                    "stringIndex": 1,
+                    "fret": 1,
+                    "press": 0
                 }
             },
             {
@@ -339,19 +340,35 @@
                     "fret": 3,
                     "press": 0
                 }
+            },
+            {
+                "fingerIndex": 2,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 4,
+                    "press": 0
+                }
             }
-        ],
-        "frame": 39.99996
+        ]
     },
     {
         "real_tick": 4080,
+        "frame": 84.999915,
         "leftHand": [
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
+                    "stringIndex": 1,
                     "fret": 3,
                     "press": 2
+                }
+            },
+            {
+                "fingerIndex": -1,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 1,
+                    "press": 0
                 }
             },
             {
@@ -359,13 +376,13 @@
                 "fingerInfo": {
                     "stringIndex": 2,
                     "fret": 4,
-                    "press": 5
+                    "press": 0
                 }
             },
             {
                 "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 3,
+                    "stringIndex": 5,
                     "fret": 5,
                     "press": 5
                 }
@@ -373,19 +390,19 @@
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 1,
+                    "stringIndex": 3,
                     "fret": 5,
                     "press": 5
                 }
             }
-        ],
-        "frame": 67.999932
+        ]
     },
     {
         "real_tick": 4320,
+        "frame": 89.99991,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 4,
                 "fingerInfo": {
                     "stringIndex": 3,
                     "fret": 5,
@@ -393,47 +410,39 @@
                 }
             },
             {
-                "fingerIndex": -1,
+                "fingerIndex": 2,
                 "fingerInfo": {
-                    "stringIndex": 1,
-                    "fret": 1,
-                    "press": 0
+                    "stringIndex": 2,
+                    "fret": 4,
+                    "press": 1
                 }
             },
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
+                    "stringIndex": 1,
                     "fret": 3,
                     "press": 5
                 }
             },
             {
-                "fingerIndex": 2,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
-                    "press": 5
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 1,
+                    "stringIndex": 5,
                     "fret": 5,
                     "press": 5
                 }
             }
-        ],
-        "frame": 71.999928
+        ]
     },
     {
         "real_tick": 4560,
+        "frame": 94.999905,
         "leftHand": [
             {
                 "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 1,
+                    "stringIndex": 5,
                     "fret": 5,
                     "press": 1
                 }
@@ -441,7 +450,7 @@
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
+                    "stringIndex": 1,
                     "fret": 3,
                     "press": 5
                 }
@@ -457,38 +466,38 @@
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 6,
-                    "press": 0
+                    "stringIndex": 3,
+                    "fret": 5,
+                    "press": 5
                 }
             }
-        ],
-        "frame": 75.999924
+        ]
     },
     {
         "real_tick": 4800,
+        "frame": 99.9999,
         "leftHand": [
             {
-                "fingerIndex": 4,
+                "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 7,
+                    "stringIndex": 3,
+                    "fret": 2,
                     "press": 1
+                }
+            },
+            {
+                "fingerIndex": -1,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 0,
+                    "press": 0
                 }
             },
             {
                 "fingerIndex": 2,
                 "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 1,
-                "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 4,
+                    "fret": 3,
                     "press": 0
                 }
             },
@@ -496,18 +505,26 @@
                 "fingerIndex": 3,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 6,
+                    "fret": 4,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 4,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 5,
                     "press": 0
                 }
             }
-        ],
-        "frame": 79.99992
+        ]
     },
     {
         "real_tick": 5040,
+        "frame": 104.999895,
         "leftHand": [
             {
-                "fingerIndex": 2,
+                "fingerIndex": 3,
                 "fingerInfo": {
                     "stringIndex": 4,
                     "fret": 5,
@@ -515,42 +532,34 @@
                 }
             },
             {
-                "fingerIndex": -1,
+                "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 2,
-                    "press": 0
+                    "stringIndex": 3,
+                    "fret": 5,
+                    "press": 1
                 }
             },
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 2,
+                    "fret": 3,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 2,
+                "fingerInfo": {
+                    "stringIndex": 2,
                     "fret": 4,
                     "press": 0
                 }
-            },
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 6,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 7,
-                    "press": 0
-                }
             }
-        ],
-        "frame": 83.999916
+        ]
     },
     {
         "real_tick": 5280,
+        "frame": 109.99989,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -584,11 +593,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 87.999912
+        ]
     },
     {
         "real_tick": 5520,
+        "frame": 114.999885,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -622,11 +631,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 91.999908
+        ]
     },
     {
         "real_tick": 5760,
+        "frame": 119.99987999999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -668,11 +677,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 95.999904
+        ]
     },
     {
         "real_tick": 6000,
+        "frame": 124.999875,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -706,11 +715,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 99.9999
+        ]
     },
     {
         "real_tick": 6480,
+        "frame": 134.999865,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -752,11 +761,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 107.99989199999999
+        ]
     },
     {
         "real_tick": 6720,
+        "frame": 139.99985999999998,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -798,11 +807,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 111.999888
+        ]
     },
     {
         "real_tick": 6960,
+        "frame": 144.99985500000003,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -844,11 +853,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 115.99988400000001
+        ]
     },
     {
         "real_tick": 7200,
+        "frame": 149.99985,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -882,11 +891,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 119.99988
+        ]
     },
     {
         "real_tick": 7440,
+        "frame": 154.999845,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -920,11 +929,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 123.999876
+        ]
     },
     {
         "real_tick": 7920,
+        "frame": 164.999835,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -966,11 +975,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 131.999868
+        ]
     },
     {
         "real_tick": 8160,
+        "frame": 169.99983,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1012,11 +1021,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 135.999864
+        ]
     },
     {
         "real_tick": 8640,
+        "frame": 179.99982,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -1050,11 +1059,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 143.999856
+        ]
     },
     {
         "real_tick": 8880,
+        "frame": 184.99981499999998,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -1088,11 +1097,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 147.999852
+        ]
     },
     {
         "real_tick": 9360,
+        "frame": 194.999805,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -1126,11 +1135,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 155.999844
+        ]
     },
     {
         "real_tick": 9600,
+        "frame": 199.9998,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -1164,11 +1173,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 159.99984
+        ]
     },
     {
         "real_tick": 10080,
+        "frame": 209.99979,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -1202,11 +1211,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 167.999832
+        ]
     },
     {
         "real_tick": 10560,
+        "frame": 219.99978,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1248,11 +1257,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 175.999824
+        ]
     },
     {
         "real_tick": 10800,
+        "frame": 224.999775,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -1286,11 +1295,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 179.99982
+        ]
     },
     {
         "real_tick": 11040,
+        "frame": 229.99977,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -1332,11 +1341,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 183.999816
+        ]
     },
     {
         "real_tick": 11760,
+        "frame": 244.99975500000002,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -1378,11 +1387,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 195.999804
+        ]
     },
     {
         "real_tick": 12000,
+        "frame": 249.99975,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1432,11 +1441,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 199.9998
+        ]
     },
     {
         "real_tick": 12240,
+        "frame": 254.99974500000002,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1478,11 +1487,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 203.999796
+        ]
     },
     {
         "real_tick": 12480,
+        "frame": 259.99974,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -1524,11 +1533,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 207.999792
+        ]
     },
     {
         "real_tick": 12720,
+        "frame": 264.999735,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1578,11 +1587,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 211.999788
+        ]
     },
     {
         "real_tick": 12960,
+        "frame": 269.99973,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -1616,11 +1625,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 215.99978399999998
+        ]
     },
     {
         "real_tick": 13200,
+        "frame": 274.999725,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -1654,11 +1663,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 219.99978
+        ]
     },
     {
         "real_tick": 13440,
+        "frame": 279.99971999999997,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1708,11 +1717,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 223.999776
+        ]
     },
     {
         "real_tick": 13680,
+        "frame": 284.999715,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -1746,11 +1755,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 227.99977199999998
+        ]
     },
     {
         "real_tick": 14160,
+        "frame": 294.999705,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1792,11 +1801,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 235.99976400000003
+        ]
     },
     {
         "real_tick": 14400,
+        "frame": 299.9997,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -1838,11 +1847,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 239.99976
+        ]
     },
     {
         "real_tick": 14640,
+        "frame": 304.99969500000003,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -1884,11 +1893,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 243.999756
+        ]
     },
     {
         "real_tick": 14880,
+        "frame": 309.99969,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -1922,11 +1931,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 247.999752
+        ]
     },
     {
         "real_tick": 15120,
+        "frame": 314.999685,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -1960,11 +1969,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 251.999748
+        ]
     },
     {
         "real_tick": 15600,
+        "frame": 324.99967499999997,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2006,11 +2015,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 259.99974
+        ]
     },
     {
         "real_tick": 15840,
+        "frame": 329.99967,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -2052,11 +2061,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 263.999736
+        ]
     },
     {
         "real_tick": 16320,
+        "frame": 339.99966,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2090,11 +2099,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 271.999728
+        ]
     },
     {
         "real_tick": 16560,
+        "frame": 344.999655,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2128,11 +2137,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 275.999724
+        ]
     },
     {
         "real_tick": 17040,
+        "frame": 354.999645,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2166,11 +2175,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 283.99971600000003
+        ]
     },
     {
         "real_tick": 17280,
+        "frame": 359.99964,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -2204,11 +2213,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 287.999712
+        ]
     },
     {
         "real_tick": 17760,
+        "frame": 369.99962999999997,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2242,11 +2251,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 295.999704
+        ]
     },
     {
         "real_tick": 18240,
+        "frame": 379.99962,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -2288,11 +2297,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 303.999696
+        ]
     },
     {
         "real_tick": 18480,
+        "frame": 384.99961499999995,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2326,11 +2335,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 307.999692
+        ]
     },
     {
         "real_tick": 18720,
+        "frame": 389.99961,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2372,11 +2381,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 311.999688
+        ]
     },
     {
         "real_tick": 19680,
+        "frame": 409.99959,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2410,11 +2419,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 327.99967200000003
+        ]
     },
     {
         "real_tick": 19920,
+        "frame": 414.999585,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2448,11 +2457,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 331.999668
+        ]
     },
     {
         "real_tick": 20160,
+        "frame": 419.99958,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -2486,11 +2495,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 335.999664
+        ]
     },
     {
         "real_tick": 20400,
+        "frame": 424.999575,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -2524,11 +2533,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 339.99966
+        ]
     },
     {
         "real_tick": 20640,
+        "frame": 429.99957,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -2562,11 +2571,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 343.99965599999996
+        ]
     },
     {
         "real_tick": 20880,
+        "frame": 434.99956499999996,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -2608,11 +2617,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 347.99965199999997
+        ]
     },
     {
         "real_tick": 21120,
+        "frame": 439.99956,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -2654,11 +2663,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 351.999648
+        ]
     },
     {
         "real_tick": 21360,
+        "frame": 444.99955500000004,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -2692,11 +2701,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 355.999644
+        ]
     },
     {
         "real_tick": 21840,
+        "frame": 454.999545,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2730,11 +2739,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 363.999636
+        ]
     },
     {
         "real_tick": 22080,
+        "frame": 459.99954,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2768,11 +2777,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 367.999632
+        ]
     },
     {
         "real_tick": 22320,
+        "frame": 464.999535,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2806,11 +2815,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 371.99962800000003
+        ]
     },
     {
         "real_tick": 22560,
+        "frame": 469.99953,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -2844,11 +2853,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 375.999624
+        ]
     },
     {
         "real_tick": 22800,
+        "frame": 474.999525,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -2882,11 +2891,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 379.99962
+        ]
     },
     {
         "real_tick": 23040,
+        "frame": 479.99951999999996,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2920,11 +2929,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 383.999616
+        ]
     },
     {
         "real_tick": 23520,
+        "frame": 489.99951000000004,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2958,11 +2967,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 391.999608
+        ]
     },
     {
         "real_tick": 23760,
+        "frame": 494.999505,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -2996,11 +3005,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 395.999604
+        ]
     },
     {
         "real_tick": 24000,
+        "frame": 499.9995,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3034,11 +3043,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 399.9996
+        ]
     },
     {
         "real_tick": 24240,
+        "frame": 504.99949499999997,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3072,11 +3081,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 403.999596
+        ]
     },
     {
         "real_tick": 24480,
+        "frame": 509.99949000000004,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -3110,11 +3119,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 407.999592
+        ]
     },
     {
         "real_tick": 24720,
+        "frame": 514.9994849999999,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -3156,11 +3165,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 411.99958799999996
+        ]
     },
     {
         "real_tick": 24960,
+        "frame": 519.99948,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -3202,11 +3211,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 415.999584
+        ]
     },
     {
         "real_tick": 25200,
+        "frame": 524.9994750000001,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3240,11 +3249,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 419.99958000000004
+        ]
     },
     {
         "real_tick": 25440,
+        "frame": 529.99947,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3278,11 +3287,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 423.999576
+        ]
     },
     {
         "real_tick": 25680,
+        "frame": 534.999465,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3316,11 +3325,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 427.99957200000006
+        ]
     },
     {
         "real_tick": 25920,
+        "frame": 539.99946,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3354,11 +3363,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 431.99956799999995
+        ]
     },
     {
         "real_tick": 26160,
+        "frame": 544.999455,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3400,11 +3409,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 435.999564
+        ]
     },
     {
         "real_tick": 27360,
+        "frame": 569.99943,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3438,11 +3447,11 @@
                     "press": 5
                 }
             }
-        ],
-        "frame": 455.99954399999996
+        ]
     },
     {
         "real_tick": 27600,
+        "frame": 574.999425,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3476,11 +3485,11 @@
                     "press": 5
                 }
             }
-        ],
-        "frame": 459.99954
+        ]
     },
     {
         "real_tick": 27840,
+        "frame": 579.9994200000001,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -3514,11 +3523,11 @@
                     "press": 5
                 }
             }
-        ],
-        "frame": 463.99953600000003
+        ]
     },
     {
         "real_tick": 28080,
+        "frame": 584.999415,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3552,11 +3561,11 @@
                     "press": 5
                 }
             }
-        ],
-        "frame": 467.999532
+        ]
     },
     {
         "real_tick": 28320,
+        "frame": 589.99941,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3590,11 +3599,11 @@
                     "press": 5
                 }
             }
-        ],
-        "frame": 471.99952800000005
+        ]
     },
     {
         "real_tick": 28560,
+        "frame": 594.999405,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3628,11 +3637,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 475.99952399999995
+        ]
     },
     {
         "real_tick": 28800,
+        "frame": 599.9994,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3666,11 +3675,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 479.99952
+        ]
     },
     {
         "real_tick": 29040,
+        "frame": 604.9993949999999,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3704,11 +3713,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 483.99951599999997
+        ]
     },
     {
         "real_tick": 29520,
+        "frame": 614.999385,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -3742,11 +3751,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 491.999508
+        ]
     },
     {
         "real_tick": 29760,
+        "frame": 619.99938,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3780,11 +3789,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 495.999504
+        ]
     },
     {
         "real_tick": 30000,
+        "frame": 624.9993750000001,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3818,11 +3827,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 499.9995
+        ]
     },
     {
         "real_tick": 30240,
+        "frame": 629.99937,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -3856,11 +3865,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 503.999496
+        ]
     },
     {
         "real_tick": 30480,
+        "frame": 634.999365,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -3894,11 +3903,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 507.99949200000003
+        ]
     },
     {
         "real_tick": 30720,
+        "frame": 639.99936,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -3932,11 +3941,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 511.999488
+        ]
     },
     {
         "real_tick": 30960,
+        "frame": 644.999355,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -3986,11 +3995,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 515.999484
+        ]
     },
     {
         "real_tick": 31440,
+        "frame": 654.9993450000001,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -4024,11 +4033,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 523.999476
+        ]
     },
     {
         "real_tick": 31680,
+        "frame": 659.99934,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4078,11 +4087,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 527.999472
+        ]
     },
     {
         "real_tick": 32160,
+        "frame": 669.99933,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -4116,11 +4125,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 535.999464
+        ]
     },
     {
         "real_tick": 32400,
+        "frame": 674.999325,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4178,11 +4187,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 539.99946
+        ]
     },
     {
         "real_tick": 32640,
+        "frame": 679.99932,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4240,11 +4249,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 543.999456
+        ]
     },
     {
         "real_tick": 33120,
+        "frame": 689.99931,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -4286,11 +4295,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 551.999448
+        ]
     },
     {
         "real_tick": 33360,
+        "frame": 694.9993049999999,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -4324,11 +4333,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 555.999444
+        ]
     },
     {
         "real_tick": 33840,
+        "frame": 704.999295,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -4362,11 +4371,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 563.999436
+        ]
     },
     {
         "real_tick": 34320,
+        "frame": 714.999285,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -4400,11 +4409,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 571.999428
+        ]
     },
     {
         "real_tick": 34560,
+        "frame": 719.99928,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4446,11 +4455,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 575.999424
+        ]
     },
     {
         "real_tick": 34800,
+        "frame": 724.9992749999999,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -4484,11 +4493,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 579.99942
+        ]
     },
     {
         "real_tick": 35040,
+        "frame": 729.99927,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -4522,11 +4531,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 583.999416
+        ]
     },
     {
         "real_tick": 35280,
+        "frame": 734.999265,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4568,11 +4577,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 587.999412
+        ]
     },
     {
         "real_tick": 35520,
+        "frame": 739.9992599999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -4606,11 +4615,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 591.999408
+        ]
     },
     {
         "real_tick": 36000,
+        "frame": 749.99925,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4652,11 +4661,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 599.9993999999999
+        ]
     },
     {
         "real_tick": 36240,
+        "frame": 754.999245,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -4690,11 +4699,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 603.999396
+        ]
     },
     {
         "real_tick": 36720,
+        "frame": 764.999235,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -4736,11 +4745,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 611.999388
+        ]
     },
     {
         "real_tick": 36960,
+        "frame": 769.9992299999999,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -4774,11 +4783,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 615.999384
+        ]
     },
     {
         "real_tick": 37200,
+        "frame": 774.999225,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4820,11 +4829,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 619.99938
+        ]
     },
     {
         "real_tick": 37440,
+        "frame": 779.99922,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -4858,11 +4867,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 623.999376
+        ]
     },
     {
         "real_tick": 37680,
+        "frame": 784.999215,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4904,11 +4913,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 627.999372
+        ]
     },
     {
         "real_tick": 37920,
+        "frame": 789.9992100000001,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4950,11 +4959,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 631.999368
+        ]
     },
     {
         "real_tick": 38400,
+        "frame": 799.9992,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -4996,11 +5005,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 639.99936
+        ]
     },
     {
         "real_tick": 38640,
+        "frame": 804.999195,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -5034,11 +5043,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 643.999356
+        ]
     },
     {
         "real_tick": 38880,
+        "frame": 809.99919,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -5072,11 +5081,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 647.999352
+        ]
     },
     {
         "real_tick": 39120,
+        "frame": 814.999185,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5118,11 +5127,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 651.9993479999999
+        ]
     },
     {
         "real_tick": 39360,
+        "frame": 819.99918,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5156,11 +5165,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 655.9993440000001
+        ]
     },
     {
         "real_tick": 39840,
+        "frame": 829.99917,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5202,11 +5211,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 663.999336
+        ]
     },
     {
         "real_tick": 40080,
+        "frame": 834.9991650000001,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5240,11 +5249,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 667.9993320000001
+        ]
     },
     {
         "real_tick": 40800,
+        "frame": 849.99915,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5294,11 +5303,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 679.99932
+        ]
     },
     {
         "real_tick": 40920,
+        "frame": 852.4991474999999,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -5332,11 +5341,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 681.9993179999999
+        ]
     },
     {
         "real_tick": 41040,
+        "frame": 854.999145,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5378,11 +5387,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 683.999316
+        ]
     },
     {
         "real_tick": 41160,
+        "frame": 857.4991425,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -5416,11 +5425,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 685.999314
+        ]
     },
     {
         "real_tick": 41280,
+        "frame": 859.99914,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5462,11 +5471,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 687.9993119999999
+        ]
     },
     {
         "real_tick": 41400,
+        "frame": 862.4991375000001,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5500,11 +5509,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 689.99931
+        ]
     },
     {
         "real_tick": 41520,
+        "frame": 864.999135,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -5538,11 +5547,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 691.999308
+        ]
     },
     {
         "real_tick": 41640,
+        "frame": 867.4991325,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5584,11 +5593,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 693.9993059999999
+        ]
     },
     {
         "real_tick": 41760,
+        "frame": 869.9991299999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5622,11 +5631,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 695.9993039999999
+        ]
     },
     {
         "real_tick": 42480,
+        "frame": 884.999115,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -5660,11 +5669,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 707.999292
+        ]
     },
     {
         "real_tick": 42720,
+        "frame": 889.9991100000001,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -5698,11 +5707,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 711.999288
+        ]
     },
     {
         "real_tick": 42960,
+        "frame": 894.999105,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5744,11 +5753,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 715.999284
+        ]
     },
     {
         "real_tick": 43200,
+        "frame": 899.9991,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5782,11 +5791,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 719.99928
+        ]
     },
     {
         "real_tick": 43680,
+        "frame": 909.99909,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5828,11 +5837,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 727.999272
+        ]
     },
     {
         "real_tick": 43920,
+        "frame": 914.9990849999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -5866,11 +5875,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 731.999268
+        ]
     },
     {
         "real_tick": 44400,
+        "frame": 924.999075,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -5912,11 +5921,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 739.9992599999999
+        ]
     },
     {
         "real_tick": 44640,
+        "frame": 929.99907,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -5950,11 +5959,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 743.9992560000001
+        ]
     },
     {
         "real_tick": 44880,
+        "frame": 934.9990650000001,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -5996,11 +6005,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 747.9992520000001
+        ]
     },
     {
         "real_tick": 45120,
+        "frame": 939.99906,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -6034,11 +6043,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 751.999248
+        ]
     },
     {
         "real_tick": 45360,
+        "frame": 944.999055,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -6080,11 +6089,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 755.9992440000001
+        ]
     },
     {
         "real_tick": 45600,
+        "frame": 949.99905,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -6126,11 +6135,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 759.99924
+        ]
     },
     {
         "real_tick": 46080,
+        "frame": 959.9990399999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -6164,11 +6173,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 767.999232
+        ]
     },
     {
         "real_tick": 46320,
+        "frame": 964.999035,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -6210,11 +6219,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 771.999228
+        ]
     },
     {
         "real_tick": 46560,
+        "frame": 969.99903,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -6256,11 +6265,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 775.9992239999999
+        ]
     },
     {
         "real_tick": 46800,
+        "frame": 974.9990249999998,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -6302,11 +6311,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 779.9992199999999
+        ]
     },
     {
         "real_tick": 47040,
+        "frame": 979.9990200000001,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -6348,11 +6357,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 783.999216
+        ]
     },
     {
         "real_tick": 47520,
+        "frame": 989.99901,
         "leftHand": [
             {
                 "fingerIndex": 4,
@@ -6386,133 +6395,141 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 791.999208
+        ]
     },
     {
         "real_tick": 47760,
+        "frame": 994.9990050000001,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 4,
                 "fingerInfo": {
                     "stringIndex": 4,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": -1,
-                "fingerInfo": {
-                    "stringIndex": 0,
-                    "fret": 1,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 1,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 3,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
-                    "press": 0
-                }
-            }
-        ],
-        "frame": 795.9992040000001
-    },
-    {
-        "real_tick": 48000,
-        "leftHand": [
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 1,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 1,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 3,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 5,
-                    "press": 5
-                }
-            }
-        ],
-        "frame": 799.9992
-    },
-    {
-        "real_tick": 48480,
-        "leftHand": [
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
-                    "press": 1
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 1,
                     "fret": 5,
                     "press": 3
                 }
             },
             {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 1
+                }
+            },
+            {
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 2,
                     "fret": 3,
                     "press": 0
                 }
+            },
+            {
+                "fingerIndex": 2,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 4,
+                    "press": 0
+                }
             }
-        ],
-        "frame": 807.999192
+        ]
+    },
+    {
+        "real_tick": 48000,
+        "frame": 999.999,
+        "leftHand": [
+            {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 1
+                }
+            },
+            {
+                "fingerIndex": -1,
+                "fingerInfo": {
+                    "stringIndex": 1,
+                    "fret": 1,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 1,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 3,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 2,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 4,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 4,
+                "fingerInfo": {
+                    "stringIndex": 4,
+                    "fret": 5,
+                    "press": 5
+                }
+            }
+        ]
+    },
+    {
+        "real_tick": 48480,
+        "frame": 1009.9989899999999,
+        "leftHand": [
+            {
+                "fingerIndex": 4,
+                "fingerInfo": {
+                    "stringIndex": 3,
+                    "fret": 5,
+                    "press": 3
+                }
+            },
+            {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 5,
+                    "fret": 5,
+                    "press": 1
+                }
+            },
+            {
+                "fingerIndex": -1,
+                "fingerInfo": {
+                    "stringIndex": 1,
+                    "fret": 1,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 1,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 3,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 2,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 4,
+                    "press": 0
+                }
+            }
+        ]
     },
     {
         "real_tick": 50160,
+        "frame": 1044.998955,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -6535,13 +6552,13 @@
                 "fingerInfo": {
                     "stringIndex": 2,
                     "fret": 4,
-                    "press": 5
+                    "press": 0
                 }
             },
             {
                 "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 3,
+                    "stringIndex": 5,
                     "fret": 5,
                     "press": 5
                 }
@@ -6549,19 +6566,19 @@
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 1,
+                    "stringIndex": 3,
                     "fret": 5,
                     "press": 5
                 }
             }
-        ],
-        "frame": 835.999164
+        ]
     },
     {
         "real_tick": 50400,
+        "frame": 1049.9989500000001,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 2,
                     "fret": 5,
@@ -6571,35 +6588,35 @@
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 3,
-                    "press": 5
-                }
-            },
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
                     "stringIndex": 2,
                     "fret": 4,
                     "press": 0
                 }
             },
             {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 6,
+                    "press": 0
+                }
+            },
+            {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 1,
-                    "fret": 5,
-                    "press": 5
+                    "stringIndex": 2,
+                    "fret": 7,
+                    "press": 0
                 }
             }
-        ],
-        "frame": 839.9991600000001
+        ]
     },
     {
         "real_tick": 50640,
+        "frame": 1054.998945,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 3,
                     "fret": 5,
@@ -6609,76 +6626,76 @@
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 3,
-                    "press": 5
-                }
-            },
-            {
-                "fingerIndex": 2,
-                "fingerInfo": {
                     "stringIndex": 2,
                     "fret": 4,
                     "press": 0
                 }
             },
             {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 6,
+                    "press": 0
+                }
+            },
+            {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 1,
-                    "fret": 5,
-                    "press": 5
+                    "stringIndex": 2,
+                    "fret": 7,
+                    "press": 0
                 }
             }
-        ],
-        "frame": 843.9991560000001
+        ]
     },
     {
         "real_tick": 50880,
+        "frame": 1059.99894,
         "leftHand": [
+            {
+                "fingerIndex": 3,
+                "fingerInfo": {
+                    "stringIndex": 4,
+                    "fret": 7,
+                    "press": 1
+                }
+            },
+            {
+                "fingerIndex": 4,
+                "fingerInfo": {
+                    "stringIndex": 3,
+                    "fret": 7,
+                    "press": 1
+                }
+            },
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 2,
-                    "press": 2
+                    "stringIndex": 2,
+                    "fret": 5,
+                    "press": 0
                 }
             },
             {
                 "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 3,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 5,
+                    "fret": 6,
                     "press": 0
                 }
             }
-        ],
-        "frame": 847.999152
+        ]
     },
     {
         "real_tick": 51120,
+        "frame": 1064.9989349999998,
         "leftHand": [
             {
-                "fingerIndex": 1,
+                "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 2,
+                    "stringIndex": 4,
+                    "fret": 7,
                     "press": 1
                 }
             },
@@ -6686,7 +6703,15 @@
                 "fingerIndex": -1,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 0,
+                    "fret": 3,
+                    "press": 0
+                }
+            },
+            {
+                "fingerIndex": 1,
+                "fingerInfo": {
+                    "stringIndex": 2,
+                    "fret": 5,
                     "press": 0
                 }
             },
@@ -6694,34 +6719,26 @@
                 "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 3,
-                    "press": 0
-                }
-            },
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 4,
+                    "fret": 6,
                     "press": 0
                 }
             },
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 5,
-                    "press": 0
+                    "stringIndex": 3,
+                    "fret": 7,
+                    "press": 5
                 }
             }
-        ],
-        "frame": 851.9991479999999
+        ]
     },
     {
         "real_tick": 51360,
+        "frame": 1069.99893,
         "leftHand": [
             {
-                "fingerIndex": 3,
+                "fingerIndex": 2,
                 "fingerInfo": {
                     "stringIndex": 3,
                     "fret": 5,
@@ -6732,15 +6749,15 @@
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 3,
+                    "fret": 4,
                     "press": 0
                 }
             },
             {
-                "fingerIndex": 2,
+                "fingerIndex": 3,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 4,
+                    "fret": 6,
                     "press": 0
                 }
             },
@@ -6748,91 +6765,91 @@
                 "fingerIndex": 4,
                 "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 6,
+                    "fret": 7,
                     "press": 0
                 }
             }
-        ],
-        "frame": 855.9991440000001
+        ]
     },
     {
         "real_tick": 51600,
+        "frame": 1074.998925,
         "leftHand": [
             {
-                "fingerIndex": 1,
+                "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 4,
-                    "fret": 3,
-                    "press": 2
+                    "stringIndex": 5,
+                    "fret": 8,
+                    "press": 1
                 }
             },
             {
                 "fingerIndex": 2,
                 "fingerInfo": {
+                    "stringIndex": 3,
+                    "fret": 6,
+                    "press": 1
+                }
+            },
+            {
+                "fingerIndex": 1,
+                "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 4,
+                    "fret": 5,
                     "press": 0
                 }
             },
             {
                 "fingerIndex": 3,
                 "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 5,
-                    "press": 5
-                }
-            },
-            {
-                "fingerIndex": 4,
-                "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 6,
+                    "fret": 7,
                     "press": 0
                 }
             }
-        ],
-        "frame": 859.99914
+        ]
     },
     {
         "real_tick": 51840,
+        "frame": 1079.99892,
         "leftHand": [
-            {
-                "fingerIndex": 3,
-                "fingerInfo": {
-                    "stringIndex": 3,
-                    "fret": 5,
-                    "press": 1
-                }
-            },
             {
                 "fingerIndex": 1,
                 "fingerInfo": {
                     "stringIndex": 4,
-                    "fret": 3,
-                    "press": 5
+                    "fret": 5,
+                    "press": 2
                 }
             },
             {
                 "fingerIndex": 2,
                 "fingerInfo": {
+                    "stringIndex": 3,
+                    "fret": 6,
+                    "press": 5
+                }
+            },
+            {
+                "fingerIndex": 3,
+                "fingerInfo": {
                     "stringIndex": 2,
-                    "fret": 4,
+                    "fret": 7,
                     "press": 0
                 }
             },
             {
                 "fingerIndex": 4,
                 "fingerInfo": {
-                    "stringIndex": 2,
-                    "fret": 6,
-                    "press": 0
+                    "stringIndex": 5,
+                    "fret": 8,
+                    "press": 5
                 }
             }
-        ],
-        "frame": 863.9991359999999
+        ]
     },
     {
         "real_tick": 52080,
+        "frame": 1084.998915,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -6866,11 +6883,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 867.9991319999999
+        ]
     },
     {
         "real_tick": 52320,
+        "frame": 1089.99891,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -6904,11 +6921,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 871.999128
+        ]
     },
     {
         "real_tick": 52560,
+        "frame": 1094.998905,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -6958,11 +6975,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 875.9991239999999
+        ]
     },
     {
         "real_tick": 52800,
+        "frame": 1099.9989,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -6996,11 +7013,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 879.99912
+        ]
     },
     {
         "real_tick": 53040,
+        "frame": 1104.9988950000002,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7034,11 +7051,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 883.9991160000001
+        ]
     },
     {
         "real_tick": 54000,
+        "frame": 1124.998875,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -7072,11 +7089,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 899.9991
+        ]
     },
     {
         "real_tick": 54240,
+        "frame": 1129.99887,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7110,11 +7127,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 903.999096
+        ]
     },
     {
         "real_tick": 54480,
+        "frame": 1134.998865,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7148,11 +7165,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 907.999092
+        ]
     },
     {
         "real_tick": 54720,
+        "frame": 1139.99886,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7194,11 +7211,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 911.9990879999999
+        ]
     },
     {
         "real_tick": 54960,
+        "frame": 1144.998855,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7232,11 +7249,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 915.999084
+        ]
     },
     {
         "real_tick": 55200,
+        "frame": 1149.99885,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -7270,11 +7287,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 919.99908
+        ]
     },
     {
         "real_tick": 55440,
+        "frame": 1154.9988449999998,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7308,11 +7325,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 923.999076
+        ]
     },
     {
         "real_tick": 55680,
+        "frame": 1159.9988400000002,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7346,11 +7363,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 927.9990720000001
+        ]
     },
     {
         "real_tick": 55920,
+        "frame": 1164.998835,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7384,11 +7401,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 931.9990680000001
+        ]
     },
     {
         "real_tick": 56160,
+        "frame": 1169.99883,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7422,11 +7439,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 935.999064
+        ]
     },
     {
         "real_tick": 56400,
+        "frame": 1174.998825,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7460,11 +7477,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 939.9990599999999
+        ]
     },
     {
         "real_tick": 56640,
+        "frame": 1179.99882,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7498,11 +7515,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 943.9990560000001
+        ]
     },
     {
         "real_tick": 56880,
+        "frame": 1184.998815,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7544,11 +7561,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 947.999052
+        ]
     },
     {
         "real_tick": 57120,
+        "frame": 1189.99881,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7582,11 +7599,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 951.9990479999999
+        ]
     },
     {
         "real_tick": 57360,
+        "frame": 1194.9988050000002,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7620,11 +7637,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 955.9990440000001
+        ]
     },
     {
         "real_tick": 57600,
+        "frame": 1199.9988,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7658,11 +7675,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 959.99904
+        ]
     },
     {
         "real_tick": 57840,
+        "frame": 1204.998795,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7704,11 +7721,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 963.9990359999999
+        ]
     },
     {
         "real_tick": 58080,
+        "frame": 1209.9987899999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7742,11 +7759,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 967.9990319999999
+        ]
     },
     {
         "real_tick": 58320,
+        "frame": 1214.998785,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7780,11 +7797,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 971.9990280000001
+        ]
     },
     {
         "real_tick": 58560,
+        "frame": 1219.9987800000001,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7818,11 +7835,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 975.999024
+        ]
     },
     {
         "real_tick": 58800,
+        "frame": 1224.998775,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7864,11 +7881,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 979.99902
+        ]
     },
     {
         "real_tick": 59040,
+        "frame": 1229.99877,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7902,11 +7919,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 983.999016
+        ]
     },
     {
         "real_tick": 59280,
+        "frame": 1234.998765,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -7940,11 +7957,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 987.999012
+        ]
     },
     {
         "real_tick": 59520,
+        "frame": 1239.99876,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -7978,11 +7995,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 991.999008
+        ]
     },
     {
         "real_tick": 59760,
+        "frame": 1244.9987549999998,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -8016,11 +8033,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 995.999004
+        ]
     },
     {
         "real_tick": 60000,
+        "frame": 1249.9987500000002,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -8054,11 +8071,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 999.999
+        ]
     },
     {
         "real_tick": 60240,
+        "frame": 1254.998745,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8108,11 +8125,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1003.998996
+        ]
     },
     {
         "real_tick": 60480,
+        "frame": 1259.99874,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -8146,11 +8163,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1007.998992
+        ]
     },
     {
         "real_tick": 60720,
+        "frame": 1264.998735,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8184,11 +8201,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1011.9989879999999
+        ]
     },
     {
         "real_tick": 61680,
+        "frame": 1284.998715,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8222,11 +8239,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1027.9989719999999
+        ]
     },
     {
         "real_tick": 61920,
+        "frame": 1289.99871,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -8260,11 +8277,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1031.998968
+        ]
     },
     {
         "real_tick": 62160,
+        "frame": 1294.998705,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -8298,11 +8315,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1035.998964
+        ]
     },
     {
         "real_tick": 62400,
+        "frame": 1299.9986999999999,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8336,11 +8353,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1039.99896
+        ]
     },
     {
         "real_tick": 62640,
+        "frame": 1304.998695,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8374,11 +8391,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1043.9989560000001
+        ]
     },
     {
         "real_tick": 62880,
+        "frame": 1309.9986900000001,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8420,11 +8437,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1047.998952
+        ]
     },
     {
         "real_tick": 63120,
+        "frame": 1314.998685,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8474,11 +8491,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1051.998948
+        ]
     },
     {
         "real_tick": 63360,
+        "frame": 1319.99868,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -8512,11 +8529,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1055.998944
+        ]
     },
     {
         "real_tick": 63600,
+        "frame": 1324.998675,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -8550,11 +8567,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1059.99894
+        ]
     },
     {
         "real_tick": 63840,
+        "frame": 1329.99867,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8596,11 +8613,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1063.998936
+        ]
     },
     {
         "real_tick": 64080,
+        "frame": 1334.998665,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8642,11 +8659,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1067.998932
+        ]
     },
     {
         "real_tick": 64320,
+        "frame": 1339.99866,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8688,11 +8705,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1071.998928
+        ]
     },
     {
         "real_tick": 65280,
+        "frame": 1359.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8734,11 +8751,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1087.998912
+        ]
     },
     {
         "real_tick": 65440,
+        "frame": 1363.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8772,11 +8789,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1091.198912
+        ]
     },
     {
         "real_tick": 65600,
+        "frame": 1367.99864,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -8810,11 +8827,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1094.398912
+        ]
     },
     {
         "real_tick": 65760,
+        "frame": 1371.99864,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8856,11 +8873,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1097.598912
+        ]
     },
     {
         "real_tick": 65920,
+        "frame": 1375.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -8894,11 +8911,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1100.798912
+        ]
     },
     {
         "real_tick": 66080,
+        "frame": 1379.99864,
         "leftHand": [
             {
                 "fingerIndex": -1,
@@ -8940,11 +8957,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1103.998912
+        ]
     },
     {
         "real_tick": 66240,
+        "frame": 1383.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -8978,11 +8995,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1107.198912
+        ]
     },
     {
         "real_tick": 66720,
+        "frame": 1395.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9016,11 +9033,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1116.798912
+        ]
     },
     {
         "real_tick": 67200,
+        "frame": 1407.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9054,11 +9071,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1126.398912
+        ]
     },
     {
         "real_tick": 67360,
+        "frame": 1411.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9092,11 +9109,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1129.598912
+        ]
     },
     {
         "real_tick": 67520,
+        "frame": 1415.99864,
         "leftHand": [
             {
                 "fingerIndex": 2,
@@ -9130,11 +9147,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1132.798912
+        ]
     },
     {
         "real_tick": 67680,
+        "frame": 1419.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9168,11 +9185,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1135.998912
+        ]
     },
     {
         "real_tick": 67840,
+        "frame": 1423.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9206,11 +9223,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1139.198912
+        ]
     },
     {
         "real_tick": 68000,
+        "frame": 1427.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9244,11 +9261,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1142.398912
+        ]
     },
     {
         "real_tick": 68160,
+        "frame": 1431.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9282,11 +9299,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1145.598912
+        ]
     },
     {
         "real_tick": 68640,
+        "frame": 1443.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9320,11 +9337,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1155.198912
+        ]
     },
     {
         "real_tick": 69120,
+        "frame": 1455.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9358,11 +9375,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1164.798912
+        ]
     },
     {
         "real_tick": 69280,
+        "frame": 1459.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9396,11 +9413,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1167.998912
+        ]
     },
     {
         "real_tick": 69440,
+        "frame": 1463.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9434,11 +9451,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1171.198912
+        ]
     },
     {
         "real_tick": 69600,
+        "frame": 1467.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9472,11 +9489,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1174.398912
+        ]
     },
     {
         "real_tick": 69760,
+        "frame": 1471.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9510,11 +9527,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1177.598912
+        ]
     },
     {
         "real_tick": 69920,
+        "frame": 1475.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9548,11 +9565,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1180.798912
+        ]
     },
     {
         "real_tick": 70080,
+        "frame": 1479.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9586,11 +9603,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1183.998912
+        ]
     },
     {
         "real_tick": 70560,
+        "frame": 1491.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9624,11 +9641,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1193.598912
+        ]
     },
     {
         "real_tick": 70720,
+        "frame": 1495.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9662,11 +9679,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1196.798912
+        ]
     },
     {
         "real_tick": 70880,
+        "frame": 1499.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9700,11 +9717,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1199.998912
+        ]
     },
     {
         "real_tick": 71040,
+        "frame": 1503.99864,
         "leftHand": [
             {
                 "fingerIndex": 3,
@@ -9738,11 +9755,11 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1203.198912
+        ]
     },
     {
         "real_tick": 72960,
+        "frame": 1551.99864,
         "leftHand": [
             {
                 "fingerIndex": 1,
@@ -9776,7 +9793,6 @@
                     "press": 0
                 }
             }
-        ],
-        "frame": 1241.598912
+        ]
     }
 ]
