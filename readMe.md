@@ -6,7 +6,7 @@ Demo video in BiliBili: [https://www.bilibili.com/video/BV14F4m1A7xX/](https://w
 
 ### How to run
 
-- Install a virtual environment and run `python -m venv .venv`
+- Install a virtual environment by running `python -m venv .venv`
 - Activate the virtual environment by running `source .venv/bin/activate`. For Windows, it is `.\.venv\Scripts\activate`
 - Install dependencies by running `pip install -r requirements.txt`
 - Run `python main.py`, then select the avatar and midi file in the interface, set the `FPS` and the pitch of each string, and click submit to generate the json data required for the animation.
