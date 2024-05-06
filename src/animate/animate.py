@@ -3,7 +3,7 @@ from src.midi.midiToNote import calculate_frame
 from numpy import array, linalg, cross, random
 
 from ..hand.LeftFinger import PRESSSTATE
-from ..hand.RightHand import caculateRightHandFingers
+from ..hand.RightHand import caculateRightHandFingers, calculateRightPick
 from ..utils.utils import get_position_by_fret
 
 
@@ -194,15 +194,13 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
     return fingerInfos
 
 
-def rightHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes: list, ticks_per_beat: int, FPS: float) -> None:
+def rightHand2Animation(avatar: str, recorder: str, animation: str) -> None:
     data_for_animation = []
     with open(recorder, "r") as f:
         handDicts = json.load(f)
 
         for data in handDicts:
-            real_tick = data["real_tick"]
-            frame = calculate_frame(
-                tempo_changes, ticks_per_beat, FPS, real_tick)
+            frame = data['frame']
             right_hand = data["rightHand"]
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
@@ -228,6 +226,43 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, tempo_change
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
+
+
+def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, right_hand_animation_file: str) -> None:
+    pick_down = True
+    data_for_animation = []
+
+    with open(right_hand_recorder_file, "r") as f:
+        handDicts = json.load(f)
+
+        for data in handDicts:
+            frame = data['frame']
+            strings = data["strings"]
+            isArpeggio = True if len(strings) > 4 else False
+            min_string = min(strings)
+            max_string = max(strings)
+
+            ready = calculateRightPick(
+                avatar, max_string, pick_down, isArpeggio, isAfterPlayed=False)
+
+            played = calculateRightPick(
+                avatar, min_string, pick_down, isArpeggio, isAfterPlayed=True)
+
+            data_for_animation.append({
+                "frame": frame,
+                "fingerInfos": ready
+            })
+
+            elapsed_frame = 3 if len(strings) > 2 else 1
+            data_for_animation.append({
+                "frame": frame + elapsed_frame,
+                "fingerInfos": played
+            })
+
+            pick_down = not pick_down
+
+    with open(right_hand_animation_file, "w") as f:
+        json.dump(data_for_animation, f, indent=4)
 
 
 def twiceLerpFingers(base_data: object, fret: int, stringIndex: int) -> array:

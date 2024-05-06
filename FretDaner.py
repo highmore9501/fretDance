@@ -4,7 +4,7 @@ from typing import List
 from tqdm import tqdm
 
 from src.HandPoseRecorder import HandPoseRecordPool, HandPoseRecorder, RightHandRecorder
-from src.animate.animate import leftHand2Animation, rightHand2Animation
+from src.animate.animate import leftHand2Animation, rightHand2Animation, ElectronicRightHand2Animation
 from src.guitar.Guitar import Guitar
 from src.guitar.GuitarString import createGuitarStrings
 from src.guitar.MusicNote import MusicNote
@@ -153,7 +153,33 @@ def update_right_hand_recorder_pool(left_hand_recorder_file, rightHandRecordPool
                 progress.update(1)
 
 
-def main(avatar: str, midiFilePath: str, FPS: int, guitar_string_notes: List[str]) -> str:
+def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_file):
+    result = []
+    with open(left_hand_recorder_file, "r") as f:
+        data = json.load(f)
+        total_steps = len(data)
+
+        with tqdm(total=total_steps, desc="Processing", ncols=100, unit="step") as progress:
+            for i in range(total_steps):
+                item = data[i]
+                leftHand = item["leftHand"]
+                frame = item["frame"]
+                strings = []
+                for finger in leftHand:
+                    if finger["fingerIndex"] == -1 or 0 < finger["fingerInfo"]["press"] < 5:
+                        strings.append(finger["fingerInfo"]['stringIndex'])
+                result.append({
+                    'frame': frame,
+                    'strings': strings,
+                })
+
+                progress.update(1)
+
+    with open(right_hand_recorder_file, "w") as f:
+        json.dump(result, f, indent=4)
+
+
+def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_string_notes: List[str]) -> str:
     filename = midiFilePath.split("/")[-1].split(".")[0]
     left_hand_recorder_file = f"output/{filename}_lefthand_recorder.json"
     left_hand_animation_file = f"output/{avatar}_{filename}_lefthand_animation.json"
@@ -161,7 +187,7 @@ def main(avatar: str, midiFilePath: str, FPS: int, guitar_string_notes: List[str
     right_hand_animation_file = f"output/{avatar}_{filename}_righthand_animation.json"
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
-    notes_map = midiToGuitarNotes(midiFilePath, useChannel=1)
+    notes_map = midiToGuitarNotes(midiFilePath, useChannel=track_number)
 
     print(f'全曲的速度变化是:')
     for track, tempo, tick in tempo_changes:
@@ -218,28 +244,36 @@ def main(avatar: str, midiFilePath: str, FPS: int, guitar_string_notes: List[str
     leftHand2Animation(avatar, left_hand_recorder_file,
                        left_hand_animation_file, tempo_changes, ticks_per_beat, FPS)
 
-    initRightHand = RightHand(
-        usedFingers=[], rightFingerPositions=[5, 2, 1, 0])
+    # 下面是处理右手的部分，右手要视情况分电吉他与古典吉他两种情况处理。
+    if avatar.endswith("_E"):
+        leftHand2ElectronicRightHand(
+            left_hand_recorder_file, right_hand_recorder_file)
+        ElectronicRightHand2Animation(
+            avatar, right_hand_recorder_file, right_hand_animation_file)
+    else:
+        initRightHand = RightHand(
+            usedFingers=[], rightFingerPositions=[5, 2, 1, 0])
 
-    initRightHandRecorder = RightHandRecorder()
-    initRightHandRecorder.addHandPose(initRightHand, 0, 0)
+        initRightHandRecorder = RightHandRecorder()
+        initRightHandRecorder.addHandPose(initRightHand, 0, 0)
 
-    rightHandRecordPool = HandPoseRecordPool(100)
-    rightHandRecordPool.insert_new_hand_pose_recorder(initRightHandRecorder, 0)
+        rightHandRecordPool = HandPoseRecordPool(100)
+        rightHandRecordPool.insert_new_hand_pose_recorder(
+            initRightHandRecorder, 0)
 
-    update_right_hand_recorder_pool(
-        left_hand_recorder_file, rightHandRecordPool, current_recoreder_num, previous_recoreder_num)
+        update_right_hand_recorder_pool(
+            left_hand_recorder_file, rightHandRecordPool, current_recoreder_num, previous_recoreder_num)
 
-    # after all iterations, read the best solution in the record pool. 全部遍历完以后，读取记录池中的最优解。
-    bestHandPoseRecord = rightHandRecordPool.curHandPoseRecordPool[0]
-    bestEntropy = bestHandPoseRecord.currentEntropy
-    print(f"最小消耗熵为：{bestEntropy}")
-    bestHandPoseRecord.output()
-    bestHandPoseRecord.save(right_hand_recorder_file,
-                            tempo_changes, ticks_per_beat, FPS)
+        # after all iterations, read the best solution in the record pool. 全部遍历完以后，读取记录池中的最优解。
+        bestHandPoseRecord = rightHandRecordPool.curHandPoseRecordPool[0]
+        bestEntropy = bestHandPoseRecord.currentEntropy
+        print(f"最小消耗熵为：{bestEntropy}")
+        bestHandPoseRecord.output()
+        bestHandPoseRecord.save(right_hand_recorder_file,
+                                tempo_changes, ticks_per_beat, FPS)
 
-    rightHand2Animation(avatar, right_hand_recorder_file,
-                        right_hand_animation_file, tempo_changes, ticks_per_beat, FPS)
+        rightHand2Animation(avatar, right_hand_recorder_file,
+                            right_hand_animation_file)
 
     finall_info = f'全部执行完毕，recorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}，动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}'
 

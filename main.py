@@ -21,20 +21,23 @@ midi_files = ["asset/midi/" + f for f in os.listdir(
     "asset/midi") if f.endswith(".mid")]
 
 
-def check_and_exec(avatar, midiFilePath, FPS, guitar_string_notes) -> str:
+def check_and_exec(avatar, midiFilePath, track_number, FPS, guitar_string_notes) -> str:
     # 将逗号分隔的字符串转换为列表
     guitar_string_notes = guitar_string_notes.replace(' ', '').split(',')
     # 检查列表中的每个元素是否在all_notes中
     for note in guitar_string_notes:
         if note not in all_notes:
             return "Invalid note: " + note
-    result = main(avatar, midiFilePath, FPS, guitar_string_notes)
+    result = main(avatar, midiFilePath, track_number, FPS, guitar_string_notes)
     return result
 
 
 with gr.Blocks() as demo:
-    avatar_dropdown = gr.Dropdown(json_files, label="选择角色")
+    avatar_dropdown = gr.Dropdown(
+        json_files, label="选择角色，后缀为_E的角色是使用的电吉它，要确保midi文件也是电吉他的谱子")
     midi_dropdown = gr.Dropdown(midi_files, label="选择在目录asset/midi下面的MIDI 文件")
+    track_number = gr.Number(
+        minimum=1, maximum=100, value=1, step=1, label="选择 MIDI 文件的音轨编号")
     fps_number = gr.Number(
         minimum=1, maximum=120, value=30, step=1, label="设定 Blender 里的 FPS")
     guitar_string_notes_textbox = gr.Textbox(
@@ -42,6 +45,6 @@ with gr.Blocks() as demo:
     output_textbox = gr.Textbox(label="输出结果")
     submit_button = gr.Button(value="提交")
     submit_button.click(check_and_exec, inputs=[
-                        avatar_dropdown, midi_dropdown, fps_number, guitar_string_notes_textbox], outputs=[output_textbox])
+                        avatar_dropdown, midi_dropdown, track_number, fps_number, guitar_string_notes_textbox], outputs=[output_textbox])
 
 demo.launch(inbrowser=True)

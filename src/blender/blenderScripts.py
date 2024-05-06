@@ -203,6 +203,11 @@ def import_right_controller_info(hand_position: int):
     H_R = bpy.data.objects['H_R']
     H_R.location = bpy.data.objects[hand_position_name].location
 
+    # 设置大拇指位置
+    thumb_position_name = f'p{finger_positions["p"]}'
+    T_R = bpy.data.objects['T_R']
+    T_R.location = bpy.data.objects[thumb_position_name].location
+
     for obj in bpy.data.collections[collection].objects:
         obj_name = obj.name
         if obj_name.endswith("_L"):
@@ -216,8 +221,6 @@ def import_right_controller_info(hand_position: int):
                 position_ball_name = f'a{finger_positions["a"]}'
             elif obj_name.startswith("P"):
                 position_ball_name = f'ch{finger_positions["a"]}'
-            elif obj_name.startswith("T"):
-                position_ball_name = f't{finger_positions["p"]}'
             else:
                 print(f'Error happend. name: {obj_name}')
             obj.location = bpy.data.objects[position_ball_name].location
@@ -335,7 +338,6 @@ def connect_parent_to_child():
         if parent and parent_count[parent.name] == 1:
 
             parent.tail = pose_bone.head
-            # 切换回姿态模式
 
 
 def add_damped_tracks():
@@ -358,6 +360,39 @@ def add_damped_tracks():
         pose_bone.constraints.new('DAMPED_TRACK')
         pose_bone.constraints['Damped Track'].target = target
         pose_bone.constraints['Damped Track'].subtarget = sub_target_bone_name
+
+
+def remove_zero_influence_constraints():
+    """
+    useage:这个方法用于在blender中删除所有权重为0的约束
+    """
+    # 切换到姿态模式
+    bpy.ops.object.mode_set(mode='POSE')
+
+    # 获取所有选中的骨骼
+    selected_bones = bpy.context.selected_pose_bones_from_active_object
+
+    for pose_bone in selected_bones:
+        for constraint in pose_bone.constraints:
+            if constraint.influence == 0:
+                pose_bone.constraints.remove(constraint)
+
+
+def check_missing_texture(missing_file):
+    """
+    useage:这个方法用于在blender中检查所有材质是否有缺失的纹理
+    """
+    for mat in bpy.data.materials:
+        try:
+            for node in mat.node_tree.nodes:
+                if node.type == 'TEX_IMAGE':
+                    if node.image is not None:
+                        print(node.image.name_full)
+                        if node.image.name_full == missing_file:
+                            print('Material', mat.name,
+                                  f'uses the missing texture {missing_file}')
+        except:
+            print(mat.name, 'has no node tree')
 
 
 if __name__ == "__main__":

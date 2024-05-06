@@ -275,3 +275,27 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
     result['P_R'] = P_R
 
     return result
+
+
+def calculateRightPick(avatar: str, stringIndex: int, pick_down: bool, isArpeggio: bool, isAfterPlayed: bool = False) -> Dict:
+    json_file = f'asset\controller_infos\{avatar}.json'
+    fingerMoveDistanceWhilePlay = 0.009
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+
+    result = {}
+    thumb_index = "p_end" if isArpeggio else f"p{stringIndex}"
+    T_R = data['RIGHT_HAND_POSITIONS'][thumb_index].copy()
+    move = data['RIGHT_HAND_LINES']["T_line"]
+    # 如果当前音符是下拨，并且音符已经演奏完毕，或者当前音符是上拨，并且音符还没有演奏完毕，那么拨片的位置就是在弦的下方
+    pick_on_low_position = (pick_down and isAfterPlayed) or (
+        not pick_down and not isAfterPlayed)
+    multiplier = 1 if pick_on_low_position else -1
+    # 如果是琶音，而且此时已经是在低位置，那么不需要再移动拨片，其它情况都要移动拨片
+    if not (isArpeggio and pick_on_low_position):
+        T_R[0] += move[0] * fingerMoveDistanceWhilePlay * multiplier
+        T_R[1] += move[1] * fingerMoveDistanceWhilePlay * multiplier
+        T_R[2] += move[2] * fingerMoveDistanceWhilePlay * multiplier
+    result['T_R'] = T_R
+
+    return result
