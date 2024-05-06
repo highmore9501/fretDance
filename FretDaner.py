@@ -181,10 +181,10 @@ def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_fi
 
 def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_string_notes: List[str]) -> str:
     filename = midiFilePath.split("/")[-1].split(".")[0]
-    left_hand_recorder_file = f"output/{filename}_lefthand_recorder.json"
-    left_hand_animation_file = f"output/{avatar}_{filename}_lefthand_animation.json"
-    right_hand_recorder_file = f"output/{filename}_righthand_recorder.json"
-    right_hand_animation_file = f"output/{avatar}_{filename}_righthand_animation.json"
+    left_hand_recorder_file = f"output/{filename}_{track_number}_lefthand_recorder.json"
+    left_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_lefthand_animation.json"
+    right_hand_recorder_file = f"output/{filename}_{track_number}_righthand_recorder.json"
+    right_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_righthand_animation.json"
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
     notes_map = midiToGuitarNotes(midiFilePath, useChannel=track_number)
@@ -235,7 +235,6 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
     bestHandPoseRecord = handPoseRecordPool.curHandPoseRecordPool[0]
     bestEntropy = bestHandPoseRecord.currentEntropy
     print(f"最小消耗熵为：{bestEntropy}")
-    bestHandPoseRecord.output(True)
     bestHandPoseRecord.save(left_hand_recorder_file,
                             tempo_changes, ticks_per_beat, FPS)
     print(f"总音符数应该为{total_steps}")
@@ -268,7 +267,6 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
         bestHandPoseRecord = rightHandRecordPool.curHandPoseRecordPool[0]
         bestEntropy = bestHandPoseRecord.currentEntropy
         print(f"最小消耗熵为：{bestEntropy}")
-        bestHandPoseRecord.output()
         bestHandPoseRecord.save(right_hand_recorder_file,
                                 tempo_changes, ticks_per_beat, FPS)
 
