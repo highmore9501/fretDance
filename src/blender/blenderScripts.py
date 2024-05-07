@@ -183,6 +183,35 @@ def import_left_controller_info(position_name: Literal["P0", "P1", "P2", "P3"], 
                 print(f"Error: {e}")
 
 
+def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1", "P2", "P3"], status_name: Literal["Normal", "Outer", "Inner"]):
+    """    
+    :param position_name: 位置名称
+    :param status_name: 状态名称
+    useage:这个方法同import_left_controller_info，但是是将球的位置设置到控制器上
+    """
+    collections = ['FingerPositionControllers',
+                   'RotationControllers', 'HandPositionControllers']
+
+    for collection in collections:
+        for obj in bpy.data.collections[collection].objects:
+            obj_name = obj.name
+            if obj_name.endswith("_R"):
+                continue
+            try:
+                if collection == "HandPositionControllers":
+                    position_ball_name = f'{status_name}_{position_name}_{obj_name}'
+                    bpy.data.objects[position_ball_name].location = obj.location
+                elif collection == "FingerPositionControllers":
+                    position_ball_name = f'Fret_{position_name}'
+                    if obj.name == 'I_L':
+                        bpy.data.objects[position_ball_name].location = obj.location
+                elif collection == "RotationControllers":
+                    rotation_cone_name = f'{status_name}_{position_name}_H_rotation_L'
+                    bpy.data.objects[rotation_cone_name].rotation_euler = obj.rotation_euler
+            except Exception as e:
+                print(f"Error: {e}")
+
+
 def import_right_controller_info(hand_position: int):
     """
     useage:这个方法用于在blender中快速将人物右手放置成某个特定的状态。方便进行下一步的微调
@@ -224,6 +253,52 @@ def import_right_controller_info(hand_position: int):
             else:
                 print(f'Error happend. name: {obj_name}')
             obj.location = bpy.data.objects[position_ball_name].location
+
+        except Exception as e:
+            print(f"Error: {e}")
+
+
+def set_right_controller_info_to_position_balls(hand_position: int):
+    """
+    useage:这个方法同import_right_controller_info，但是是将球的位置设置到控制器上
+    """
+    collection = 'FingerPositionControllers'
+    right_hand_test_positions = {
+        0: {"p": 2, "i": 0, "m": 0, "a": 0},
+        1: {"p": 3, "i": 1, "m": 1, "a": 0},
+        2: {"p": 5, "i": 2, "m": 1, "a": 0},
+        3: {"p": 5, "i": 4, "m": 3, "a": 2},
+        4: {"p": '_end', "i": '_end', "m": '_end', "a": '_end'}
+    }
+
+    finger_positions = right_hand_test_positions[hand_position]
+
+    # 设置右手位置
+    hand_position_name = f'h{hand_position}' if hand_position != 4 else 'h_end'
+    H_R = bpy.data.objects['H_R']
+    H_R.location = bpy.data.objects[hand_position_name].location
+
+    # 设置大拇指位置
+    thumb_position_name = f'p{finger_positions["p"]}'
+    T_R = bpy.data.objects['T_R']
+    T_R.location = bpy.data.objects[thumb_position_name].location
+
+    for obj in bpy.data.collections[collection].objects:
+        obj_name = obj.name
+        if obj_name.endswith("_L"):
+            continue
+        try:
+            if obj_name.startswith("I"):
+                position_ball_name = f'i{finger_positions["i"]}'
+            elif obj_name.startswith("M"):
+                position_ball_name = f'm{finger_positions["m"]}'
+            elif obj_name.startswith("R"):
+                position_ball_name = f'a{finger_positions["a"]}'
+            elif obj_name.startswith("P"):
+                position_ball_name = f'ch{finger_positions["a"]}'
+            else:
+                print(f'Error happend. name: {obj_name}')
+            bpy.data.objects[position_ball_name].location = obj.location
 
         except Exception as e:
             print(f"Error: {e}")
