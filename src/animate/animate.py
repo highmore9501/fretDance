@@ -158,20 +158,11 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
     hand_rotation_y = twiceLerp(
         base_data=base_data,
         hand_state=hand_state,
-        value="H_rotation_Y_L",
+        value="H_rotation_L",
         valueType="rotation",
         fret=hand_fret,
         stringIndex=index_finger_string_number)
-    fingerInfos["H_rotation_Y_L"] = hand_rotation_y.tolist()
-
-    hand_rotation_x = twiceLerp(
-        base_data=base_data,
-        hand_state=hand_state,
-        value="H_rotation_X_L",
-        valueType="rotation",
-        fret=hand_fret,
-        stringIndex=index_finger_string_number)
-    fingerInfos["H_rotation_X_L"] = hand_rotation_x.tolist()
+    fingerInfos["H_rotation_L"] = hand_rotation_y.tolist()
 
     thumb_position = twiceLerp(
         base_data=base_data,
