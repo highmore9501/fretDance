@@ -5,11 +5,13 @@ import mathutils
 # 从外部读取json文件
 avatar = 'rem'
 midi_name = "Corridors Of Time Fingerstyle"
+track_number = 1
 
-left_hand_animation = f"G:/fretDance/output/{avatar}_{midi_name}_lefthand_animation.json"
-right_hand_animation = f"G:/fretDance/output/{avatar}_{midi_name}_righthand_animation.json"
+left_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_lefthand_animation.json"
+right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_righthand_animation.json"
 
-def animate_hand(animation_file: str):    
+
+def animate_hand(animation_file: str):
 
     # 读取json文件
     with open(animation_file, "r") as f:
@@ -25,12 +27,6 @@ def animate_hand(animation_file: str):
             # 将blender时间帧设置到frame
             bpy.context.scene.frame_set(frame)
             insert_values(fingerInfos)
-
-            # 如果当前帧和下一帧的差值大于3，则在两帧之间插入额外的帧
-            if i < len(frames) - 1 and frames[i + 1] - frame > 3:
-                for extra_frame in range(frame + 1, frames[i + 1]):
-                    bpy.context.scene.frame_set(extra_frame)
-                    insert_values(fingerInfos)
 
 
 def insert_values(fingerInfos):
@@ -51,5 +47,5 @@ def insert_values(fingerInfos):
             pass
 
 
-animate_hand(left_hand_animation)
-animate_hand(right_hand_animation)
+animate_hand(left_hand_animation_file)
+animate_hand(right_hand_animation_file)

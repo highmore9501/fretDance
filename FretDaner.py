@@ -275,6 +275,8 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
 
     finall_info = f'全部执行完毕，recorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}，动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}'
 
+    print(finall_info)
+
     return finall_info
 
 

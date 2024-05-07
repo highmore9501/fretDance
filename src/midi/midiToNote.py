@@ -67,9 +67,11 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :return: notes and beat in the midi file. 返回midi文件中的音符和拍子
     """
+    import sys
     midFile = MidiFile(midiFilePath)
     for i, track in enumerate(midFile.tracks):
-        print(f"Track {i}: {track.name}")
+        print(
+            f"Track {i}: {track.name.encode('utf-8').decode(sys.stdout.encoding)}")
         for msg in track:
             if msg.type == 'program_change':
                 print(
