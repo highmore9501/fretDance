@@ -36,12 +36,11 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
 
     for i in range(len(handDicts)):
         item = handDicts[i]
-        next_tick = None
+        frame = item["frame"]
         if i != len(handDicts) - 1:
-            next_item = handDicts[i + 1]
-            next_tick = next_item["real_tick"]
-        real_tick = item["real_tick"]
-        frame = calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick)
+            next_frame = handDicts[i + 1]["frame"]
+            if next_frame > frame + elapsed_frame:
+                hold_pose_frame = next_frame - elapsed_frame
 
         # 计算左手的动画信息
         fingerInfos = animatedLeftHand(
@@ -51,14 +50,12 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
             "fingerInfos": fingerInfos
         })
 
-        if next_tick:
-            next_frame = calculate_frame(
-                tempo_changes, ticks_per_beat, FPS, next_tick)
-            if frame + 2 < next_frame:
-                data_for_animation.append({
-                    "frame": next_frame-elapsed_frame,
-                    "fingerInfos": fingerInfos
-                })
+        # 右手会保持当前动作直到下个动作到来前两帧
+        if hold_pose_frame:
+            data_for_animation.append({
+                "frame": hold_pose_frame,
+                "fingerInfos": fingerInfos
+            })
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
@@ -205,10 +202,15 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
     elapsed_frame = int(FPS / 15)
     with open(recorder, "r") as f:
         handDicts = json.load(f)
+        hand_count = len(handDicts)
 
-        for data in handDicts:
+        for i in range(hand_count):
+            data = handDicts[i]
             frame = data['frame']
             right_hand = data["rightHand"]
+            if i != hand_count-1:
+                next_frame = handDicts[i + 1]['frame']
+
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
             rightHandPosition = right_hand["rightHandPosition"]
@@ -218,17 +220,26 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
 
             played = caculateRightHandFingers(avatar,
                                               rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
-
+            # 触弦帧
             data_for_animation.append({
                 "frame": frame,
                 "fingerInfos": ready,
             })
-
+            # 拨弦帧
             time_multiplier = 2 if usedFingers == [] else 1
+            played_frame = frame + elapsed_frame * time_multiplier
             data_for_animation.append({
-                "frame": frame + elapsed_frame * time_multiplier,
+                "frame": played_frame,
                 "fingerInfos": played,
             })
+            # 拨弦后维持动作帧
+            if next_frame:
+                if next_frame - played_frame > elapsed_frame:
+                    hold_pose_frame = next_frame - elapsed_frame
+                    data_for_animation.append({
+                        "frame": hold_pose_frame,
+                        "fingerInfos": played,
+                    })
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
