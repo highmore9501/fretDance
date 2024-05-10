@@ -254,7 +254,7 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
             avatar, right_hand_recorder_file, right_hand_animation_file, FPS)
     else:
         initRightHand = RightHand(
-            usedFingers=[], rightFingerPositions=[5, 2, 1, 0])
+            usedFingers=[], rightFingerPositions=[max_string_index, 2, 1, 0])
 
         initRightHandRecorder = RightHandRecorder()
         initRightHandRecorder.addHandPose(initRightHand, 0, 0)
