@@ -113,8 +113,8 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
     possibleRightHands = generatePossibleRightHands(
         usedStrings, allFingers, allstrings, allow_double_p)
 
-    # if len(possibleRightHands) == 0:
-    #     print(f"当前要拨动的弦是{usedStrings}，没有找到合适的右手拨法。")
+    if len(possibleRightHands) == 0:
+        print(f"当前要拨动的弦是{usedStrings}，没有找到合适的右手拨法。")
 
     for rightHand, handRecorder in itertools.product(possibleRightHands, rightHandRecordPool.preHandPoseRecordPool):
         lastHand = handRecorder.currentHandPose()
@@ -124,7 +124,6 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
             new_entropy)
         if insert_index != -1:
             newRecorder = RightHandRecorder()
-
             newRecorder.handPoseList = handRecorder.handPoseList + [rightHand]
             newRecorder.currentEntropy = handRecorder.currentEntropy + entropy
             newRecorder.entropys = handRecorder.entropys + [new_entropy]

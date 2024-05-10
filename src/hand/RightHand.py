@@ -13,7 +13,7 @@ rightFingers = {
 # 右手在吉它上摆放有四个位置，在这四个位置上，每个手指可以接触到的弦的范围如下表所示，其中2就是常规的起始手型
 handPositionToFingerPositions = {
     0: {"p": (1, 2), "i": (0, 1), "m": (0, 1), "a": (0, 1)},
-    1: {"p": (2, 4), "i": (0, 2), "m": (0, 1), "a": (0, 1)},
+    1: {"p": (2, 4), "i": (0, 2), "m": (0, 2), "a": (0, 2)},
     2: {"p": (3, 5), "i": (1, 3), "m": (0, 2), "a": (0, 2)},
     3: {"p": (4, 5), "i": (3, 5), "m": (2, 4), "a": (2, 4)}
 }
@@ -23,7 +23,6 @@ class RightHand():
     def __init__(self, usedFingers: List[str], rightFingerPositions: List[int], isArpeggio: bool = False):
         self.usedFingers = usedFingers
         self.rightFingerPositions = rightFingerPositions
-        # 手掌的位置由右手中指的位置来决定
         self.rightHandPosition = self.caculateHandPosition()
         self.isArpeggio = isArpeggio
         self.afterPlayed()
@@ -32,16 +31,7 @@ class RightHand():
         if rightFingerPositions == None:
             rightFingerPositions = self.rightFingerPositions
 
-        # 选择右手位置的优先顺序是2103。
-        results = [2, 1, 0, 3]
-        for hand_position in results:
-            for finger in ['p', 'i', 'm', 'a']:
-                min_pos, max_pos = handPositionToFingerPositions[hand_position][finger]
-                if not min_pos <= rightFingerPositions[rightFingers[finger]] <= max_pos:
-                    break
-            else:
-                return hand_position
-        return -1  # 返回-1表示没有找到满足条件的hand_position
+        return caculateHandPositionByFingerPositions(rightFingerPositions)
 
     def validateRightHand(self, usedFingers=None, rightFingerPositions=None) -> bool:
         if rightFingerPositions == None:
@@ -49,27 +39,7 @@ class RightHand():
         if usedFingers == None:
             usedFingers = self.usedFingers
 
-        usedString = []
-        rightHandPosition = self.caculateHandPosition(rightFingerPositions)
-
-        if rightHandPosition == -1:
-            return False
-        for finger in usedFingers:
-            usedString.append(rightFingerPositions[rightFingers[finger]])
-            # 检测是否有pima以外的手指
-            if finger not in rightFingers:
-                return False
-
-        # 不能有重复的弦被拨动，除非是用P指
-        if len(usedString) != len(set(usedString)):
-            return False
-
-        for i in range(3):
-            # 检测手指的位置是否从左到右递减
-            if rightFingerPositions[i] < rightFingerPositions[i+1]:
-                return False
-
-        return True
+        return validateRightHandByFingerPositions(usedFingers, rightFingerPositions)
 
     def caculateDiff(self, otherRightHand: "RightHand") -> int:
         diff = 0
@@ -79,17 +49,17 @@ class RightHand():
                         otherRightHand.rightFingerPositions[i])
 
         # 检测两只手的usedFingers相同的元素个数有多少
-        common_elements = set(self.usedFingers).intersection(
-            set(otherRightHand.usedFingers))
+        common_elements = list(set(self.usedFingers).intersection(
+            set(otherRightHand.usedFingers)))
         same_finger_count = len(common_elements)
 
-        # 检测重复使用的手指中有没有P指
-        if 0 in common_elements:
-            diff += 1
+        # 检测重复使用的手指中有没有P指，如果有的话按加10单位diff来计算
+        if 'p' in common_elements:
+            diff += 10
             same_finger_count -= 1
 
-        # 其它重复使用的手指按3单位diff来算，也就是不鼓励除P指以外的手指重复使用
-        diff += 3 * same_finger_count
+        # 其它重复使用的手指按10单位diff来算，也就是非常不鼓励除P指以外的手指重复使用
+        diff += 20 * same_finger_count
 
         # 不考虑手掌移动，因为手掌是由身体来带动的，它的移动比手指移动要来得轻松
         return diff
@@ -131,6 +101,44 @@ class RightHand():
         print("RightHand: ", self.usedFingers, self.rightFingerPositions)
 
 
+def validateRightHandByFingerPositions(usedFingers, rightFingerPositions: List[int]) -> bool:
+    for i in range(3):
+        # 检测手指的位置是否从左到右递减
+        if rightFingerPositions[i] < rightFingerPositions[i+1]:
+            return False
+
+    usedString = []
+    rightHandPosition = caculateHandPositionByFingerPositions(
+        rightFingerPositions)
+
+    if rightHandPosition == -1:
+        return False
+    for finger in usedFingers:
+        usedString.append(rightFingerPositions[rightFingers[finger]])
+        # 检测是否有pima以外的手指
+        if finger not in rightFingers:
+            return False
+
+    # 不能有重复的弦被拨动，除非是用P指
+    if len(usedString) != len(set(usedString)):
+        return False
+
+    return True
+
+
+def caculateHandPositionByFingerPositions(rightFingerPositions: List[int]) -> int:
+    # 选择右手位置的优先顺序是2103。
+    results = [2, 1, 0, 3]
+    for hand_position in results:
+        for finger in ['p', 'i', 'm', 'a']:
+            min_pos, max_pos = handPositionToFingerPositions[hand_position][finger]
+            if not min_pos <= rightFingerPositions[rightFingers[finger]] <= max_pos:
+                break
+        else:
+            return hand_position
+    return -1  # 返回-1表示没有找到满足条件的hand_position
+
+
 def finger_string_map_generator(allFingers: List[str], allStrings: List[int], usedStrings: List[int]):
     if usedStrings == []:
         for result in finger_string_map_generator2(allFingers, allStrings):
@@ -139,11 +147,9 @@ def finger_string_map_generator(allFingers: List[str], allStrings: List[int], us
     for finger, usedString in itertools.product(allFingers, usedStrings):
         newUsedStrings = usedStrings.copy()
         newUsedStrings.remove(usedString)
-        newAllStrings = allStrings.copy()
-        newAllStrings.remove(usedString)
         newAllFingers = allFingers.copy()
         newAllFingers.remove(finger)
-        for result in finger_string_map_generator(newAllFingers, newAllStrings, newUsedStrings):
+        for result in finger_string_map_generator(newAllFingers, allStrings, newUsedStrings):
             yield [{
                 "finger": finger,
                 "string": usedString
@@ -151,16 +157,14 @@ def finger_string_map_generator(allFingers: List[str], allStrings: List[int], us
 
 
 def finger_string_map_generator2(allFingers: List[str], allStrings: List[int]):
-    if allFingers == [] or allStrings == []:
+    if allFingers == []:
         yield []
         return
 
     for finger, string in itertools.product(allFingers, allStrings):
-        newAllStrings = allStrings.copy()
-        newAllStrings.remove(string)
         newAllFingers = allFingers.copy()
         newAllFingers.remove(finger)
-        for result in finger_string_map_generator2(newAllFingers, newAllStrings):
+        for result in finger_string_map_generator2(newAllFingers, allStrings):
             yield [{
                 "finger": finger,
                 "string": string
@@ -186,9 +190,9 @@ def generatePossibleRightHands(
                 continue
             rightFingerPositions = sort_fingers(result)
             usedFingers = get_usedFingers(result, usedStrings)
-            newRightHand = RightHand(
-                usedFingers, rightFingerPositions)
-            if newRightHand.validateRightHand():
+            if validateRightHandByFingerPositions(usedFingers, rightFingerPositions):
+                newRightHand = RightHand(
+                    usedFingers, rightFingerPositions)
                 possibleRightHands.append(newRightHand)
 
     return possibleRightHands
@@ -219,7 +223,7 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
     json_file = f'asset\controller_infos\{avatar}.json'
     with open(json_file, 'r') as f:
         data = json.load(f)
-    fingerMoveDistanceWhilePlay = 0.009
+    fingerMoveDistanceWhilePlay = 0.006
     result = {}
 
     isArpeggio = usedRightFingers == [] and isAfterPlayed
@@ -237,9 +241,9 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
     T_R = data['RIGHT_HAND_POSITIONS'][t_index].copy()
     if isAfterPlayed and "p" in usedRightFingers:
         move = data['RIGHT_HAND_LINES']["T_line"]
-        T_R[0] += move[0] * fingerMoveDistanceWhilePlay * 0.8
-        T_R[1] += move[1] * fingerMoveDistanceWhilePlay * 0.8
-        T_R[2] += move[2] * fingerMoveDistanceWhilePlay * 0.8
+        T_R[0] += move[0] * fingerMoveDistanceWhilePlay * 1.2
+        T_R[1] += move[1] * fingerMoveDistanceWhilePlay * 1.2
+        T_R[2] += move[2] * fingerMoveDistanceWhilePlay * 1.2
     result['T_R'] = T_R
 
     # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的

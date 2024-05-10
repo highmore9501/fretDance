@@ -212,7 +212,6 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
             rightHandPosition = right_hand["rightHandPosition"]
-            # afterPlayedRightFingerPositions = right_hand["afterPlayedRightFingerPositions"]
 
             ready = caculateRightHandFingers(avatar,
                                              rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
@@ -225,7 +224,7 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
                 "fingerInfos": ready,
             })
 
-            time_multiplier = 3 if usedFingers == [] else 1
+            time_multiplier = 2 if usedFingers == [] else 1
             data_for_animation.append({
                 "frame": frame + elapsed_frame * time_multiplier,
                 "fingerInfos": played,
@@ -262,7 +261,7 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                 "fingerInfos": ready
             })
 
-            time_multiplier = 3 if len(strings) > 2 else 1
+            time_multiplier = 2 if len(strings) > 2 else 1
             data_for_animation.append({
                 "frame": frame + elapsed_frame * time_multiplier,
                 "fingerInfos": played
