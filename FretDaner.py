@@ -18,7 +18,9 @@ from src.utils.utils import convertChordTofingerPositions, convertNotesToChord
 def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: HandPoseRecordPool, current_recoreder_num: int, previous_recoreder_num: int):
     notes = guitarNote["notes"]
     real_tick = guitarNote["real_tick"]
-    notes = processedNotes(notes)
+    min_note = guitar.guitarStrings[-1].getBaseNote()
+    max_note = guitar.guitarStrings[0].getBaseNote() + 22
+    notes = processedNotes(notes, min_note, max_note)
 
     # calculate all possible chords, including the position information of notes on the guitar. 计算所有可能的和弦,包含音符在吉它上的位置信息。
     chords = convertNotesToChord(notes, guitar)
@@ -44,7 +46,7 @@ def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: Hand
 
         # Iterate through the list of fingerings, generate a new LeftHand object based on the fingering. 遍历按法列表，根据按法生成新的LeftHand对象。
         all_fingers, entropy = oldhand.generateNextHands(
-            guitar, fingerPositions, notes)
+            guitar, fingerPositions)
 
         if all_fingers is not None:
             new_entropy = handPoseRecord.currentEntropy + entropy
@@ -203,14 +205,15 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
         f'如果以{FPS}的fps做成动画，一共是{total_tick} ticks, 合计{total_frame}帧, 约{total_time}秒')
 
     guitar_string_list = createGuitarStrings(guitar_string_notes)
+    max_string_index = len(guitar_string_list) - 1
     # 初始化吉它
     guitar = Guitar(guitar_string_list)
     # 设定各手指状态
     leftFingers = [
-        LeftFinger(1, guitar_string_list[1], 1),
+        LeftFinger(1, guitar_string_list[2], 1),
         LeftFinger(2, guitar_string_list[2], 2),
-        LeftFinger(3, guitar_string_list[3], 3),
-        LeftFinger(4, guitar_string_list[4], 4)
+        LeftFinger(3, guitar_string_list[2], 3),
+        LeftFinger(4, guitar_string_list[2], 4)
     ]
     # 初始化左手
     initLeftHand = LeftHand(leftFingers)
@@ -241,14 +244,14 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
     print(f"实际输出音符数为{len(bestHandPoseRecord.handPoseList)}")
 
     leftHand2Animation(avatar, left_hand_recorder_file,
-                       left_hand_animation_file, tempo_changes, ticks_per_beat, FPS)
+                       left_hand_animation_file, tempo_changes, ticks_per_beat, FPS, max_string_index)
 
     # 下面是处理右手的部分，右手要视情况分电吉他与古典吉他两种情况处理。
     if avatar.endswith("_E"):
         leftHand2ElectronicRightHand(
             left_hand_recorder_file, right_hand_recorder_file)
         ElectronicRightHand2Animation(
-            avatar, right_hand_recorder_file, right_hand_animation_file)
+            avatar, right_hand_recorder_file, right_hand_animation_file, FPS)
     else:
         initRightHand = RightHand(
             usedFingers=[], rightFingerPositions=[5, 2, 1, 0])
@@ -271,9 +274,9 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
                                 tempo_changes, ticks_per_beat, FPS)
 
         rightHand2Animation(avatar, right_hand_recorder_file,
-                            right_hand_animation_file)
+                            right_hand_animation_file, FPS)
 
-    finall_info = f'全部执行完毕，recorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}，动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}'
+    finall_info = f'全部执行完毕:\nrecorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}\n动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}'
 
     print(finall_info)
 

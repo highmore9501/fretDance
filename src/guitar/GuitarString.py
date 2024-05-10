@@ -13,9 +13,8 @@ class GuitarString():
         self._baseNote = baseNote
         self._stringIndex = stringIndex
 
-    @property
-    def getBaseNote(self) -> MusicNote:
-        return self._baseNote
+    def getBaseNote(self) -> int:
+        return self._baseNote.num
 
     @property
     def getStringIndex(self) -> int:

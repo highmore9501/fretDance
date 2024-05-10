@@ -61,22 +61,24 @@ def get_tempo_changes(midiFilePath: str):
     return tempo_changes, tick_per_beat
 
 
+def export_midi_info(midiFilePath: str) -> str:
+    result = ''
+    midFile = MidiFile(midiFilePath)
+    for i, track in enumerate(midFile.tracks):
+        result += f'Track {i}: {track.name}\n'
+        for msg in track:
+            if msg.type == 'program_change':
+                result += f'Track {i}: {MIDI_INSTRUMENTS[msg.program]}\n'
+
+    return result
+
+
 def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[int] = [17]) -> object:
     """
     :param muteChannel: channels need to filter out, normally it is drum channel. 需要过滤掉的通道，一般是打击乐通道
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :return: notes and beat in the midi file. 返回midi文件中的音符和拍子
     """
-    import sys
-    midFile = MidiFile(midiFilePath)
-    for i, track in enumerate(midFile.tracks):
-        print(
-            f"Track {i}: {track.name.encode('utf-8').decode(sys.stdout.encoding)}")
-        for msg in track:
-            if msg.type == 'program_change':
-                print(
-                    f"Channel {msg.channel}: {MIDI_INSTRUMENTS[msg.program]}")
-
     try:
         midTrack = MidiFile(midiFilePath).tracks[useChannel]
     except:
@@ -103,12 +105,12 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
     return notes_map
 
 
-def processedNotes(chordNotes: list[int]) -> list[int]:
+def processedNotes(chordNotes: list[int], min: int, max: int) -> list[int]:
     """
     :param chordNotes: multiple notes in a chord. 和弦中的多个音符
     :return: simplified notes. 精简后的音符
     """
-    compressed = compressNotes(chordNotes)
+    compressed = compressNotes(chordNotes, min, max)
     simplified = simplifyNotes(compressed)
     return simplified
 

@@ -202,7 +202,7 @@ class LeftHand():
 
         return handPosition
 
-    def generateNextHands(self, guitar: Guitar, fingerPositions: List[tuple[str, int]], notes) -> tuple['LeftHand', float]:
+    def generateNextHands(self, guitar: Guitar, fingerPositions: List[tuple[str, int]]) -> tuple['LeftHand', float]:
         """
         :parma guitar: Guitar. 吉他
         :param chord: List of notes, including fret and string index and index of finger which pressed it. 音符列表，包括品格，弦的索引和按下它的手指的索引
@@ -213,7 +213,7 @@ class LeftHand():
         newHandPosition = 0
         minFingerIndex = 4
         # 最小空弦音的弦的索引，用于判断食指是横按还是普通按
-        min_empty_stringIndex = 5
+        min_empty_stringIndex = len(guitar.guitarStrings) - 1
         for fingerPosition in fingerPositions:
             fret = fingerPosition['fret']
             finger_index = fingerPosition.get('finger', -1)

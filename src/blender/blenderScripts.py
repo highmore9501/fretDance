@@ -276,12 +276,12 @@ def set_right_controller_info_to_position_balls(hand_position: int):
     # 设置右手位置
     hand_position_name = f'h{hand_position}' if hand_position != 4 else 'h_end'
     H_R = bpy.data.objects['H_R']
-    H_R.location = bpy.data.objects[hand_position_name].location
+    bpy.data.objects[hand_position_name].location = H_R.location
 
     # 设置大拇指位置
     thumb_position_name = f'p{finger_positions["p"]}'
     T_R = bpy.data.objects['T_R']
-    T_R.location = bpy.data.objects[thumb_position_name].location
+    bpy.data.objects[thumb_position_name].location = T_R.location
 
     for obj in bpy.data.collections[collection].objects:
         obj_name = obj.name
@@ -468,6 +468,30 @@ def check_missing_texture(missing_file):
                                   f'uses the missing texture {missing_file}')
         except:
             print(mat.name, 'has no node tree')
+
+
+def disable_toons_on_selected_object():
+    """
+    usage: This method disables the toon material effect on all materials of the selected object in Blender.
+    """
+    # 获取当前选择的对象
+    obj = bpy.context.selected_objects[0]
+
+    if obj and obj.type == 'MESH':  # 检查对象是否为网格类型
+        # 遍历对象的所有材质
+        for i in range(len(obj.material_slots)):
+            # 确保材质槽有有效的材质
+            material = obj.material_slots[i].material
+            if material:
+                # 检查材质是否包含MMD材料信息（适用于MMD相关场景）
+                if hasattr(material, 'mmd_material'):
+                    material.mmd_material.is_double_sided = False
+                    material.mmd_material.enabled_toon_edge = False
+                else:
+                    print(
+                        f"Material {material.name} does not have MMD material properties. Skipping.")
+    else:
+        print("No mesh object selected or no valid materials found.")
 
 
 if __name__ == "__main__":

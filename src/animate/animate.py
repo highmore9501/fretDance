@@ -7,7 +7,7 @@ from ..hand.RightHand import caculateRightHandFingers, calculateRightPick
 from ..utils.utils import get_position_by_fret
 
 
-def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float) -> None:
+def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float, max_string_index: int) -> None:
     """
     :params recorder: the path of the recorder file
     :params animation: the path of the file store information for animation
@@ -19,6 +19,9 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
     finger_position_p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
     finger_position_p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
     finger_position_p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
+
+    # 这里是计算左手按弦需要保持的时间
+    elapsed_frame = int(FPS / 8)
 
     # 计算finger_position_p0,finger_position_p1,finger_position_p2三点组成的平面上的法线值
     normal = cross(finger_position_p0 - finger_position_p1,
@@ -41,19 +44,19 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
         frame = calculate_frame(tempo_changes, ticks_per_beat, FPS, real_tick)
 
         # 计算左手的动画信息
-        fingerInfos = animatedLeftHand(base_data, item, normal)
+        fingerInfos = animatedLeftHand(
+            base_data, item, normal, max_string_index)
         data_for_animation.append({
             "frame": frame,
             "fingerInfos": fingerInfos
         })
 
-        # 这里是计算左手按弦需要保持的时间
         if next_tick:
             next_frame = calculate_frame(
                 tempo_changes, ticks_per_beat, FPS, next_tick)
             if frame + 2 < next_frame:
                 data_for_animation.append({
-                    "frame": next_frame-3,
+                    "frame": next_frame-elapsed_frame,
                     "fingerInfos": fingerInfos
                 })
 
@@ -61,7 +64,7 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
         json.dump(data_for_animation, f)
 
 
-def animatedLeftHand(base_data: object, item: object, normal: array):
+def animatedLeftHand(base_data: object, item: object, normal: array, max_string_index: int):
     leftHand = item["leftHand"]
     fingerInfos = {}
     hand_fret = 1
@@ -107,7 +110,8 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
 
         if press < 2 or press == 5 or need_recaculate:
             finger_string_numbers[fingerIndex] = stringIndex
-            finger_position = twiceLerpFingers(base_data, fret, stringIndex)
+            finger_position = twiceLerpFingers(
+                base_data, fret, stringIndex, max_string_index)
         else:
             continue
 
@@ -138,7 +142,9 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
         value="H_L",
         valueType="position",
         fret=hand_fret,
-        stringIndex=max_finger_string_index)
+        stringIndex=max_finger_string_index,
+        max_string_index=max_string_index
+    )
 
     # 来一个随机大小为0.0005的随机移动
     random_move = random.rand(3) * 0.001
@@ -152,7 +158,9 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
         value="HP_L",
         valueType="position",
         fret=hand_fret,
-        stringIndex=index_finger_string_number)
+        stringIndex=index_finger_string_number,
+        max_string_index=max_string_index
+    )
     fingerInfos["HP_L"] = hand_IK_pivot_position.tolist()
 
     hand_rotation_y = twiceLerp(
@@ -161,7 +169,9 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
         value="H_rotation_L",
         valueType="rotation",
         fret=hand_fret,
-        stringIndex=index_finger_string_number)
+        stringIndex=index_finger_string_number,
+        max_string_index=max_string_index
+    )
     fingerInfos["H_rotation_L"] = hand_rotation_y.tolist()
 
     thumb_position = twiceLerp(
@@ -170,7 +180,9 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
         value="T_L",
         valueType="position",
         fret=hand_fret,
-        stringIndex=index_finger_string_number)
+        stringIndex=index_finger_string_number,
+        max_string_index=max_string_index
+    )
     fingerInfos["T_L"] = thumb_position.tolist()
 
     thumb_IK_pivot_position = twiceLerp(
@@ -179,14 +191,18 @@ def animatedLeftHand(base_data: object, item: object, normal: array):
         value="TP_L",
         valueType="position",
         fret=hand_fret,
-        stringIndex=index_finger_string_number)
+        stringIndex=index_finger_string_number,
+        max_string_index=max_string_index
+    )
     fingerInfos["TP_L"] = thumb_IK_pivot_position.tolist()
 
     return fingerInfos
 
 
-def rightHand2Animation(avatar: str, recorder: str, animation: str) -> None:
+def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) -> None:
     data_for_animation = []
+    # 这里是计算按弦需要保持的时间
+    elapsed_frame = int(FPS / 15)
     with open(recorder, "r") as f:
         handDicts = json.load(f)
 
@@ -209,9 +225,9 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str) -> None:
                 "fingerInfos": ready,
             })
 
-            elapsed_frame = 3 if usedFingers == [] else 1
+            time_multiplier = 3 if usedFingers == [] else 1
             data_for_animation.append({
-                "frame": frame + elapsed_frame,
+                "frame": frame + elapsed_frame * time_multiplier,
                 "fingerInfos": played,
             })
 
@@ -219,9 +235,11 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str) -> None:
         json.dump(data_for_animation, f)
 
 
-def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, right_hand_animation_file: str) -> None:
+def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, right_hand_animation_file: str, FPS: int) -> None:
     pick_down = True
     data_for_animation = []
+    # 这里是计算按弦需要保持的时间
+    elapsed_frame = int(FPS / 15)
 
     with open(right_hand_recorder_file, "r") as f:
         handDicts = json.load(f)
@@ -244,9 +262,9 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                 "fingerInfos": ready
             })
 
-            elapsed_frame = 3 if len(strings) > 2 else 1
+            time_multiplier = 3 if len(strings) > 2 else 1
             data_for_animation.append({
-                "frame": frame + elapsed_frame,
+                "frame": frame + elapsed_frame * time_multiplier,
                 "fingerInfos": played
             })
 
@@ -256,7 +274,7 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
         json.dump(data_for_animation, f, indent=4)
 
 
-def twiceLerpFingers(base_data: object, fret: int, stringIndex: int) -> array:
+def twiceLerpFingers(base_data: object, fret: int, stringIndex: int, max_string_index: int) -> array:
     p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
     p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
     p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
@@ -265,12 +283,12 @@ def twiceLerpFingers(base_data: object, fret: int, stringIndex: int) -> array:
     p_fret_0 = get_position_by_fret(fret, p0, p2)
     p_fret_1 = get_position_by_fret(fret, p1, p3)
 
-    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / max_string_index
 
     return p_final
 
 
-def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float) -> array:
+def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float, max_string_index: int) -> array:
     data_dict = None
 
     if valueType == "position":
@@ -306,7 +324,8 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
     if hand_state == 0:
         p_fret_0 = get_position_by_fret(fret, p0, p2)
         p_fret_1 = get_position_by_fret(fret, p1, p3)
-        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
+            stringIndex / max_string_index
     elif hand_state > 0:
         if valueType == "position":
             outer_data_dict = base_data['OUTER_LEFT_HAND_POSITIONS']
@@ -317,12 +336,13 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
             out_p0 = array(outer_data_dict["P0"])
             out_p2 = array(outer_data_dict["P2"])
 
-        real_p0 = p0 + (out_p0 - p0) * hand_state/5
-        real_p2 = p2 + (out_p2 - p2) * hand_state/5
+        real_p0 = p0 + (out_p0 - p0) * hand_state/max_string_index
+        real_p2 = p2 + (out_p2 - p2) * hand_state/max_string_index
 
         p_fret_0 = get_position_by_fret(fret, real_p0, real_p2)
         p_fret_1 = get_position_by_fret(fret, p1, p3)
-        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
+            stringIndex / max_string_index
     else:
         if valueType == "position":
             inner_data_dict = base_data['INNER_LEFT_HAND_POSITIONS']
@@ -333,11 +353,12 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
             inner_p1 = array(inner_data_dict["P1"])
             inner_p3 = array(inner_data_dict["P3"])
 
-        real_P1 = p1 + (inner_p1 - p1) * abs(hand_state)/5
-        real_P3 = p3 + (inner_p3 - p3) * abs(hand_state)/5
+        real_P1 = p1 + (inner_p1 - p1) * abs(hand_state)/max_string_index
+        real_P3 = p3 + (inner_p3 - p3) * abs(hand_state)/max_string_index
 
         p_fret_0 = get_position_by_fret(fret, p0, p2)
         p_fret_1 = get_position_by_fret(fret, real_P1, real_P3)
-        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * stringIndex / 5
+        p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
+            stringIndex / max_string_index
 
     return p_final

@@ -12,7 +12,6 @@ right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_nu
 
 
 def animate_hand(animation_file: str):
-
     # 读取json文件
     with open(animation_file, "r") as f:
         handDicts = json.load(f)
@@ -39,7 +38,6 @@ def insert_values(fingerInfos):
                 obj.rotation_euler = value
                 obj.keyframe_insert(data_path="rotation_euler")
             else:
-                # 把value从base_bone的坐标系转换到世界坐标系
                 value = mathutils.Vector(value)
                 obj.location = value
                 obj.keyframe_insert(data_path="location")
