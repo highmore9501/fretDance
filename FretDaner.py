@@ -91,8 +91,7 @@ def update_recorder_pool(total_steps: int, guitar: Guitar, handPoseRecordPool: H
             progress.update(1)
 
 
-def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, previous_recoreder_num):
-
+def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, previous_recoreder_num, max_string_index):
     real_tick = item["real_tick"]
     leftHand = item["leftHand"]
     usedStrings = []
@@ -105,14 +104,17 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
         return
     rightHandRecordPool.readyForRecord()
 
-    allFingers = ["p", "p", "i", "m", "a"]  # 这个重复p的写法是确保p指可能弹两根弦
-    allstrings = [0, 1, 2, 3, 4, 5]
+    # 这个重复p的写法是确保p指可能弹两根弦，但如果是四弦bass，就不允许用p指弹两根弦
+    allow_double_p = max_string_index > 3
+    allFingers = ["p", "p", "i", "m",
+                  "a"] if allow_double_p else ["p", "i", "m", "a"]
+    allstrings = list(range(max_string_index + 1))
 
     possibleRightHands = generatePossibleRightHands(
-        usedStrings, allFingers, allstrings)
+        usedStrings, allFingers, allstrings, allow_double_p)
 
-    if len(possibleRightHands) == 0:
-        print(f"当前要拨动的弦是{usedStrings}，没有找到合适的右手拨法。")
+    # if len(possibleRightHands) == 0:
+    #     print(f"当前要拨动的弦是{usedStrings}，没有找到合适的右手拨法。")
 
     for rightHand, handRecorder in itertools.product(possibleRightHands, rightHandRecordPool.preHandPoseRecordPool):
         lastHand = handRecorder.currentHandPose()
@@ -140,7 +142,7 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
             f"当前record数量是{current_recoreder_num}，上一次record数量是{previous_recoreder_num}")
 
 
-def update_right_hand_recorder_pool(left_hand_recorder_file, rightHandRecordPool, current_recoreder_num, previous_recoreder_num):
+def update_right_hand_recorder_pool(left_hand_recorder_file, rightHandRecordPool, current_recoreder_num, previous_recoreder_num, max_string_index):
     with open(left_hand_recorder_file, "r") as f:
         data = json.load(f)
         total_steps = len(data)
@@ -151,7 +153,7 @@ def update_right_hand_recorder_pool(left_hand_recorder_file, rightHandRecordPool
             for i in range(total_steps):
                 item = data[i]
                 generateRightHandRecoder(
-                    item, rightHandRecordPool, current_recoreder_num, previous_recoreder_num)
+                    item, rightHandRecordPool, current_recoreder_num, previous_recoreder_num, max_string_index)
                 progress.update(1)
 
 
@@ -264,7 +266,7 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
             initRightHandRecorder, 0)
 
         update_right_hand_recorder_pool(
-            left_hand_recorder_file, rightHandRecordPool, current_recoreder_num, previous_recoreder_num)
+            left_hand_recorder_file, rightHandRecordPool, current_recoreder_num, previous_recoreder_num, max_string_index)
 
         # after all iterations, read the best solution in the record pool. 全部遍历完以后，读取记录池中的最优解。
         bestHandPoseRecord = rightHandRecordPool.curHandPoseRecordPool[0]

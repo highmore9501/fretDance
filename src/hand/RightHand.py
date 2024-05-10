@@ -131,27 +131,27 @@ class RightHand():
         print("RightHand: ", self.usedFingers, self.rightFingerPositions)
 
 
-def finger_string_generator(allFingers: List[str], allStrings: List[int], usedStrings: List[int]):
+def finger_string_map_generator(allFingers: List[str], allStrings: List[int], usedStrings: List[int]):
     if usedStrings == []:
-        for result in finger_string_generator2(allFingers, allStrings):
+        for result in finger_string_map_generator2(allFingers, allStrings):
             yield result
 
     for finger, usedString in itertools.product(allFingers, usedStrings):
-        newStrings = usedStrings.copy()
-        newStrings.remove(usedString)
+        newUsedStrings = usedStrings.copy()
+        newUsedStrings.remove(usedString)
         newAllStrings = allStrings.copy()
         newAllStrings.remove(usedString)
         newAllFingers = allFingers.copy()
         newAllFingers.remove(finger)
-        for result in finger_string_generator(newAllFingers, newAllStrings, newStrings):
+        for result in finger_string_map_generator(newAllFingers, newAllStrings, newUsedStrings):
             yield [{
                 "finger": finger,
                 "string": usedString
             }] + result
 
 
-def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
-    if allFingers == []:
+def finger_string_map_generator2(allFingers: List[str], allStrings: List[int]):
+    if allFingers == [] or allStrings == []:
         yield []
         return
 
@@ -160,7 +160,7 @@ def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
         newAllStrings.remove(string)
         newAllFingers = allFingers.copy()
         newAllFingers.remove(finger)
-        for result in finger_string_generator2(newAllFingers, newAllStrings):
+        for result in finger_string_map_generator2(newAllFingers, newAllStrings):
             yield [{
                 "finger": finger,
                 "string": string
@@ -168,7 +168,7 @@ def finger_string_generator2(allFingers: List[str], allStrings: List[int]):
 
 
 def generatePossibleRightHands(
-        usedStrings: List[int], allFingers: List[str], allstrings: List[int]):
+        usedStrings: List[int], allFingers: List[str], allstrings: List[int], allow_double_p: bool):
     possibleRightHands = []
     # usedStrings元素去重
     usedStrings = list(set(usedStrings))
@@ -179,8 +179,9 @@ def generatePossibleRightHands(
             usedFingers, rightFingerPositions, isArpeggio=True)
         possibleRightHands.append(newRightHand)
     else:
-        for result in finger_string_generator(allFingers, allstrings, usedStrings):
-            result = process_p_fingers(result)
+        for result in finger_string_map_generator(allFingers, allstrings, usedStrings):
+            if allow_double_p:
+                result = process_p_fingers(result)
             if result == None:
                 continue
             rightFingerPositions = sort_fingers(result)
