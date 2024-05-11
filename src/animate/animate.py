@@ -257,7 +257,7 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
         for data in handDicts:
             frame = data['frame']
             strings = data["strings"]
-            isArpeggio = True if len(strings) > 4 else False
+            isArpeggio = True if len(strings) > 3 else False
             min_string = min(strings)
             max_string = max(strings)
 
