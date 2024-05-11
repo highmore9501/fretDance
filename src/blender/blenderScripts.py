@@ -494,5 +494,70 @@ def disable_toons_on_selected_object():
         print("No mesh object selected or no valid materials found.")
 
 
+def convert_vrm_mat_to_blender():
+    """
+    usage: This method converts the VRM material to Blender material.
+    """
+    obj = bpy.context.selected_objects[0]
+    if obj and obj.type == 'MESH':
+        for i in range(len(obj.material_slots)):
+            material = obj.material_slots[i].material
+            if material:
+                lit_color_node = None
+                emission_node = None
+                normal_node = None
+                Princlipled_BSDF_node = None
+                Normal_map_node = None
+
+                for node in material.node_tree.nodes:
+                    if node.type == 'BSDF_PRINCIPLED':
+                        Princlipled_BSDF_node = node
+                        continue
+                    elif node.type == 'NORMAL_MAP':
+                        Normal_map_node = node
+                        continue
+                    elif node.type == 'TEX_IMAGE' and node.image:
+                        if node.label == 'Lit Color Texture':
+                            lit_color_node = node
+                            continue
+                        elif node.label == 'Emissive Texture':
+                            emission_node = node
+                            continue
+                        elif node.label == 'Normal Map Texture':
+                            normal_node = node
+                            continue
+                    else:
+                        material.node_tree.nodes.remove(node)
+
+                if not Princlipled_BSDF_node:
+                    Princlipled_BSDF_node = material.node_tree.nodes.new(
+                        'ShaderNodeBsdfPrincipled')
+                if not Normal_map_node:
+                    Normal_map_node = material.node_tree.nodes.new(
+                        'ShaderNodeNormalMap')
+
+                if lit_color_node:
+                    material.node_tree.links.new(
+                        lit_color_node.outputs['Color'], Princlipled_BSDF_node.inputs['Base Color'])
+                if emission_node:
+                    material.node_tree.links.new(
+                        emission_node.outputs['Color'], Princlipled_BSDF_node.inputs['Emission Color'])
+                if normal_node:
+                    material.node_tree.links.new(
+                        normal_node.outputs['Color'], Normal_map_node.inputs['Color'])
+                    material.node_tree.links.new(
+                        Normal_map_node.outputs['Normal'], Princlipled_BSDF_node.inputs['Normal'])
+
+                # 获取 Material Output 节点
+                material_output_node = material.node_tree.nodes.get(
+                    'Material Output')
+                if not material_output_node:
+                    material_output_node = material.node_tree.nodes.new(
+                        'ShaderNodeOutputMaterial')
+                # 连接 Princlipled_BSDF_node 到 Material Output 节点
+                material.node_tree.links.new(
+                    Princlipled_BSDF_node.outputs['BSDF'], material_output_node.inputs['Surface'])
+
+
 if __name__ == "__main__":
     pass
