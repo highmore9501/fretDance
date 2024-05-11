@@ -148,7 +148,10 @@ class LeftHand():
             return False
 
         for finger in all_fingers:
-            if finger.fret > 21:
+            if finger._fingerIndex == -1:
+                continue
+            # 最高的把位限制，四指在0弦上最多按到22品，在1弦上最多按到21品，其它弦和其它手指依此类推
+            if finger.fret > 22 - (4 - finger._fingerIndex) - finger.stringIndex:
                 return False
 
         sortedFingers = sorted(all_fingers, key=lambda x: x._fingerIndex)
@@ -202,7 +205,7 @@ class LeftHand():
 
         return handPosition
 
-    def generateNextHands(self, guitar: Guitar, fingerPositions: List[tuple[str, int]]) -> tuple['LeftHand', float]:
+    def generateNextHands(self, guitar: Guitar, fingerPositions: List[tuple[str, int]], notes: List[int]) -> tuple['LeftHand', float]:
         """
         :parma guitar: Guitar. 吉他
         :param chord: List of notes, including fret and string index and index of finger which pressed it. 音符列表，包括品格，弦的索引和按下它的手指的索引
@@ -211,16 +214,12 @@ class LeftHand():
         empty_fingers = []
         finger_touch_string_counter = {}
         newHandPosition = 0
-        minFingerIndex = 4
+        minFingerIndex = 5
         # 最小空弦音的弦的索引，用于判断食指是横按还是普通按
         min_empty_stringIndex = len(guitar.guitarStrings) - 1
         for fingerPosition in fingerPositions:
             fret = fingerPosition['fret']
             finger_index = fingerPosition.get('finger', -1)
-            # 统计最低的手指的位置
-            if 0 < finger_index < minFingerIndex:
-                minFingerIndex = finger_index
-                newHandPosition = fret
             # 生成空弦音的手指
             if finger_index == -1:
                 empty_finger = LeftFinger(
@@ -233,6 +232,10 @@ class LeftHand():
                 if finger_index not in finger_touch_string_counter:
                     finger_touch_string_counter[finger_index] = 0
                 finger_touch_string_counter[finger_index] += 1
+                # 统计最低的按弦的手指的位置
+                if 0 < finger_index < minFingerIndex:
+                    minFingerIndex = finger_index
+                    newHandPosition = fret
 
         # 生成按弦手指
         pressed_fingers = []
@@ -288,7 +291,7 @@ class LeftHand():
         for finger_index in range(1, 5):
             if finger_index not in pressed_finger_indexs:
                 if finger_index not in current_used_finger_indexs:
-                    defalut_string = guitar.guitarStrings[2]
+                    defalut_string = guitar.guitarStrings[2] if newHandPosition < 17 else guitar.guitarStrings[0]
                     defalut_fret = newHandPosition + finger_index - 1
                     press_state = "Open"
                 else:
@@ -304,6 +307,16 @@ class LeftHand():
                 open_fingers.append(open_finger)
 
         all_fingers = pressed_fingers + empty_fingers + open_fingers
+
+        # if notes == [86]:
+        #     print(fingerPositions)
+        #     print(f'当前手型是：')
+        #     self.output()
+        #     print(f'计算出来的把位是{newHandPosition}')
+        #     print('计算出来的指型是：')
+
+        #     for finger in all_fingers:
+        #         finger.output()
 
         if not self.verifyValid(all_fingers):
             return None, None
