@@ -46,7 +46,7 @@ def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: Hand
 
         # Iterate through the list of fingerings, generate a new LeftHand object based on the fingering. 遍历按法列表，根据按法生成新的LeftHand对象。
         all_fingers, entropy = oldhand.generateNextHands(
-            guitar, fingerPositions)
+            guitar, fingerPositions, notes)
 
         if all_fingers is not None:
             new_entropy = handPoseRecord.currentEntropy + entropy
@@ -184,6 +184,7 @@ def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_fi
 
 def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_string_notes: List[str]) -> str:
     filename = midiFilePath.split("/")[-1].split(".")[0]
+    notes_map_file = f"output/{filename}_{track_number}_notes_map.json"
     left_hand_recorder_file = f"output/{filename}_{track_number}_lefthand_recorder.json"
     left_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_lefthand_animation.json"
     right_hand_recorder_file = f"output/{filename}_{track_number}_righthand_recorder.json"
@@ -191,6 +192,8 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
     notes_map = midiToGuitarNotes(midiFilePath, useChannel=track_number)
+    with open(notes_map_file, "w") as f:
+        json.dump(notes_map, f, indent=4)
 
     print(f'全曲的速度变化是:')
     for track, tempo, tick in tempo_changes:
