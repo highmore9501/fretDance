@@ -291,7 +291,9 @@ class LeftHand():
         for finger_index in range(1, 5):
             if finger_index not in pressed_finger_indexs:
                 if finger_index not in current_used_finger_indexs:
-                    defalut_string = guitar.guitarStrings[2] if newHandPosition < 17 else guitar.guitarStrings[0]
+                    defalut_string_index = max(
+                        3 - finger_index, 0) if newHandPosition < 17 else 0
+                    defalut_string = guitar.guitarStrings[defalut_string_index]
                     defalut_fret = newHandPosition + finger_index - 1
                     press_state = "Open"
                 else:
