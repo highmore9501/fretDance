@@ -559,5 +559,40 @@ def convert_vrm_mat_to_blender():
                     Princlipled_BSDF_node.outputs['BSDF'], material_output_node.inputs['Surface'])
 
 
+def follow_lowest_foot(armature_name: str, base_bone_name: str, left_foot_name: str, right_foot_name: str, frames: int):
+    """
+    usage: This method follows the lowest foot of the character and adjusts the position of the character's body accordingly.
+"""
+    armature = bpy.data.objects[armature_name]
+    base_bone = armature.pose.bones[base_bone_name]
+
+    left_foot = bpy.data.objects[left_foot_name]
+    right_foot = bpy.data.objects[right_foot_name]
+    pre_foot_position = [left_foot.location.copy(), right_foot.location.copy()]
+    current_foot = None
+    pre_foot = None
+
+    for i in range(1, frames+1):
+        if i > 1:
+            pre_foot_position = current_foot_position[:]
+        # 先把时间轴调整到当前帧
+        bpy.context.scene.frame_set(i)
+        # 记录两只脚的当前位置
+        current_foot_position = [
+            left_foot.location.copy(), right_foot.location.copy()]
+
+        # 比较两只脚的坐标，看哪个最低
+        if pre_foot_position:
+            current_foot = left_foot if left_foot.location[2] < right_foot.location[2] else right_foot
+            current_foot_index = 0 if current_foot == left_foot else 1
+
+            if pre_foot == current_foot:
+                offset = current_foot.location - \
+                    pre_foot_position[current_foot_index]
+                base_bone.location -= offset
+                base_bone.keyframe_insert(data_path="location")
+            pre_foot = current_foot
+
+
 if __name__ == "__main__":
     pass
