@@ -28,7 +28,6 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
                    finger_position_p2 - finger_position_p1)
     normal = normal / linalg.norm(normal)
 
-    handDicts = None
     data_for_animation = []
 
     with open(recorder, "r") as f:
@@ -254,8 +253,14 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
     with open(right_hand_recorder_file, "r") as f:
         handDicts = json.load(f)
 
-        for data in handDicts:
+        for i in range(len(handDicts)):
+            data = handDicts[i]
             frame = data['frame']
+            if i != len(handDicts)-1:
+                next_frame = handDicts[i + 1]['frame']
+                if next_frame > frame + elapsed_frame:
+                    hold_pose_frame = next_frame - elapsed_frame
+
             strings = data["strings"]
             isArpeggio = True if len(strings) > 3 else False
             min_string = min(strings)
@@ -277,6 +282,12 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                 "frame": frame + elapsed_frame * time_multiplier,
                 "fingerInfos": played
             })
+            # 右手需要保持当前动作直到下个动作的到来之前
+            if hold_pose_frame:
+                data_for_animation.append({
+                    "frame": hold_pose_frame,
+                    "fingerInfos": played
+                })
 
             pick_down = not pick_down
 
