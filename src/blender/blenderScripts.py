@@ -90,7 +90,8 @@ def remove_non_associated_bones(mesh_name: str, armature_name: str):
     # 遍历所有骨骼，把名字不在weight_groups_name里的骨骼删除
     for bone in bpy.context.selected_bones:
         if bone.name not in weight_groups_name:
-            bone.layers = [i == 30 for i in range(32)]
+            # 删除骨骼
+            bpy.ops.armature.delete()
 
     # 切换回姿态模式
     bpy.ops.object.mode_set(mode='POSE')
@@ -592,6 +593,57 @@ def follow_lowest_foot(armature_name: str, base_bone_name: str, left_foot_name: 
                 base_bone.location -= offset
                 base_bone.keyframe_insert(data_path="location")
             pre_foot = current_foot
+
+
+def modify_daz_studio_bones():
+    """
+    usage: 将骨骼的自定义形状去掉
+    """
+    selected_bones = bpy.context.selected_pose_bones
+
+    # 切换到编辑模式
+    bpy.ops.object.mode_set(mode='EDIT')
+    for bone in selected_bones:
+        if bone.name.startswith('l'):
+            bone.name = bone.name[1:] + "_L"
+        elif bone.name.startswith('r'):
+            bone.name = bone.name[1:] + "_R"
+
+    # 切换回pose模式
+    bpy.ops.object.mode_set(mode='POSE')
+
+    for bone in selected_bones:
+        if bone.custom_shape:
+            bone.custom_shape = None
+        bone.use_ik_limit_x = False
+        bone.use_ik_limit_y = False
+        bone.use_ik_limit_z = False
+        bone.lock_ik_x = False
+        bone.lock_ik_y = False
+        bone.lock_ik_z = False
+
+
+def adjust_bone_rotation():
+    """
+    usage: 调整一定时间帧内的骨骼的旋转角度，主要用于将某些骨骼在每一帧都进行一样的旋转操作
+    """
+    # 设置当前帧
+    current_frame = bpy.context.scene.frame_start
+
+    # 获取选定的骨骼
+    selected_bones = bpy.context.selected_pose_bones
+
+    # 遍历每一帧
+    while current_frame <= bpy.context.scene.frame_end:
+        bpy.context.scene.frame_set(current_frame)
+
+        bpy.ops.transform.rotate(value=0.483127, orient_axis='X', orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', constraint_axis=(
+            True, False, False), mirror=False, snap=False, snap_elements={'INCREMENT'}, use_snap_project=False, snap_target='CLOSEST', use_snap_self=True, use_snap_edit=True, use_snap_nonedit=True, use_snap_selectable=False)
+
+        bpy.ops.anim.keyframe_insert()
+
+        # 移动到下一帧
+        current_frame += 1
 
 
 if __name__ == "__main__":
