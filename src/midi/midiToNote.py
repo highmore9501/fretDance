@@ -64,23 +64,27 @@ def get_tempo_changes(midiFilePath: str):
 def export_midi_info(midiFilePath: str) -> str:
     result = ''
     midFile = MidiFile(midiFilePath)
+    print(midFile)
+
     for i, track in enumerate(midFile.tracks):
         result += f'Track {i}: {track.name}\n'
         for msg in track:
             if msg.type == 'program_change':
-                result += f'Track {i}: {MIDI_INSTRUMENTS[msg.program]}\n'
+                channel = msg.channel
+                instrument = MIDI_INSTRUMENTS[msg.program]
+                result += f'Track {i}, Channel {channel}: {instrument}\n'
 
     return result
 
 
-def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[int] = [17]) -> object:
+def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0, muteChannel: List[int] = [17]) -> object:
     """
     :param muteChannel: channels need to filter out, normally it is drum channel. 需要过滤掉的通道，一般是打击乐通道
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :return: notes and beat in the midi file. 返回midi文件中的音符和拍子
     """
     try:
-        midTrack = MidiFile(midiFilePath).tracks[useChannel]
+        midTrack = MidiFile(midiFilePath).tracks[useTrack]
     except:
         midTrack = MidiFile(midiFilePath).tracks[0]
 
@@ -92,7 +96,7 @@ def midiToGuitarNotes(midiFilePath: str, useChannel: int = 0, muteChannel: List[
         ticks = message.time
         real_tick += ticks
 
-        if message.type == 'note_on' and message.time == 0 and message.channel not in muteChannel:
+        if message.type == 'note_on' and message.channel == useChannel:
             note.append(message.note)
         else:
             if len(note) == 0:

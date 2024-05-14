@@ -28,7 +28,7 @@ guitar_type_options = {
 }
 
 
-def check_and_exec(avatar, midiFilePath, track_number, FPS, guitar_type, use_custom_string_notes, custom_string_notes) -> str:
+def check_and_exec(avatar, midiFilePath, track_number, channel_number, FPS, guitar_type, use_custom_string_notes, custom_string_notes) -> str:
     # 根据复选框的值决定使用哪个弦音高
     if use_custom_string_notes:
         guitar_string_notes = custom_string_notes.replace(' ', '').split(',')
@@ -39,7 +39,8 @@ def check_and_exec(avatar, midiFilePath, track_number, FPS, guitar_type, use_cus
     for note in guitar_string_notes:
         if note not in all_notes:
             return "Invalid note: " + note
-    result = main(avatar, midiFilePath, track_number, FPS, guitar_string_notes)
+    result = main(avatar, midiFilePath, track_number,
+                  channel_number, FPS, guitar_string_notes)
     return result
 
 
@@ -59,7 +60,9 @@ with gr.Blocks() as demo:
         guitar_type_dropdown = gr.Dropdown(
             guitar_type_options.keys(), label="选择吉他类型")
         track_number = gr.Number(
-            minimum=1, maximum=100, value=1, step=1, label="选择 MIDI 文件的音轨编号")
+            minimum=0, maximum=100, value=0, step=1, label="选择 MIDI 文件的音轨编号")
+        channel_number = gr.Number(
+            minimum=0, maximum=100, value=0, step=1, label="选择 MIDI 文件的通道编号")
         fps_number = gr.Number(
             minimum=1, maximum=120, value=30, step=1, label="设定 Blender 里的 FPS")
 
@@ -76,7 +79,7 @@ with gr.Blocks() as demo:
         output_textbox = gr.Textbox(label="输出结果")
 
         submit_button.click(check_and_exec, inputs=[
-            avatar_dropdown, midi_dropdown, track_number, fps_number, guitar_type_dropdown, use_custom_string_notes_checkbox, custom_string_notes_textbox], outputs=[output_textbox])
+            avatar_dropdown, midi_dropdown, track_number, channel_number, fps_number, guitar_type_dropdown, use_custom_string_notes_checkbox, custom_string_notes_textbox], outputs=[output_textbox])
 
 
 demo.launch(inbrowser=True)

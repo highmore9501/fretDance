@@ -182,7 +182,7 @@ def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_fi
         json.dump(result, f, indent=4)
 
 
-def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_string_notes: List[str]) -> str:
+def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int, FPS: int, guitar_string_notes: List[str]) -> str:
     filename = midiFilePath.split("/")[-1].split(".")[0]
     notes_map_file = f"output/{filename}_{track_number}_notes_map.json"
     left_hand_recorder_file = f"output/{filename}_{track_number}_lefthand_recorder.json"
@@ -191,7 +191,8 @@ def main(avatar: str, midiFilePath: str, track_number: int, FPS: int, guitar_str
     right_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_righthand_animation.json"
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
-    notes_map = midiToGuitarNotes(midiFilePath, useChannel=track_number)
+    notes_map = midiToGuitarNotes(
+        midiFilePath, useTrack=track_number, useChannel=channel_number)
     with open(notes_map_file, "w") as f:
         json.dump(notes_map, f, indent=4)
 
