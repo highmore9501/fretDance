@@ -64,7 +64,10 @@ def get_tempo_changes(midiFilePath: str):
 def export_midi_info(midiFilePath: str) -> str:
     result = ''
     midFile = MidiFile(midiFilePath)
-    print(midFile)
+
+    with open('output\current_midi_info.txt', 'w') as f:
+        for message in midFile.tracks[0]:
+            f.write(str(message) + '\n')
 
     for i, track in enumerate(midFile.tracks):
         result += f'Track {i}: {track.name}\n'
@@ -77,10 +80,11 @@ def export_midi_info(midiFilePath: str) -> str:
     return result
 
 
-def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0, muteChannel: List[int] = [17]) -> object:
-    """
-    :param muteChannel: channels need to filter out, normally it is drum channel. 需要过滤掉的通道，一般是打击乐通道
+def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0) -> object:
+    """    
     :param midiFilePath: path of input midi file. 输入midi文件路径
+    :param useTrack: track number to use. 使用的轨道编号
+    :param useChannel: channel number to use. 使用的通道编号，如果使用-1表示不限制
     :return: notes and beat in the midi file. 返回midi文件中的音符和拍子
     """
     try:
@@ -90,23 +94,38 @@ def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0,
 
     notes_map = []
     note = []
+    pitch_wheel_map = []
     real_tick: float = 0
+    pre_tick: float = 0
+    messages = []
 
     for message in midTrack:
         ticks = message.time
         real_tick += ticks
 
-        if message.type == 'note_on' and message.channel == useChannel:
-            note.append(message.note)
-        else:
-            if len(note) == 0:
-                continue
-            # 将note里的元素按大小排序
-            notes = sorted(note)
-            notes_map.append({"notes": notes, "real_tick": real_tick})
-            note = []
+        if not hasattr(message, 'channel'):
+            continue
 
-    return notes_map
+        if message.channel == useChannel or useChannel == -1:
+            messages.append({'message': str(message), 'real_tick': real_tick})
+            if message.type == 'note_on':
+                note.append(message.note)
+            else:
+                # 结束音符的收集
+                if len(note) == 0:
+                    continue
+                # 将note里的元素按大小排序
+                notes = sorted(note)
+                notes_map.append({"notes": notes, "real_tick": pre_tick})
+                note = []
+
+            if message.type == 'pitchwheel':
+                pitch_wheel_map.append(
+                    {"pitchwheel": message.pitch, "real_tick": pre_tick})
+
+        pre_tick = real_tick
+
+    return notes_map, pitch_wheel_map, messages
 
 
 def processedNotes(chordNotes: list[int], min: int, max: int) -> list[int]:

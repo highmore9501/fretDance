@@ -62,7 +62,7 @@ with gr.Blocks() as demo:
         track_number = gr.Number(
             minimum=0, maximum=100, value=0, step=1, label="选择 MIDI 文件的音轨编号")
         channel_number = gr.Number(
-            minimum=0, maximum=100, value=0, step=1, label="选择 MIDI 文件的通道编号")
+            minimum=-1, maximum=100, value=-1, step=1, label="选择 MIDI 文件的通道编号，如果为-1表示接受所有通道")
         fps_number = gr.Number(
             minimum=1, maximum=120, value=30, step=1, label="设定 Blender 里的 FPS")
 

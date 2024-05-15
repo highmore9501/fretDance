@@ -4,7 +4,7 @@ from typing import List
 from tqdm import tqdm
 
 from src.HandPoseRecorder import HandPoseRecordPool, HandPoseRecorder, RightHandRecorder
-from src.animate.animate import leftHand2Animation, rightHand2Animation, ElectronicRightHand2Animation
+from src.animate.animate import leftHand2Animation, rightHand2Animation, ElectronicRightHand2Animation, addPitchwheel
 from src.guitar.Guitar import Guitar
 from src.guitar.GuitarString import createGuitarStrings
 from src.guitar.MusicNote import MusicNote
@@ -16,7 +16,9 @@ from src.utils.utils import convertChordTofingerPositions, convertNotesToChord
 
 
 def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: HandPoseRecordPool, current_recoreder_num: int, previous_recoreder_num: int):
-    notes = guitarNote["notes"]
+    notes = guitarNote.get("notes", False)
+    if notes == False:
+        return current_recoreder_num, previous_recoreder_num
     real_tick = guitarNote["real_tick"]
     min_note = guitar.guitarStrings[-1].getBaseNote()
     max_note = guitar.guitarStrings[0].getBaseNote() + 22
@@ -165,12 +167,19 @@ def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_fi
         with tqdm(total=total_steps, desc="Processing", ncols=100, unit="step") as progress:
             for i in range(total_steps):
                 item = data[i]
+                pitchwheel = item.get("pitchwheel", 0)
+                if pitchwheel != 0:
+                    continue
                 leftHand = item["leftHand"]
                 frame = item["frame"]
                 strings = []
                 for finger in leftHand:
                     if finger["fingerIndex"] == -1 or 0 < finger["fingerInfo"]["press"] < 5:
                         strings.append(finger["fingerInfo"]['stringIndex'])
+
+                if len(strings) > len(set(strings)):
+                    strings = list(set(strings))
+
                 result.append({
                     'frame': frame,
                     'strings': strings,
@@ -185,16 +194,19 @@ def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_fi
 def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int, FPS: int, guitar_string_notes: List[str]) -> str:
     filename = midiFilePath.split("/")[-1].split(".")[0]
     notes_map_file = f"output/{filename}_{track_number}_notes_map.json"
+    messages_file = f"output/{filename}_{track_number}_messages.json"
     left_hand_recorder_file = f"output/{filename}_{track_number}_lefthand_recorder.json"
     left_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_lefthand_animation.json"
     right_hand_recorder_file = f"output/{filename}_{track_number}_righthand_recorder.json"
     right_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_righthand_animation.json"
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
-    notes_map = midiToGuitarNotes(
+    notes_map, pitch_wheel_map, messages = midiToGuitarNotes(
         midiFilePath, useTrack=track_number, useChannel=channel_number)
     with open(notes_map_file, "w") as f:
         json.dump(notes_map, f, indent=4)
+    with open(messages_file, "w") as f:
+        json.dump(messages, f, indent=4)
 
     print(f'全曲的速度变化是:')
     for track, tempo, tick in tempo_changes:
@@ -247,6 +259,14 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
                             tempo_changes, ticks_per_beat, FPS)
     print(f"总音符数应该为{total_steps}")
     print(f"实际输出音符数为{len(bestHandPoseRecord.handPoseList)}")
+
+    # 如果有各种推弦动作，添加推弦动作
+    if len(pitch_wheel_map) > 0:
+        for item in pitch_wheel_map:
+            frame = calculate_frame(
+                tempo_changes, ticks_per_beat, FPS, item['real_tick'])
+            item['frame'] = frame
+        addPitchwheel(left_hand_recorder_file, pitch_wheel_map)
 
     leftHand2Animation(avatar, left_hand_recorder_file,
                        left_hand_animation_file, tempo_changes, ticks_per_beat, FPS, max_string_index)

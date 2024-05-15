@@ -1,5 +1,4 @@
 import json
-from src.midi.midiToNote import calculate_frame
 from numpy import array, linalg, cross, random
 
 from ..hand.LeftFinger import PRESSSTATE
@@ -21,7 +20,7 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
     finger_position_p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
 
     # 这里是计算左手按弦需要保持的时间
-    elapsed_frame = int(FPS / 8)
+    elapsed_frame = FPS / 8.0
 
     # 计算finger_position_p0,finger_position_p1,finger_position_p2三点组成的平面上的法线值
     normal = cross(finger_position_p0 - finger_position_p1,
@@ -36,6 +35,8 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
     for i in range(len(handDicts)):
         item = handDicts[i]
         frame = item["frame"]
+        pitchwheel = item.get("pitchwheel", 0)
+        hold_pose_frame = None
         if i != len(handDicts) - 1:
             next_frame = handDicts[i + 1]["frame"]
             if next_frame > frame + elapsed_frame:
@@ -43,25 +44,57 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
 
         # 计算左手的动画信息
         fingerInfos = animatedLeftHand(
-            base_data, item, normal, max_string_index)
+            base_data, item, normal, max_string_index, pitchwheel)
         data_for_animation.append({
             "frame": frame,
-            "fingerInfos": fingerInfos
+            "fingerInfos": fingerInfos,
+            "pitchwheel": pitchwheel
         })
 
         # 右手会保持当前动作直到下个动作到来前两帧
         if hold_pose_frame:
             data_for_animation.append({
                 "frame": hold_pose_frame,
-                "fingerInfos": fingerInfos
+                "fingerInfos": fingerInfos,
+                "pitchwheel": pitchwheel
             })
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
 
 
-def animatedLeftHand(base_data: object, item: object, normal: array, max_string_index: int):
+def addPitchwheel(left_hand_recorder_file: str, pitch_wheel_map: list):
+    with open(left_hand_recorder_file, "r") as f:
+        data = json.load(f)
+        total_itmes = len(data)
+
+        new_data = []
+
+        for i in range(total_itmes):
+            new_item = data[i]
+            new_item['pitchwheel'] = 0
+            new_data.append(new_item)
+
+            if i != total_itmes - 1:
+                recorder_tick = data[i]["real_tick"]
+                next_tick = data[i + 1]["real_tick"]
+
+                for pitch_wheel_item in pitch_wheel_map:
+                    tick = pitch_wheel_item['real_tick']
+                    if recorder_tick <= tick <= next_tick:
+                        insert_item = new_item.copy()
+                        insert_item['real_tick'] = tick
+                        insert_item['frame'] = pitch_wheel_item['frame']
+                        insert_item['pitchwheel'] = pitch_wheel_item['pitchwheel']
+                        new_data.append(insert_item)
+
+        with open(left_hand_recorder_file, "w") as f:
+            json.dump(new_data, f, indent=4)
+
+
+def animatedLeftHand(base_data: object, item: object, normal: array, max_string_index: int, pitchwheel: int):
     leftHand = item["leftHand"]
+
     fingerInfos = {}
     hand_fret = 1
     max_finger_string_index = 0
@@ -75,11 +108,11 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
         4: 0
     }
 
-    for hand_data in leftHand:
-        fingerIndex = hand_data["fingerIndex"]
-        stringIndex = hand_data["fingerInfo"]["stringIndex"]
-        fret = hand_data["fingerInfo"]["fret"]
-        press = hand_data["fingerInfo"]["press"]
+    for finger_data in leftHand:
+        fingerIndex = finger_data["fingerIndex"]
+        stringIndex = finger_data["fingerInfo"]["stringIndex"]
+        fret = finger_data["fingerInfo"]["fret"]
+        press = finger_data["fingerInfo"]["press"]
 
         min_press_fingerIndex = 4
         # skip open string. 空弦音跳过
@@ -101,6 +134,14 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
             else:
                 stringIndex += 0.5
 
+        # 按弦的手指考虑是否有pitchWheel，以进行对应的移动
+        if press == PRESSSTATE['Pressed'] and pitchwheel != 0:
+            pitch_move = pitchwheel / 8192
+            if stringIndex > 2:
+                stringIndex -= pitch_move
+            else:
+                stringIndex += pitch_move
+
         # 如果手指有横按的情况，并且遍历到的stringIndex比之前计算过的要大，那么需要重新计算手指的位置
         need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and 5 > press > 1
 
@@ -113,7 +154,7 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
 
         # 如果手指没有按下，那么手指位置会稍微上移
         if press == PRESSSTATE['Open']:
-            finger_position -= normal * 0.003
+            finger_position -= normal * 0.006
 
         if fingerIndex == 1:
             position_value_name = "I_L"
@@ -248,7 +289,7 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
     pick_down = True
     data_for_animation = []
     # 这里是计算按弦需要保持的时间
-    elapsed_frame = int(FPS / 15)
+    elapsed_frame = FPS / 15.0
 
     with open(right_hand_recorder_file, "r") as f:
         handDicts = json.load(f)
@@ -256,15 +297,18 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
         for i in range(len(handDicts)):
             data = handDicts[i]
             frame = data['frame']
-            if i != len(handDicts)-1:
-                next_frame = handDicts[i + 1]['frame']
-                if next_frame > frame + elapsed_frame:
-                    hold_pose_frame = next_frame - elapsed_frame
-
             strings = data["strings"]
             isArpeggio = True if len(strings) > 3 else False
             min_string = min(strings)
             max_string = max(strings)
+            time_multiplier = 2 if len(strings) > 2 else 1
+            played_frame = frame + elapsed_frame * time_multiplier
+
+            hold_pose_frame = None
+            if i < len(handDicts)-1:
+                next_frame = handDicts[i + 1]['frame']
+                if next_frame > played_frame + elapsed_frame:
+                    hold_pose_frame = next_frame - elapsed_frame
 
             ready = calculateRightPick(
                 avatar, max_string, pick_down, isArpeggio, isAfterPlayed=False)
@@ -277,13 +321,12 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                 "fingerInfos": ready
             })
 
-            time_multiplier = 2 if len(strings) > 2 else 1
             data_for_animation.append({
-                "frame": frame + elapsed_frame * time_multiplier,
+                "frame": played_frame,
                 "fingerInfos": played
             })
             # 右手需要保持当前动作直到下个动作的到来之前
-            if hold_pose_frame:
+            if hold_pose_frame is not None:
                 data_for_animation.append({
                     "frame": hold_pose_frame,
                     "fingerInfos": played
