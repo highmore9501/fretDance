@@ -45,4 +45,4 @@ In the Blender folder, there are some scripts that run in Blender, which serve t
 The purpose of this project is not to output tabs for humans to read, because traditional tabs only record the movement of the left hand fingers that need to be pressed, but lack recording of the positions of the unused left hand fingers.
 Of course, for humans, this does not matter, because humans will naturally move their unused fingers to places they feel appropriate.
 However, when considering animation generation, which requires the position information of each finger at each keyframe, traditional tabs are not enough.
-Therefore, the goal of this project is to output a sequence containing all finger information for each beat, so as to provide sufficient information for possible animation generation.
+Therefore, the goal of this project is to output a sequence containing all finger information for each beat, so as to provide sufficient information for animation generation.
