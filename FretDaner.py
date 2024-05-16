@@ -96,15 +96,20 @@ def update_recorder_pool(total_steps: int, guitar: Guitar, handPoseRecordPool: H
 def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, previous_recoreder_num, max_string_index):
     real_tick = item["real_tick"]
     leftHand = item["leftHand"]
-    usedStrings = []
+    touchedStrings = []
 
     for finger in leftHand:
         if finger["fingerIndex"] == -1 or 5 > finger["fingerInfo"]["press"] > 0:
-            usedStrings.append(finger["fingerInfo"]["stringIndex"])
+            touchedStrings.append(finger["fingerInfo"]["stringIndex"])
 
-    if usedStrings == []:
+    if touchedStrings == []:
         return
     rightHandRecordPool.readyForRecord()
+
+    # usedStrings元素去重
+    touchedStrings = list(set(touchedStrings))
+    # usedStrings进行从高到低的排序
+    touchedStrings.sort(reverse=True)
 
     # 这个重复p的写法是确保p指可能弹两根弦，但如果是四弦bass，就不允许用p指弹两根弦
     allow_double_p = max_string_index > 3
@@ -113,10 +118,10 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
     allstrings = list(range(max_string_index + 1))
 
     possibleRightHands = generatePossibleRightHands(
-        usedStrings, allFingers, allstrings, allow_double_p)
+        touchedStrings, allFingers, allstrings)
 
     if len(possibleRightHands) == 0:
-        print(f"当前要拨动的弦是{usedStrings}，没有找到合适的右手拨法。")
+        print(f"当前要拨动的弦是{touchedStrings}，没有找到合适的右手拨法。")
 
     for rightHand, handRecorder in itertools.product(possibleRightHands, rightHandRecordPool.preHandPoseRecordPool):
         lastHand = handRecorder.currentHandPose()

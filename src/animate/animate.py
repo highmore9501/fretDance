@@ -253,13 +253,12 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
 
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
-            rightHandPosition = right_hand["rightHandPosition"]
 
             ready = caculateRightHandFingers(avatar,
-                                             rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=False)
+                                             rightFingerPositions, usedFingers, isAfterPlayed=False)
 
             played = caculateRightHandFingers(avatar,
-                                              rightFingerPositions, usedFingers, rightHandPosition, isAfterPlayed=True)
+                                              rightFingerPositions, usedFingers, isAfterPlayed=True)
             # 触弦帧
             data_for_animation.append({
                 "frame": frame,

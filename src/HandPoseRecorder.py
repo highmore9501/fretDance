@@ -95,8 +95,6 @@ class RightHandRecorder():
             handInfo = {
                 "usedFingers": rightHand.usedFingers,
                 "rightFingerPositions": rightHand.rightFingerPositions,
-                "rightHandPosition": rightHand.rightHandPosition,
-                "afterPlayedRightFingerPositions": rightHand.afterPlayedRightFingerPositions
             }
 
             handsDict.append({
