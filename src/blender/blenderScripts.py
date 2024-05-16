@@ -560,18 +560,16 @@ def convert_vrm_mat_to_blender():
                     Princlipled_BSDF_node.outputs['BSDF'], material_output_node.inputs['Surface'])
 
 
-def follow_lowest_foot(armature_name: str, base_bone_name: str, left_foot_name: str, right_foot_name: str, frames: int):
+def follow_lowest_foot(base_pivot_name: str, left_foot_name: str, right_foot_name: str, frames: int):
     """
-    usage: This method follows the lowest foot of the character and adjusts the position of the character's body accordingly.
+    usage: 这个方法用于修正滑步的动作.使用方式是先用两个轴点left_foot_name和right_foot_name记录左右脚最低点的运动，然后用一个空轴点base_pivot_name来记录修正运动。最后面将骨骼的base_bone约束到这个修正后的空轴点上，就可以完成滑步的修正。
 """
-    armature = bpy.data.objects[armature_name]
-    base_bone = armature.pose.bones[base_bone_name]
+    base_pivot = bpy.data.objects[base_pivot_name]
 
     left_foot = bpy.data.objects[left_foot_name]
     right_foot = bpy.data.objects[right_foot_name]
     pre_foot_position = [left_foot.location.copy(), right_foot.location.copy()]
     current_foot = None
-    pre_foot = None
 
     for i in range(1, frames+1):
         if i > 1:
@@ -581,18 +579,15 @@ def follow_lowest_foot(armature_name: str, base_bone_name: str, left_foot_name: 
         # 记录两只脚的当前位置
         current_foot_position = [
             left_foot.location.copy(), right_foot.location.copy()]
+        # 这里取哪个值来判断高度，取决base_bone的朝向
+        current_foot = left_foot if left_foot.location[2] <= right_foot.location[2] else right_foot
+        current_foot_index = 0 if current_foot == left_foot else 1
+        print(f'current_i:{i},current_foot_index: {current_foot_index}')
 
-        # 比较两只脚的坐标，看哪个最低
-        if pre_foot_position:
-            current_foot = left_foot if left_foot.location[2] < right_foot.location[2] else right_foot
-            current_foot_index = 0 if current_foot == left_foot else 1
-
-            if pre_foot == current_foot:
-                offset = current_foot.location - \
-                    pre_foot_position[current_foot_index]
-                base_bone.location -= offset
-                base_bone.keyframe_insert(data_path="location")
-            pre_foot = current_foot
+        offset = current_foot.location - \
+            pre_foot_position[current_foot_index]
+        base_pivot.location -= offset
+        base_pivot.keyframe_insert(data_path="location")
 
 
 def modify_daz_studio_bones():
