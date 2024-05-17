@@ -1,6 +1,6 @@
 ## FretDance
 
-![blender screen capture](asset\img\image00.png)
+![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/image00.png)
 Convert the original MIDI file into a guitar tablature fingering arrangement that minimizes the movement trajectories of both hands. Ultimately, present the performance animation in Blender.
 
 Demo video in BiliBili: [https://www.bilibili.com/video/BV1my411Y72J/](https://www.bilibili.com/video/BV1my411Y72J/)
