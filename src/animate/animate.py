@@ -171,9 +171,8 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
 
     # 判断当前应该使用哪种手型来计算
     index_finger_string_number = finger_string_numbers[1]
-    differences = [
-        string - index_finger_string_number for string in finger_string_numbers.values()]
-    hand_state = max(differences, key=abs)
+    pinky_finger_string_number = finger_string_numbers[4]
+    hand_state = pinky_finger_string_number - index_finger_string_number
 
     hand_position = twiceLerp(
         base_data=base_data,
@@ -250,37 +249,52 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
             data = handDicts[i]
             frame = data['frame']
             right_hand = data["rightHand"]
-            if i != hand_count-1:
-                next_frame = handDicts[i + 1]['frame']
-
             usedFingers = right_hand["usedFingers"]
             rightFingerPositions = right_hand["rightFingerPositions"]
+
+            time_multiplier = 2 if usedFingers == [] else 1
+            played_frame = frame + elapsed_frame * time_multiplier
+
+            played_finished_frame = None
+            hold_pose_frame = None
+            if i != hand_count-1:
+                next_frame = handDicts[i + 1]['frame']
+                if next_frame > played_frame + elapsed_frame:
+                    played_finished_frame = played_frame + elapsed_frame
+                    if next_frame > played_finished_frame + elapsed_frame:
+                        hold_pose_frame = next_frame - elapsed_frame
 
             ready = caculateRightHandFingers(avatar,
                                              rightFingerPositions, usedFingers, isAfterPlayed=False)
 
             played = caculateRightHandFingers(avatar,
                                               rightFingerPositions, usedFingers, isAfterPlayed=True)
+
+            # 右手拨弦分为四个阶段，准备拨弦，拨弦，拨弦后维持动作，返回准备状态。
+            # 如果与下一个音符之间的间隔足够长，就需要把这些动作都记录下来
+
             # 触弦帧
             data_for_animation.append({
                 "frame": frame,
                 "fingerInfos": ready,
             })
-            # 拨弦帧
-            time_multiplier = 2 if usedFingers == [] else 1
-            played_frame = frame + elapsed_frame * time_multiplier
             data_for_animation.append({
                 "frame": played_frame,
                 "fingerInfos": played,
             })
             # 拨弦后维持动作帧
-            if next_frame:
-                if next_frame - played_frame > elapsed_frame:
-                    hold_pose_frame = next_frame - elapsed_frame
-                    data_for_animation.append({
-                        "frame": hold_pose_frame,
-                        "fingerInfos": played,
-                    })
+            if played_finished_frame is not None:
+                data_for_animation.append({
+                    "frame": played_finished_frame,
+                    "fingerInfos": played,
+                })
+
+            # 拨弦后返回准备状态帧
+            if hold_pose_frame is not None:
+                data_for_animation.append({
+                    "frame": hold_pose_frame,
+                    "fingerInfos": ready,
+                })
 
     with open(animation, "w") as f:
         json.dump(data_for_animation, f)
@@ -305,11 +319,11 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
             time_multiplier = 2 if len(strings) > 2 else 1
             played_frame = frame + elapsed_frame * time_multiplier
 
-            hold_pose_frame = None
+            played_finished_frame = None
             if i < len(handDicts)-1:
                 next_frame = handDicts[i + 1]['frame']
                 if next_frame > played_frame + elapsed_frame:
-                    hold_pose_frame = next_frame - elapsed_frame
+                    played_finished_frame = played_frame + elapsed_frame
 
             ready = calculateRightPick(
                 avatar, max_string, pick_down, isArpeggio, isAfterPlayed=False)
@@ -317,6 +331,7 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
             played = calculateRightPick(
                 avatar, min_string, pick_down, isArpeggio, isAfterPlayed=True)
 
+            # pick拨弦分为三个阶段，准备拨弦，拨弦，拨弦后维持动作。它没有再返回准备状态的必要。
             data_for_animation.append({
                 "frame": frame,
                 "fingerInfos": ready
@@ -326,10 +341,10 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                 "frame": played_frame,
                 "fingerInfos": played
             })
-            # 右手需要保持当前动作直到下个动作的到来之前
-            if hold_pose_frame is not None:
+
+            if played_finished_frame is not None:
                 data_for_animation.append({
-                    "frame": hold_pose_frame,
+                    "frame": played_finished_frame,
                     "fingerInfos": played
                 })
 

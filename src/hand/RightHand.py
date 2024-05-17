@@ -10,14 +10,6 @@ rightFingers = {
     "a": 3
 }
 
-# 右手在吉它上摆放有四个位置，在这四个位置上，每个手指可以接触到的弦的范围如下表所示，其中2就是常规的起始手型
-handPositionToFingerPositions = {
-    0: {"p": (1, 2), "i": (0, 1), "m": (0, 1), "a": (0, 1)},
-    1: {"p": (2, 4), "i": (0, 2), "m": (0, 2), "a": (0, 2)},
-    2: {"p": (3, 5), "i": (1, 3), "m": (0, 2), "a": (0, 2)},
-    3: {"p": (4, 5), "i": (3, 5), "m": (2, 4), "a": (2, 4)}
-}
-
 
 class RightHand():
     def __init__(self, usedFingers: List[str], rightFingerPositions: List[int], isArpeggio: bool = False):
@@ -194,42 +186,87 @@ def get_usedFingers(finger_list: List[object], usedStrings: List[int]):
     return [item['finger'] for item in finger_list if item['string'] in usedStrings]
 
 
-def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: list, isAfterPlayed: bool = False) -> Dict:
+def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers: List[str], isAfterPlayed: bool = False) -> Dict:
     json_file = f'asset\controller_infos\{avatar}.json'
     with open(json_file, 'r') as f:
         data = json.load(f)
     fingerMoveDistanceWhilePlay = 0.006
     result = {}
 
-    isArpeggio = usedRightFingers == [] and isAfterPlayed
+    default_position = {
+        "h": 2, "p": 5, "i": 2, "m": 1, "a": 0
+    }
+    finger_indexs = {
+        "p": 0,
+        "i": 1,
+        "m": 2,
+        "a": 3
+    }
 
+    H_default = array(data['RIGHT_HAND_POSITIONS']
+                      [f'h{default_position["h"]}'])
+    T_defalut = array(data['RIGHT_HAND_POSITIONS']
+                      [f'p{default_position["p"]}'])
+    I_default = array(data['RIGHT_HAND_POSITIONS']
+                      [f'i{default_position["i"]}'])
+    M_default = array(data['RIGHT_HAND_POSITIONS']
+                      [f'm{default_position["m"]}'])
+    R_default = array(data['RIGHT_HAND_POSITIONS']
+                      [f'a{default_position["a"]}'])
+    # ch指是总是和a指在同一弦上
+    P_default = array(data['RIGHT_HAND_POSITIONS']
+                      [f'ch{default_position["a"]}'])
+
+    isArpeggio = usedRightFingers == []
+
+    # 如果是扫弦，只计算h的位置，然后根据相对位置计算出其它手指的位置
     if isArpeggio:
         if isAfterPlayed:
-            H_R = data['RIGHT_HAND_POSITIONS']['h_end']
-            H_rotation_R = data['ROTATIONS']['H_rotation_R']['Normal']['P3']
-            HP_R = data['RIGHT_HAND_POSITIONS']['P3_HP_R']
-            TP_R = data['RIGHT_HAND_POSITIONS']['P3_TP_R']
+            H_R = array(data['RIGHT_HAND_POSITIONS']['h_end'])
+            H_rotation_R = array(
+                data['ROTATIONS']['H_rotation_R']['Normal']['P3'])
+            HP_R = array(data['RIGHT_HAND_POSITIONS']['P3_HP_R'])
+            TP_R = array(data['RIGHT_HAND_POSITIONS']['P3_TP_R'])
         else:
-            H_rotation_R = data['ROTATIONS']['H_rotation_R']['Normal']['P0']
-            H_R = data['RIGHT_HAND_POSITIONS']['h0']
-            HP_R = data['RIGHT_HAND_POSITIONS']['P0_HP_R']
-            TP_R = data['RIGHT_HAND_POSITIONS']['P0_TP_R']
+            H_rotation_R = array(
+                data['ROTATIONS']['H_rotation_R']['Normal']['P0'])
+            H_R = array(data['RIGHT_HAND_POSITIONS']['h0'])
+            HP_R = array(data['RIGHT_HAND_POSITIONS']['P0_HP_R'])
+            TP_R = array(data['RIGHT_HAND_POSITIONS']['P0_TP_R'])
 
-        result['H_R'] = H_R
-        result['H_rotation_R'] = H_rotation_R
-        result['HP_R'] = HP_R
-        result['TP_R'] = TP_R
+        T_R = array(H_R) + T_defalut - H_default
+        I_R = array(H_R) + I_default - H_default
+        M_R = array(H_R) + M_default - H_default
+        R_R = array(H_R) + R_default - H_default
     else:
-        average_posisition = 0.5 * (positions[0] + positions[-1])
-        hand_position = average_posisition - 0.5
+        offsets = 0
+        for usedfinger in usedRightFingers:
+            current_finger_position = positions[finger_indexs[usedfinger]]
+            default_finger_position = default_position[usedfinger]
+            mulitplier = 3 if usedfinger == 'p' else 1
+            offsets += (current_finger_position -
+                        default_finger_position) * mulitplier
+
+        average_offset = offsets / 4
+        """
+        这一段解释一下：
+        我只在blender里调整了h0和h3的两个位置，然后通过这两个位置来计算其它手指的位置。
+        首先，默认手型的位置是{"p": 5, "i": 2, "m": 1, "a": 0}
+        接下来是两个极端手型的位置：
+        h0是在{"p": 2, "i": 0, "m": 0, "a": 0}的位置上，它的average_offset是3,同时h_position=0,
+        h3是在{"p": 5, "i": 4, "m": 3, "a": 2}的位置上，它的average_offset是1.5，同时h_position=3
+        
+        根据上面这两个值，我们可以计算出来线性插值的斜率是：
+        m = (1.5 - 3) / (3 - 0) = -2
+        
+        而线性插值的计算公式是：
+        h_position = average_offset * -2 + 6
+        """
+        hand_position = -2 * average_offset + 6
 
         h0 = array(data['RIGHT_HAND_POSITIONS']['h0'])
         h3 = array(data['RIGHT_HAND_POSITIONS']['h3'])
         H_R = h0 + hand_position * (h3 - h0) / 3
-        # 来一个随机大小为0.001的随机移动
-        random_move = random.rand(3) * 0.001
-        H_R += random_move
-        result['H_R'] = H_R.tolist()
 
         h_rotation_0 = array(
             data['ROTATIONS']['H_rotation_R']['Normal']['P0'])
@@ -237,51 +274,58 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
             data['ROTATIONS']['H_rotation_R']['Normal']['P3'])
         H_rotation_R = h_rotation_0 + hand_position * \
             (h_rotation_3 - h_rotation_0) / 3
-        result['H_rotation_R'] = H_rotation_R.tolist()
 
         hp_0 = array(data['RIGHT_HAND_POSITIONS']['P0_HP_R'])
         hp_3 = array(data['RIGHT_HAND_POSITIONS']['P3_HP_R'])
         HP_R = hp_0 + hand_position * (hp_3 - hp_0) / 3
-        result['HP_R'] = HP_R.tolist()
 
         tp_0 = array(data['RIGHT_HAND_POSITIONS']['P0_TP_R'])
         tp_3 = array(data['RIGHT_HAND_POSITIONS']['P3_TP_R'])
         TP_R = tp_0 + hand_position * (tp_3 - tp_0) / 3
-        result['TP_R'] = TP_R.tolist()
 
-    t_index = "p_end" if isArpeggio else f"p{positions[0]}"
-    T_R = array(data['RIGHT_HAND_POSITIONS'][t_index])
-    if isAfterPlayed and "p" in usedRightFingers:
-        move = array(data['RIGHT_HAND_LINES']["T_line"])
-        T_R += move * fingerMoveDistanceWhilePlay * 1.2
-    result['T_R'] = T_R.tolist()
+        t_index = f"p{positions[0]}"
+        T_R = array(data['RIGHT_HAND_POSITIONS'][t_index]
+                    ) if "p" in usedRightFingers else H_R + T_defalut - H_default
+        if isAfterPlayed and "p" in usedRightFingers:
+            move = array(data['RIGHT_HAND_LINES']["T_line"])
+            T_R += move * fingerMoveDistanceWhilePlay * 1.2
 
-    # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的
-    i_index = "i_end" if isArpeggio else f"i{positions[1]}"
-    I_R = array(data['RIGHT_HAND_POSITIONS'][i_index])
-    if isAfterPlayed and "i" in usedRightFingers:
-        move = array(data['RIGHT_HAND_LINES']["I_line"])
-        I_R -= move * fingerMoveDistanceWhilePlay
-    result['I_R'] = I_R.tolist()
+        # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的
+        i_index = f"i{positions[1]}"
+        I_R = array(data['RIGHT_HAND_POSITIONS'][i_index]
+                    ) if "i" in usedRightFingers else H_R + I_default - H_default
+        if isAfterPlayed and "i" in usedRightFingers:
+            move = array(data['RIGHT_HAND_LINES']["I_line"])
+            I_R -= move * fingerMoveDistanceWhilePlay
 
-    m_index = "m_end" if isArpeggio else f"m{positions[2]}"
-    M_R = array(data['RIGHT_HAND_POSITIONS'][m_index])
-    if isAfterPlayed and "m" in usedRightFingers:
-        move = array(data['RIGHT_HAND_LINES']["M_line"])
-        M_R -= move * fingerMoveDistanceWhilePlay
-    result['M_R'] = M_R.tolist()
+        m_index = f"m{positions[2]}"
+        M_R = array(data['RIGHT_HAND_POSITIONS'][m_index]
+                    ) if "m" in usedRightFingers else H_R + M_default - H_default
+        if isAfterPlayed and "m" in usedRightFingers:
+            move = array(data['RIGHT_HAND_LINES']["M_line"])
+            M_R -= move * fingerMoveDistanceWhilePlay
 
-    r_index = "a_end" if isArpeggio else f"a{positions[3]}"
-    R_R = array(data['RIGHT_HAND_POSITIONS'][r_index])
-    if isAfterPlayed and "a" in usedRightFingers:
-        move = array(data['RIGHT_HAND_LINES']["R_line"])
-        R_R -= move * fingerMoveDistanceWhilePlay
-    result['R_R'] = R_R.tolist()
+        r_index = f"a{positions[3]}"
+        R_R = array(data['RIGHT_HAND_POSITIONS'][r_index]
+                    ) if "a" in usedRightFingers else H_R + R_default - H_default
+        if isAfterPlayed and "a" in usedRightFingers:
+            move = array(data['RIGHT_HAND_LINES']["R_line"])
+            R_R -= move * fingerMoveDistanceWhilePlay
 
-    # ch指是不动的
-    p_index = "ch_end" if isArpeggio else f"ch{positions[3]}"
-    P_R = data['RIGHT_HAND_POSITIONS'][p_index]
-    result['P_R'] = P_R
+    # ch指是不动的，根据相对位置计算出ch的位置
+    P_R = H_R + P_default - H_default
+
+    result.update({
+        'H_R': H_R.tolist(),
+        'H_rotation_R': H_rotation_R.tolist(),
+        'HP_R': HP_R.tolist(),
+        'TP_R': TP_R.tolist(),
+        'T_R': T_R.tolist(),
+        'I_R': I_R.tolist(),
+        'R_R': R_R.tolist(),
+        'M_R': M_R.tolist(),
+        'P_R': P_R.tolist()
+    })
 
     return result
 

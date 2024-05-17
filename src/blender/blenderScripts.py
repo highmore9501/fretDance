@@ -239,7 +239,7 @@ def import_right_controller_info(hand_position: int):
 
     # 设置旋转值
     H_rotation_controller = bpy.data.objects['H_rotation_R']
-    rotation_cone_name = f'P{hand_position}_H_rotation_R'
+    rotation_cone_name = f'Normal_P{hand_position}_H_rotation_R'
     rotation_cone = bpy.data.objects[rotation_cone_name]
     H_rotation_controller.rotation_euler = rotation_cone.rotation_euler
 
@@ -295,7 +295,7 @@ def set_right_controller_info_to_position_balls(hand_position: int):
 
     # 记录旋转值
     H_rotation_controller = bpy.data.objects['H_rotation_R']
-    rotation_cone_name = f'P{hand_position}_H_rotation_R'
+    rotation_cone_name = f'Normal_P{hand_position}_H_rotation_R'
     rotation_cone = bpy.data.objects[rotation_cone_name]
     rotation_cone.rotation_euler = H_rotation_controller.rotation_euler
 
