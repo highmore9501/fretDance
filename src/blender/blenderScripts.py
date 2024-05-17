@@ -233,6 +233,16 @@ def import_right_controller_info(hand_position: int):
     H_R = bpy.data.objects['H_R']
     H_R.location = bpy.data.objects[hand_position_name].location
 
+    hand_pivot_name = f'P{hand_position}_HP_R'
+    HP_R = bpy.data.objects['HP_R']
+    HP_R.location = bpy.data.objects[hand_pivot_name].location
+
+    # 设置旋转值
+    H_rotation_controller = bpy.data.objects['H_rotation_R']
+    rotation_cone_name = f'P{hand_position}_H_rotation_R'
+    rotation_cone = bpy.data.objects[rotation_cone_name]
+    H_rotation_controller.rotation_euler = rotation_cone.rotation_euler
+
     # 设置大拇指位置
     thumb_position_name = f'p{finger_positions["p"]}'
     T_R = bpy.data.objects['T_R']
@@ -274,12 +284,22 @@ def set_right_controller_info_to_position_balls(hand_position: int):
 
     finger_positions = right_hand_test_positions[hand_position]
 
-    # 设置右手位置
+    # 记录右手位置
     hand_position_name = f'h{hand_position}' if hand_position != 4 else 'h_end'
     H_R = bpy.data.objects['H_R']
     bpy.data.objects[hand_position_name].location = H_R.location
 
-    # 设置大拇指位置
+    hand_pivot_name = f'P{hand_position}_HP_R'
+    HP_R = bpy.data.objects['HP_R']
+    bpy.data.objects[hand_pivot_name].location = HP_R.location
+
+    # 记录旋转值
+    H_rotation_controller = bpy.data.objects['H_rotation_R']
+    rotation_cone_name = f'P{hand_position}_H_rotation_R'
+    rotation_cone = bpy.data.objects[rotation_cone_name]
+    rotation_cone.rotation_euler = H_rotation_controller.rotation_euler
+
+    # 记录大拇指位置
     thumb_position_name = f'p{finger_positions["p"]}'
     T_R = bpy.data.objects['T_R']
     bpy.data.objects[thumb_position_name].location = T_R.location
@@ -372,6 +392,7 @@ def export_controller_info(file_name: str) -> None:
     for obj in RightHandPositions:
         obj_name = obj.name
         result['RIGHT_HAND_POSITIONS'][obj_name] = obj.location
+
     # 因为是读取的四元旋转值，所以代表手指运动方向的五根线都需要把旋转模式改成四元数，否则读取出来的值为变为[1,0,0,0]
     for obj in RightHandLines:
         obj_name = obj.name
