@@ -62,6 +62,7 @@ def get_tempo_changes(midiFilePath: str):
 
 
 def export_midi_info(midiFilePath: str) -> str:
+    midiFilePath = 'asset/midi/' + midiFilePath
     result = ''
     midFile = MidiFile(midiFilePath)
 
