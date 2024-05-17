@@ -102,18 +102,19 @@ def validateRightHandByFingerPositions(usedFingers, rightFingerPositions: List[i
 
 
 def finger_string_map_generator(allFingers: List[str], touchedStrings: List[int], unusedFingers: List[str], allStrings: List[int]):
+    # 如果所有需要触弦的弦都已经被触弦，那么就开始分配未使用的手指放置的位置
     if touchedStrings == []:
         for result in finger_string_map_generator2(unusedFingers, allStrings):
             yield result
-
-    if allFingers == []:
-        yield []
-        return
 
     for usedFinger, touchedString in itertools.product(allFingers, touchedStrings):
         # next_allFinger是所有序号高于usedFingers的手指的列表
         usedFinger_index = allFingers.index(usedFinger)
         next_allFingers = allFingers[usedFinger_index + 1:]
+
+        # 如果余下可用的手指数量小于需要触弦的数量，那么说明之前的手指分配是不合理的，直接跳过后面的计算
+        if len(next_allFingers) < len(touchedStrings)-1:
+            continue
 
         next_touchedStrings = touchedStrings[:]
         next_touchedStrings.remove(touchedString)
@@ -202,21 +203,26 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
 
     isArpeggio = usedRightFingers == [] and isAfterPlayed
 
-    # 目前HP_R和TP_R两个值假定它们是全程固定的，所以暂时没有测量它们
-
     if isArpeggio:
         if isAfterPlayed:
             H_R = data['RIGHT_HAND_POSITIONS']['h_end']
             H_rotation_R = data['ROTATIONS']['H_rotation_R']['Normal']['P3']
+            HP_R = data['RIGHT_HAND_POSITIONS']['P3_HP_R']
+            TP_R = data['RIGHT_HAND_POSITIONS']['P3_TP_R']
         else:
             H_rotation_R = data['ROTATIONS']['H_rotation_R']['Normal']['P0']
             H_R = data['RIGHT_HAND_POSITIONS']['h0']
+            HP_R = data['RIGHT_HAND_POSITIONS']['P0_HP_R']
+            TP_R = data['RIGHT_HAND_POSITIONS']['P0_TP_R']
 
         result['H_R'] = H_R
         result['H_rotation_R'] = H_rotation_R
+        result['HP_R'] = HP_R
+        result['TP_R'] = TP_R
     else:
         average_posisition = 0.5 * (positions[0] + positions[-1])
         hand_position = average_posisition - 0.5
+
         h0 = array(data['RIGHT_HAND_POSITIONS']['h0'])
         h3 = array(data['RIGHT_HAND_POSITIONS']['h3'])
         H_R = h0 + hand_position * (h3 - h0) / 3
@@ -232,6 +238,16 @@ def caculateRightHandFingers(avatar: str, positions: list, usedRightFingers: lis
         H_rotation_R = h_rotation_0 + hand_position * \
             (h_rotation_3 - h_rotation_0) / 3
         result['H_rotation_R'] = H_rotation_R.tolist()
+
+        hp_0 = array(data['RIGHT_HAND_POSITIONS']['P0_HP_R'])
+        hp_3 = array(data['RIGHT_HAND_POSITIONS']['P3_HP_R'])
+        HP_R = hp_0 + hand_position * (hp_3 - hp_0) / 3
+        result['HP_R'] = HP_R.tolist()
+
+        tp_0 = array(data['RIGHT_HAND_POSITIONS']['P0_TP_R'])
+        tp_3 = array(data['RIGHT_HAND_POSITIONS']['P3_TP_R'])
+        TP_R = tp_0 + hand_position * (tp_3 - tp_0) / 3
+        result['TP_R'] = TP_R.tolist()
 
     t_index = "p_end" if isArpeggio else f"p{positions[0]}"
     T_R = array(data['RIGHT_HAND_POSITIONS'][t_index])

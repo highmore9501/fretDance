@@ -185,7 +185,7 @@ def rotate_vector(euler_angles: list):
     return rotated_vector
 
 
-def get_position_by_fret(fret: int, value_1: np.array, value_12: np.array) -> np.array:
+def get_position_by_fret(fret: float, value_1: np.array, value_12: np.array) -> np.array:
     base_ratio = 2**(1/12)
     value_0 = (2 * value_12 - base_ratio *
                (2 * value_12 - value_1)) / (2 - base_ratio)

@@ -133,6 +133,8 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
                 stringIndex -= 0.5
             else:
                 stringIndex += 0.5
+            # 如果是中指没有按弦，还可以保持原来的位置，如果是其它手指，会相对中指进行一定的移动
+            fret -= 0.15 * (fingerIndex - 2)
 
         # 按弦的手指考虑是否有pitchWheel，以进行对应的移动
         if press == PRESSSTATE['Pressed'] and pitchwheel != 0:
@@ -183,7 +185,7 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
         max_string_index=max_string_index
     )
 
-    # 来一个随机大小为0.0005的随机移动
+    # 添加一点随机移动
     random_move = random.rand(3) * 0.001
     hand_position += random_move
 
@@ -337,7 +339,7 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
         json.dump(data_for_animation, f, indent=4)
 
 
-def twiceLerpFingers(base_data: object, fret: int, stringIndex: int, max_string_index: int) -> array:
+def twiceLerpFingers(base_data: object, fret: float, stringIndex: int, max_string_index: int) -> array:
     p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
     p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
     p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
@@ -351,7 +353,7 @@ def twiceLerpFingers(base_data: object, fret: int, stringIndex: int, max_string_
     return p_final
 
 
-def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fret: int, stringIndex: int | float, max_string_index: int) -> array:
+def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fret: float, stringIndex: int | float, max_string_index: int) -> array:
     data_dict = None
 
     if valueType == "position":
