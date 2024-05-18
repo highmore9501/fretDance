@@ -190,11 +190,11 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
     json_file = f'asset\controller_infos\{avatar}.json'
     with open(json_file, 'r') as f:
         data = json.load(f)
-    fingerMoveDistanceWhilePlay = 0.006
+    fingerMoveDistanceWhilePlay = 0.003
     result = {}
 
     default_position = {
-        "h": 2, "p": 5, "i": 2, "m": 1, "a": 0
+        "h": 2, "p": 4, "i": 2, "m": 1, "a": 0
     }
     finger_indexs = {
         "p": 0,
@@ -242,27 +242,23 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
         offsets = 0
         for usedfinger in usedRightFingers:
             current_finger_position = positions[finger_indexs[usedfinger]]
-            default_finger_position = default_position[usedfinger]
-            mulitplier = 3 if usedfinger == 'p' else 1
-            offsets += (current_finger_position -
-                        default_finger_position) * mulitplier
+            offsets += current_finger_position
 
-        average_offset = offsets / 4
+        average_offset = offsets / len(usedRightFingers)
         """
         这一段解释一下：
-        我只在blender里调整了h0和h3的两个位置，然后通过这两个位置来计算其它手指的位置。
-        首先，默认手型的位置是{"p": 5, "i": 2, "m": 1, "a": 0}
-        接下来是两个极端手型的位置：
-        h0是在{"p": 2, "i": 0, "m": 0, "a": 0}的位置上，它的average_offset是3,同时h_position=0,
-        h3是在{"p": 5, "i": 4, "m": 3, "a": 2}的位置上，它的average_offset是1.5，同时h_position=3
+        我只在blender里调整了h0和h3的两个位置，然后通过这两个位置来计算其它手指的位置。        
+        这是两个极端手型，这两个组合包含了各个手指实际上能触碰的最高和最低弦：
+        h0是在{"p": 2, "i": 0, "m": 0, "a": 0}的位置上，它的average_offset是0.5, 同时h_position=0
+        h3是在{"p": 5, "i": 4, "m": 3, "a": 2}的位置上，它的average_offset是3.5，同时h_position=3
         
         根据上面这两个值，我们可以计算出来线性插值的斜率是：
-        m = (1.5 - 3) / (3 - 0) = -2
+        m = (3.5 - 0.5) / (3 - 0) = 1
         
-        而线性插值的计算公式是：
-        h_position = average_offset * -2 + 6
+        最终线性插值的计算公式是：
+        h_position = average_offset -0.5
         """
-        hand_position = -2 * average_offset + 6
+        hand_position = average_offset - 0.5
 
         h0 = array(data['RIGHT_HAND_POSITIONS']['h0'])
         h3 = array(data['RIGHT_HAND_POSITIONS']['h3'])
