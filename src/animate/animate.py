@@ -442,3 +442,63 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
             stringIndex / max_string_index
 
     return p_final
+
+
+def animated_guitar_string(left_recorder: str, string_recorder: str, FPS: int) -> None:
+    elapsed_frame = FPS / 8.0
+    with open(left_recorder, "r") as f:
+        handDicts = json.load(f)
+
+    data_for_animation = []
+
+    for i in range(len(handDicts)):
+        item = handDicts[i]
+        frame = item["frame"]
+        leftHand = item["leftHand"]
+        string_last_frame = None
+        if i != len(handDicts) - 1:
+            next_frame = handDicts[i + 1]["frame"]
+            if next_frame < frame + elapsed_frame:
+                string_last_frame = next_frame
+            else:
+                string_last_frame = frame + elapsed_frame
+
+        for finger_data in leftHand:
+            fingerIndex = finger_data["fingerIndex"]
+
+            fingerInfo = finger_data["fingerInfo"]
+            press = fingerInfo["press"]
+            if (press == 0 or press == 5) and fingerIndex != -1:
+                continue
+
+            stringIndex = fingerInfo["stringIndex"]
+
+            fret = 0 if fingerIndex == -1 else fingerInfo["fret"]
+
+            start = {
+                "frame": frame,
+                "stringIndex": stringIndex,
+                "fret": fret,
+                "influence": 0.5
+            }
+
+            end = {
+                "frame": string_last_frame,
+                "stringIndex": stringIndex,
+                "fret": fret,
+                "influence": 0.0
+            }
+            data_for_animation.append(start)
+            data_for_animation.append(end)
+
+            if string_last_frame and string_last_frame - frame > 2:
+                middle = {
+                    "frame": (string_last_frame+frame)/2,
+                    "stringIndex": stringIndex,
+                    "fret": fret,
+                    "influence": 1
+                }
+                data_for_animation.append(middle)
+
+    with open(string_recorder, "w") as f:
+        json.dump(data_for_animation, f, indent=4)

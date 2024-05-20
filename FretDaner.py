@@ -4,7 +4,7 @@ from typing import List
 from tqdm import tqdm
 
 from src.HandPoseRecorder import HandPoseRecordPool, HandPoseRecorder, RightHandRecorder
-from src.animate.animate import leftHand2Animation, rightHand2Animation, ElectronicRightHand2Animation, addPitchwheel
+from src.animate.animate import leftHand2Animation, rightHand2Animation, ElectronicRightHand2Animation, addPitchwheel, animated_guitar_string
 from src.guitar.Guitar import Guitar
 from src.guitar.GuitarString import createGuitarStrings
 from src.guitar.MusicNote import MusicNote
@@ -111,27 +111,33 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
     # usedStrings进行从高到低的排序
     touchedStrings.sort(reverse=True)
 
-    # 这个重复p的写法是确保p指可能弹两根弦，但如果是四弦bass，就不允许用p指弹两根弦
-    allow_double_p = max_string_index > 3
+    # 这个重复p的写法是确保p指可能弹两根弦，但如果是四弦bass或者只有一个单音的情况下，就不允许用p指弹两根弦
+    allow_double_p = max_string_index > 3 and len(touchedStrings) > 1
     allFingers = ["p", "p", "i", "m",
                   "a"] if allow_double_p else ["p", "i", "m", "a"]
     allstrings = list(range(max_string_index + 1))
 
-    possibleRightHands = generatePossibleRightHands(
+    possibleCombinations = generatePossibleRightHands(
         touchedStrings, allFingers, allstrings)
 
-    if len(possibleRightHands) == 0:
+    if len(possibleCombinations) == 0:
         print(f"当前要拨动的弦是{touchedStrings}，没有找到合适的右手拨法。")
 
-    for rightHand, handRecorder in itertools.product(possibleRightHands, rightHandRecordPool.preHandPoseRecordPool):
+    for combination, handRecorder in itertools.product(possibleCombinations, rightHandRecordPool.preHandPoseRecordPool):
         lastHand = handRecorder.currentHandPose()
+        usedFingers = combination['usedFingers']
+        rightFingerPositions = combination['rightFingerPositions']
+        rightHand = RightHand(
+            usedFingers, rightFingerPositions, lastHand.usedFingers, usedFingers == [])
+
         entropy = lastHand.caculateDiff(rightHand)
         new_entropy = handRecorder.currentEntropy + entropy
         insert_index = rightHandRecordPool.check_insert_index(
             new_entropy)
         if insert_index != -1:
             newRecorder = RightHandRecorder()
-            newRecorder.handPoseList = handRecorder.handPoseList + [rightHand]
+            newRecorder.handPoseList = handRecorder.handPoseList + \
+                [rightHand]
             newRecorder.currentEntropy = handRecorder.currentEntropy + entropy
             newRecorder.entropys = handRecorder.entropys + [new_entropy]
             newRecorder.real_ticks = handRecorder.real_ticks + [real_tick]
@@ -204,6 +210,7 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
     left_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_lefthand_animation.json"
     right_hand_recorder_file = f"output/{filename}_{track_number}_righthand_recorder.json"
     right_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_righthand_animation.json"
+    guitar_string_recorder_file = f"output/{filename}_{track_number}_guitar_string_recorder.json"
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
     notes_map, pitch_wheel_map, messages = midiToGuitarNotes(
@@ -284,7 +291,7 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
             avatar, right_hand_recorder_file, right_hand_animation_file, FPS)
     else:
         initRightHand = RightHand(
-            usedFingers=[], rightFingerPositions=[max_string_index, 2, 1, 0])
+            usedFingers=[], rightFingerPositions=[max_string_index, 2, 1, 0], preUsedFingers=[])
 
         initRightHandRecorder = RightHandRecorder()
         initRightHandRecorder.addHandPose(initRightHand, 0, 0)
@@ -306,7 +313,10 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
         rightHand2Animation(avatar, right_hand_recorder_file,
                             right_hand_animation_file, FPS)
 
-    finall_info = f'全部执行完毕:\nrecorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}\n动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}'
+    animated_guitar_string(left_hand_recorder_file,
+                           guitar_string_recorder_file, FPS)
+
+    finall_info = f'全部执行完毕:\nrecorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}\n动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}\n吉它弦动画文件被保存到了{guitar_string_recorder_file}'
 
     print(finall_info)
 
