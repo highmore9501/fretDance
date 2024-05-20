@@ -1,6 +1,6 @@
-from typing import List, Dict
+from typing import List, Dict, Union
 import itertools
-from numpy import array, random
+from numpy import array, linalg
 import json
 
 rightFingers = {
@@ -12,9 +12,10 @@ rightFingers = {
 
 
 class RightHand():
-    def __init__(self, usedFingers: List[str], rightFingerPositions: List[int], isArpeggio: bool = False):
+    def __init__(self, usedFingers: List[str], rightFingerPositions: List[int], preUsedFingers: List[str], isArpeggio: bool = False):
         self.usedFingers = usedFingers
         self.rightFingerPositions = rightFingerPositions
+        self.preUsedFingers = preUsedFingers
         self.isArpeggio = isArpeggio
 
     def validateRightHand(self, usedFingers=None, rightFingerPositions=None) -> bool:
@@ -28,7 +29,7 @@ class RightHand():
 
     def caculateDiff(self, otherRightHand: "RightHand") -> int:
         # 重复使用同一根手指的惩罚机制
-        repeat_punish = 5
+        repeat_punish = 10
         diff = 0
         # 计算手指改变所在弦位置的情况，每有移动一根弦距就加1单位的diff
         for i in range(4):
@@ -38,15 +39,23 @@ class RightHand():
         # 检测两只手的usedFingers相同的元素个数有多少
         common_elements = list(set(self.usedFingers).intersection(
             set(otherRightHand.usedFingers)))
+        pre_common_elements = list(set(self.preUsedFingers).intersection(
+            set(otherRightHand.usedFingers)))
         same_finger_count = len(common_elements)
+        pre_same_finger_count = len(pre_common_elements)
 
         # 检测重复使用的手指中有没有P指，如果有的话按加repeat_punish来计算重复指惩罚
         if 'p' in common_elements:
             diff += repeat_punish
             same_finger_count -= 1
 
+        if 'p' in pre_common_elements:
+            diff += 0.5 * repeat_punish
+            pre_same_finger_count -= 1
+
         # 其它重复使用的手指按双倍repeat_punish来算，也就是非常不鼓励除P指以外的手指重复使用
-        diff += 2 * repeat_punish * same_finger_count
+        diff += 2 * repeat_punish * \
+            (same_finger_count + 0.5 * pre_same_finger_count)
 
         # 不考虑手掌移动，因为手掌是由身体来带动的，它的移动比手指移动要来得轻松
         return diff
@@ -93,61 +102,89 @@ def validateRightHandByFingerPositions(usedFingers, rightFingerPositions: List[i
     return True
 
 
-def finger_string_map_generator(allFingers: List[str], touchedStrings: List[int], unusedFingers: List[str], allStrings: List[int]):
-    # 如果所有需要触弦的弦都已经被触弦，那么就开始分配未使用的手指放置的位置
+def finger_string_map_generator(allFingers: List[str], touchedStrings: List[int], unusedFingers: List[str], allStrings: List[int], prev_finger_string_map: List[Dict[str, Union[str, int]]] = None):
+    if prev_finger_string_map is None:
+        prev_finger_string_map = []
+
     if touchedStrings == []:
-        for result in finger_string_map_generator2(unusedFingers, allStrings):
+        for result in finger_string_map_generator2(unusedFingers, allStrings, prev_finger_string_map):
             yield result
 
-    for usedFinger, touchedString in itertools.product(allFingers, touchedStrings):
-        # next_allFinger是所有序号高于usedFingers的手指的列表
-        usedFinger_index = allFingers.index(usedFinger)
-        next_allFingers = allFingers[usedFinger_index + 1:]
+    for current_finger, touchedString in itertools.product(allFingers, touchedStrings):
+        current_pairing_is_legal = True
+        current_finger_index = rightFingers[current_finger]
 
-        # 如果余下可用的手指数量小于需要触弦的数量，那么说明之前的手指分配是不合理的，直接跳过后面的计算
-        if len(next_allFingers) < len(touchedStrings)-1:
-            continue
+        # 检测当前配对组合是否和之前生成的配对组合有冲突
+        for pairing in prev_finger_string_map:
+            prev_finger = pairing['finger']
+            prev_string = pairing['string']
+            prev_index = rightFingers[prev_finger]
+            # 这里注意，finger是从pima递增的，但现实中它们拨的弦序号是递减的，所以判断合理性时要留意这一点
+            if (current_finger_index > prev_index and touchedString >= prev_string) or (current_finger_index < prev_index and touchedString <= prev_string) or (current_finger_index == prev_index and abs(prev_string-touchedString) > 1):
+                current_pairing_is_legal = False
 
-        next_touchedStrings = touchedStrings[:]
-        next_touchedStrings.remove(touchedString)
+        if current_pairing_is_legal:
+            next_allFingers = allFingers[:]
+            next_allFingers.remove(current_finger)
 
-        next_unusedFingers = unusedFingers[:]
-        next_unusedFingers.remove(usedFinger)
-        next_unusedStrings = allStrings[:]
-        next_unusedStrings.remove(touchedString)
-        for result in finger_string_map_generator(next_allFingers, next_touchedStrings, next_unusedFingers, next_unusedStrings):
-            yield [{
-                "finger": usedFinger,
-                "string": touchedString
-            }] + result
+            next_touchedStrings = touchedStrings[:]
+            next_touchedStrings.remove(touchedString)
+
+            next_unusedFingers = unusedFingers[:]
+            next_unusedFingers.remove(current_finger)
+
+            current_pairing = [
+                {"finger": current_finger, "string": touchedString}]
+
+            next_finger_string_map = prev_finger_string_map + current_pairing
+
+            for result in finger_string_map_generator(next_allFingers, next_touchedStrings, next_unusedFingers, allStrings, next_finger_string_map):
+                yield current_pairing + result
 
 
-def finger_string_map_generator2(unusedFingers: List[str], allStrings: List[int]):
-    if unusedFingers == [] or allStrings == []:
+def finger_string_map_generator2(unusedFingers: List[str], allStrings: List[int], prev_finger_string_map: List[Dict[str, Union[str, int]]] = None):
+    if prev_finger_string_map == None:
+        prev_finger_string_map = []
+
+    if unusedFingers == []:
         yield []
         return
 
-    # 这里每次配对以后，不再移除已经配对的弦，因为不演奏的手指可以放在同一根弦上
-    for finger, string in itertools.product(unusedFingers, allStrings):
-        newAllFingers = unusedFingers[:]
-        newAllFingers.remove(finger)
-        for result in finger_string_map_generator2(newAllFingers, allStrings):
-            yield [{
-                "finger": finger,
-                "string": string
-            }] + result
+    # 这里每次配对以后，不再移除已经配对的弦，因为不演奏的手指可以放在任一根弦上
+    for current_finger, cur_string in itertools.product(unusedFingers, allStrings):
+        current_pairing_is_legal = True
+        current_finger_index = rightFingers[current_finger]
+
+        # 检测当前配对组合是否和之前生成的配对组合有冲突
+        for pairing in prev_finger_string_map:
+            prev_finger = pairing['finger']
+            prev_string = pairing['string']
+            prev_index = rightFingers[prev_finger]
+            if (current_finger_index > prev_index and cur_string > prev_string+1) or (current_finger_index < prev_index and cur_string < prev_string-1):
+                current_pairing_is_legal = False
+
+        if current_pairing_is_legal:
+            next_allFingers = unusedFingers[:]
+            next_allFingers.remove(current_finger)
+
+            current_pairing = [
+                {"finger": current_finger, "string": cur_string}]
+
+            updated_finger_string_map = prev_finger_string_map + current_pairing
+            for result in finger_string_map_generator2(next_allFingers, allStrings, updated_finger_string_map):
+                yield current_pairing + result
 
 
-def generatePossibleRightHands(
-        touchedStrings: List[int], allFingers: List[str], allStrings: List[int]):
-    possibleRightHands = []
+def generatePossibleRightHands(touchedStrings: List[int], allFingers: List[str], allStrings: List[int]):
+    possibleCombinations = []
 
     if len(touchedStrings) > 4:
         usedFingers = []
         rightFingerPositions = [5, 3, 3, 2]
-        newRightHand = RightHand(
-            usedFingers, rightFingerPositions, isArpeggio=True)
-        possibleRightHands.append(newRightHand)
+        possibleCombinations.append({
+            'usedFingers': usedFingers,
+            'rightFingerPositions': rightFingerPositions
+        })
     else:
         unused_fingers = allFingers[:]
         for result in finger_string_map_generator(allFingers, touchedStrings, unused_fingers, allStrings):
@@ -156,13 +193,11 @@ def generatePossibleRightHands(
                 continue
             rightFingerPositions = sort_fingers(result)
             usedFingers = get_usedFingers(result, touchedStrings)
-            # result到这里是可能存在p指重复的，需要在下面的方法里进行检测看重复是否合理
-            if validateRightHandByFingerPositions(usedFingers, rightFingerPositions, repeated_fingers_checked=True):
-                newRightHand = RightHand(
-                    usedFingers, rightFingerPositions)
-                possibleRightHands.append(newRightHand)
-
-    return possibleRightHands
+            possibleCombinations.append({
+                'usedFingers': usedFingers,
+                'rightFingerPositions': rightFingerPositions
+            })
+    return possibleCombinations
 
 
 def sort_fingers(finger_list: List[object]):
@@ -291,21 +326,21 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
         I_R = array(data['RIGHT_HAND_POSITIONS'][i_index]
                     ) if "i" in usedRightFingers else H_R + I_default - H_default
         if isAfterPlayed and "i" in usedRightFingers:
-            move = array(data['RIGHT_HAND_LINES']["I_line"])
+            move = (I_R - H_R) / linalg.norm(I_R - H_R)
             I_R -= move * fingerMoveDistanceWhilePlay
 
         m_index = f"m{positions[2]}"
         M_R = array(data['RIGHT_HAND_POSITIONS'][m_index]
                     ) if "m" in usedRightFingers else H_R + M_default - H_default
         if isAfterPlayed and "m" in usedRightFingers:
-            move = array(data['RIGHT_HAND_LINES']["M_line"])
+            move = (M_R - H_R) / linalg.norm(M_R - H_R)
             M_R -= move * fingerMoveDistanceWhilePlay
 
         r_index = f"a{positions[3]}"
         R_R = array(data['RIGHT_HAND_POSITIONS'][r_index]
                     ) if "a" in usedRightFingers else H_R + R_default - H_default
         if isAfterPlayed and "a" in usedRightFingers:
-            move = array(data['RIGHT_HAND_LINES']["R_line"])
+            move = (R_R - H_R) / linalg.norm(R_R - H_R)
             R_R -= move * fingerMoveDistanceWhilePlay
 
     # ch指是不动的，根据相对位置计算出ch的位置

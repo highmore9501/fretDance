@@ -66,7 +66,7 @@ def export_midi_info(midiFilePath: str) -> str:
     result = ''
     midFile = MidiFile(midiFilePath)
 
-    with open('output\current_midi_info.txt', 'w') as f:
+    with open('output\current_midi_info.txt', 'w', encoding='utf-8') as f:
         for message in midFile.tracks[0]:
             f.write(str(message) + '\n')
 
