@@ -42,6 +42,27 @@ def move_deform_bones():
             bone.bone.layers = [i == 24 for i in range(32)]
 
 
+def move_MCH_bones():
+    """
+    useage:这个方法用于在blender中将所有的MCH骨骼移动到MCH层
+    """
+    # 切换到pose模式
+    bpy.ops.object.mode_set(mode='POSE')
+
+    # 全选所有骨骼
+    bpy.ops.pose.select_all(action='SELECT')
+    # 这里是需要文件中只有一个armature
+    MCH_collection = bpy.data.armatures[0].collections_all['MCH']
+
+    for pose_bone in bpy.context.selected_pose_bones:
+        if 'MCH' in pose_bone.name:
+            for bone_collection in bpy.data.bpy.data.armatures[0].collections:
+                if bone_collection == MCH_collection:
+                    bone_collection.assign(pose_bone)
+                else:
+                    bone_collection.unassign(pose_bone)
+
+
 def remove_empty_vertex_group():
     """
     useage:这个方法用于在blender中删除没有关联的顶点组
@@ -221,7 +242,7 @@ def import_right_controller_info(hand_position: int):
     right_hand_test_positions = {
         0: {"p": 2, "i": 0, "m": 0, "a": 0},
         1: {"p": 3, "i": 1, "m": 1, "a": 0},
-        2: {"p": 5, "i": 2, "m": 1, "a": 0},
+        2: {"p": 4, "i": 2, "m": 1, "a": 0},
         3: {"p": 5, "i": 4, "m": 3, "a": 2},
         4: {"p": '_end', "i": '_end', "m": '_end', "a": '_end'}
     }
@@ -277,7 +298,7 @@ def set_right_controller_info_to_position_balls(hand_position: int):
     right_hand_test_positions = {
         0: {"p": 2, "i": 0, "m": 0, "a": 0},
         1: {"p": 3, "i": 1, "m": 1, "a": 0},
-        2: {"p": 5, "i": 2, "m": 1, "a": 0},
+        2: {"p": 4, "i": 2, "m": 1, "a": 0},
         3: {"p": 5, "i": 4, "m": 3, "a": 2},
         4: {"p": '_end', "i": '_end', "m": '_end', "a": '_end'}
     }
@@ -641,13 +662,10 @@ def modify_daz_studio_bones():
 
 def adjust_bone_rotation():
     """
-    usage: 调整一定时间帧内的骨骼的旋转角度，主要用于将某些骨骼在每一帧都进行一样的旋转操作
+    usage: 调整一定时间帧内的骨骼的旋转角度，主要用于将某些骨骼在每一帧都进行一样的旋转操作，操作时要提前选好要旋转的骨骼，并把视角设置好
     """
     # 设置当前帧
     current_frame = bpy.context.scene.frame_start
-
-    # 获取选定的骨骼
-    selected_bones = bpy.context.selected_pose_bones
 
     # 遍历每一帧
     while current_frame <= bpy.context.scene.frame_end:
@@ -660,6 +678,37 @@ def adjust_bone_rotation():
 
         # 移动到下一帧
         current_frame += 1
+
+
+def create_MCH_bones():
+
+    # 切换到编辑模式
+    bpy.ops.object.mode_set(mode='EDIT')
+    current_bones = bpy.context.selected_editable_bones
+
+    new_bones = []
+
+    for bone in current_bones:
+        # 复制骨骼
+        bone_copy = bpy.context.object.data.edit_bones.new("MCH_" + bone.name)
+        bone_copy.head = bone.head
+        bone_copy.tail = bone.tail
+        bone_copy.parent = bone.parent
+        # 将现骨骼的connected选项去掉
+        bone.use_connect = False
+        # 将原骨骼的parent设置为新骨骼
+        bone.parent = bone_copy
+        new_bones.append(bone_copy)
+
+    for copy_bone in new_bones:
+        # 检测它的parent是否有MCH前缀的同名骨骼存在
+        parent = copy_bone.parent
+        if not parent:
+            continue
+        new_parent_name = "MCH_" + parent.name
+        new_parent = bpy.context.object.data.edit_bones.get(new_parent_name)
+        if new_parent:
+            copy_bone.parent = new_parent
 
 
 if __name__ == "__main__":
