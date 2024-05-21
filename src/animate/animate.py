@@ -462,6 +462,8 @@ def animated_guitar_string(left_recorder: str, string_recorder: str, FPS: int) -
                 string_last_frame = next_frame
             else:
                 string_last_frame = frame + elapsed_frame
+        else:
+            string_last_frame = frame + elapsed_frame
 
         for finger_data in leftHand:
             fingerIndex = finger_data["fingerIndex"]
