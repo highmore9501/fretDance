@@ -22,7 +22,7 @@ guitar_type_options = {
 }
 
 
-def check_and_exec(avatar, midiFilePath, track_number, channel_number, FPS, guitar_type, use_custom_string_notes, custom_string_notes) -> str:
+def check_and_exec(avatar, midiFilePath, track_number, channel_number, FPS, guitar_type, use_custom_string_notes, custom_string_notes, octave_down_checkbox, capo_number) -> str:
     # 根据复选框的值决定使用哪个弦音高
     if use_custom_string_notes:
         guitar_string_notes = custom_string_notes.replace(' ', '').split(',')
@@ -36,7 +36,7 @@ def check_and_exec(avatar, midiFilePath, track_number, channel_number, FPS, guit
 
     midi_path = "asset/midi/" + midiFilePath
     result = main(avatar, midi_path, track_number,
-                  channel_number, FPS, guitar_string_notes)
+                  channel_number, FPS, guitar_string_notes, octave_down_checkbox, capo_number)
     return result
 
 
@@ -53,8 +53,6 @@ refresh_asset_files()
 with gr.Blocks() as demo:
     with gr.Row() as avatar_selection_container:
         with gr.Column():
-            refresh_button = gr.Button("Refresh asset 刷新asset文件夹信息")
-            refresh_button.click(fn=refresh_asset_files)
             midi_dropdown = gr.Dropdown(
                 midi_files, label="select midi 选择在目录asset/midi下面的MIDI 文件")
             submit_check_midi_button = gr.Button(
@@ -70,6 +68,11 @@ with gr.Blocks() as demo:
                 minimum=-1, maximum=100, value=-1, step=1, label="select channel 选择 MIDI 文件的通道编号，如果为-1表示接受所有通道")
             fps_number = gr.Number(
                 minimum=1, maximum=120, value=30, step=1, label="set fps 设定 Blender 里的 FPS")
+            # 是否需要降八度
+            octave_down_checkbox = gr.Checkbox(label="octave down 是否要降一个八度")
+            # 原曲变调夹是在几品
+            capo_number = gr.Number(
+                minimum=0, maximum=12, value=0, step=1, label="capo number 原曲变调夹是在几品")
 
         # 创建一个新的容器
         with gr.Column() as custom_string_notes_container:
@@ -89,7 +92,7 @@ with gr.Blocks() as demo:
         output_textbox = gr.Textbox(label="输出结果")
 
         submit_button.click(check_and_exec, inputs=[
-            avatar_dropdown, midi_dropdown, track_number, channel_number, fps_number, guitar_type_dropdown, use_custom_string_notes_checkbox, custom_string_notes_textbox], outputs=[output_textbox])
+            avatar_dropdown, midi_dropdown, track_number, channel_number, fps_number, guitar_type_dropdown, use_custom_string_notes_checkbox, custom_string_notes_textbox, octave_down_checkbox, capo_number], outputs=[output_textbox])
 
 
 demo.launch(inbrowser=True)

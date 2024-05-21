@@ -81,7 +81,7 @@ def export_midi_info(midiFilePath: str) -> str:
     return result
 
 
-def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0) -> object:
+def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0, octave_down_checkbox: bool = False, capo_number: int = 0) -> object:
     """    
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :param useTrack: track number to use. 使用的轨道编号
@@ -110,7 +110,9 @@ def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0)
         if message.channel == useChannel or useChannel == -1:
             messages.append({'message': str(message), 'real_tick': real_tick})
             if message.type == 'note_on':
-                note.append(message.note)
+                message_note = message.note if not octave_down_checkbox else message.note - 12
+                message_note -= capo_number
+                note.append(message_note)
             else:
                 # 结束音符的收集
                 if len(note) == 0:
