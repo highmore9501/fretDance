@@ -9,7 +9,22 @@ track_number = 1
 
 left_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_lefthand_animation.json"
 right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_righthand_animation.json"
-guitar_string_recorder_file = f"output/{midi_name}_{track_number}_guitar_string_recorder.json"
+guitar_string_recorder_file = f"G:/fretDance/output/{midi_name}_{track_number}_guitar_string_recorder.json"
+
+
+def clear_all_keyframe():
+    # 全选所有物体
+    bpy.ops.object.select_all(action='SELECT')
+    # 清除所有关键帧
+    for ob in bpy.context.selected_objects:
+        ob.animation_data_clear()
+        if hasattr(ob.data, "shape_keys"):
+            if ob.data.shape_keys:
+                print(ob.name)
+                ob.data.shape_keys.animation_data_clear()
+
+    # 取消全选
+    bpy.ops.object.select_all(action='DESELECT')
 
 
 def animate_hand(animation_file: str):
@@ -47,7 +62,7 @@ def insert_values(fingerInfos):
 
 
 def animate_string(string_recorder: str):
-    biggest_shape_key_name = 'fret20'
+
     # 读取json文件
     bpy.context.scene.frame_set(0)  # 从第0帧开始动画，否则会出现插值问题
     for i in range(0, 6):
@@ -61,6 +76,8 @@ def animate_string(string_recorder: str):
         stringDicts = json.load(f)
 
         for item in stringDicts:
+            if item["frame"] is None:
+                continue
             frame = int(item["frame"])
             stringIndex = item["stringIndex"]
             fret = item["fret"]
@@ -71,13 +88,14 @@ def animate_string(string_recorder: str):
 
             current_string = bpy.data.objects[f"string{stringIndex}"]
             if current_string:
-                shape_key_name = f'fret{fret}'
+                shape_key_name = f's{stringIndex}fret{fret}'
                 current_shape_key = current_string.data.shape_keys.key_blocks[shape_key_name]
                 if current_shape_key:
                     # 设置形状关键帧
                     current_shape_key.value = influence
                     current_shape_key.keyframe_insert(data_path="value")
                 else:
+                    biggest_shape_key_name = f's{stringIndex}fret20'
                     biggest_shape_key = current_string.data.shape_keys.key_blocks[
                         biggest_shape_key_name]
                     if biggest_shape_key:
@@ -85,6 +103,7 @@ def animate_string(string_recorder: str):
                         biggest_shape_key.keyframe_insert(data_path="value")
 
 
+clear_all_keyframe()
 animate_hand(left_hand_animation_file)
 animate_hand(right_hand_animation_file)
 animate_string(guitar_string_recorder_file)
