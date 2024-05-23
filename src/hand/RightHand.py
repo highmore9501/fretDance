@@ -277,23 +277,35 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
         offsets = 0
         for usedfinger in usedRightFingers:
             current_finger_position = positions[finger_indexs[usedfinger]]
-            offsets += current_finger_position
+            mutilplier = 3 if usedfinger == 'p' else 1
+            offsets += current_finger_position * mutilplier
 
-        average_offset = offsets / len(usedRightFingers)
+        total_finger_weights = len(
+            usedRightFingers) if 'p' not in usedRightFingers else len(usedRightFingers) + 3
+        average_offset = offsets / total_finger_weights
         """
         这一段解释一下：
-        我只在blender里调整了h0和h3的两个位置，然后通过这两个位置来计算其它手指的位置。        
-        这是两个极端手型，这两个组合包含了各个手指实际上能触碰的最高和最低弦：
-        h0是在{"p": 2, "i": 0, "m": 0, "a": 0}的位置上，它的average_offset是0.5, 同时h_position=0
-        h3是在{"p": 5, "i": 4, "m": 3, "a": 2}的位置上，它的average_offset是3.5，同时h_position=3
+        我只在blender里调整了h0和h3的两个位置，然后通过这两个位置的average_offset来计算其它手指的位置。 
+        所谓 average_offset， 是计量了所有需要弹奏的手指的位置的平均值，然后通过这个平均值来决定手掌的位置，最后面再决定那些没有参与演奏的手指的位置。
+        在计算 average_offset时，p指是特殊处理了的，它的权重是3，因为p指是决定手掌位置最重要的手指。 
+              
+        h0和h3两个极端手型，这两个组合包含了各个手指实际上能触碰的最高和最低弦：
+        h0是在{"p": 2, "i": 0, "m": 0, "a": 0}的位置上，它的average_offset是1, 同时h_position=0
+        h3是在{"p": 5, "i": 4, "m": 3, "a": 2}的位置上，它的average_offset是6，同时h_position=3
+        
+        假定h_position都是线性分布，满足：
+        h_position = m * average_offset + b
         
         根据上面这两个值，我们可以计算出来线性插值的斜率是：
-        m = (3.5 - 0.5) / (3 - 0) = 1
+        m = (3 - 0) / (6 - 1)  = 0.6
         
         最终线性插值的计算公式是：
-        h_position = average_offset -0.5
+        h_position = 0.6 * average_offset - 0.6
+        
+        而这个时间手掌的实际位置是：
+        H_R = h0 + h_position * (h3 - h0) / 3
         """
-        hand_position = average_offset - 0.5
+        hand_position = 0.6 * average_offset - 0.6
 
         h0 = array(data['RIGHT_HAND_POSITIONS']['h0'])
         h3 = array(data['RIGHT_HAND_POSITIONS']['h3'])
