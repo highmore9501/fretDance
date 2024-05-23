@@ -65,8 +65,10 @@ def animate_string(string_recorder: str):
 
     # 读取json文件
     bpy.context.scene.frame_set(0)  # 从第0帧开始动画，否则会出现插值问题
-    for i in range(0, 6):
-        current_string = bpy.data.objects[f"string{i}"]
+    for i in range(0, 10):
+        current_string = bpy.data.objects.get(f"string{i}", None)
+        if current_string is None:
+            continue
         # 将current_string上所有的shape_key值设置为0
         for shape_key in current_string.data.shape_keys.key_blocks:
             shape_key.value = 0
