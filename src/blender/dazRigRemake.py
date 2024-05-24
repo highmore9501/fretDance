@@ -176,8 +176,8 @@ def creat_finger_MCH_bones():
 
 def creat_wrist_MCH_bones():
     armature = bpy.data.armatures[0]
-    # 选中armature以后进入姿态模式
-    bpy.ops.object.mode_set(mode='POSE')
+    # 进入编辑模式
+    bpy.ops.object.mode_set(mode='EDIT')
 
     def creat_wrist_MCH_bone(wrist_name: str, suffix: str):
         wrist_bone = armature.edit_bones[wrist_name + suffix]
@@ -189,8 +189,6 @@ def creat_wrist_MCH_bones():
         forearm_name = "MCH_forearm" + suffix
         new_bone.parent = armature.edit_bones[forearm_name]
         new_bone.use_deform = False
-        # 设置new_bone的旋转模式为zxy
-        new_bone.rotation_mode = 'ZXY'
         wrist_bone.parent = new_bone
 
     suffixs = ['_L', '_R']
@@ -200,6 +198,18 @@ def creat_wrist_MCH_bones():
 
 
 # 从这里开始的步骤要先从其它文件导入controller以后才能执行
+def change_hand_bone_rotation():
+    armature = bpy.data.armatures[0]
+    # 选中armature以后进入POSE模式
+    bpy.ops.object.mode_set(mode='POSE')
+
+    suffixs = ['_L', '_R']
+    wrist_name = 'Hand'
+    for suffix in suffixs:
+        wrist_bone = bpy.context.active_object.pose.bones[wrist_name+suffix]
+        wrist_bone.rotation_mode = 'ZXY'
+
+
 def add_constraints():
     armature = bpy.data.armatures[0]
     # 选中armature以后进入POSE模式
@@ -429,6 +439,7 @@ def before_controller_export():
 
 
 def after_controller_export():
+    change_hand_bone_rotation()
     add_constraints()
     add_locked_tracks()
     move_MCH_bones()
