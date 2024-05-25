@@ -2,26 +2,19 @@ import bpy
 import json
 import mathutils
 
-# 从外部读取json文件
-avatar = 'rem'
-midi_name = "Corridors Of Time Fingerstyle"
-track_number = 1
-
-left_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_lefthand_animation.json"
-right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_righthand_animation.json"
-guitar_string_recorder_file = f"G:/fretDance/output/{midi_name}_{track_number}_guitar_string_recorder.json"
-
 
 def clear_all_keyframe():
     # 全选所有物体
     bpy.ops.object.select_all(action='SELECT')
     # 清除所有关键帧
     for ob in bpy.context.selected_objects:
-        ob.animation_data_clear()
+        if ob.animation_data and ob.animation_data.action:
+            for fcurve in ob.animation_data.action.fcurves:
+                fcurve.keyframe_points.clear()
         if hasattr(ob.data, "shape_keys"):
-            if ob.data.shape_keys:
-                print(ob.name)
-                ob.data.shape_keys.animation_data_clear()
+            if ob.data.shape_keys and ob.data.shape_keys.animation_data and ob.data.shape_keys.animation_data.action:
+                for fcurve in ob.data.shape_keys.animation_data.action.fcurves:
+                    fcurve.keyframe_points.clear()
 
     # 取消全选
     bpy.ops.object.select_all(action='DESELECT')
@@ -91,7 +84,8 @@ def animate_string(string_recorder: str):
             current_string = bpy.data.objects[f"string{stringIndex}"]
             if current_string:
                 shape_key_name = f's{stringIndex}fret{fret}'
-                current_shape_key = current_string.data.shape_keys.key_blocks[shape_key_name]
+                current_shape_key = current_string.data.shape_keys.key_blocks.get(
+                    shape_key_name, None)
                 if current_shape_key:
                     # 设置形状关键帧
                     current_shape_key.value = influence
@@ -103,6 +97,16 @@ def animate_string(string_recorder: str):
                     if biggest_shape_key:
                         biggest_shape_key.value = influence
                         biggest_shape_key.keyframe_insert(data_path="value")
+
+
+# 从外部读取json文件
+avatar = 'rem'
+midi_name = "Corridors Of Time Fingerstyle"
+track_number = 1
+
+left_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_lefthand_animation.json"
+right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_righthand_animation.json"
+guitar_string_recorder_file = f"G:/fretDance/output/{midi_name}_{track_number}_guitar_string_recorder.json"
 
 
 clear_all_keyframe()
