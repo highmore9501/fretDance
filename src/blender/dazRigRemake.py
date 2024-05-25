@@ -88,7 +88,7 @@ def create_face_bone_collections():
 # 第五步，生成手臂的MCH骨骼
 
 
-def creat_arm_MCH_bones(armature_name):
+def creat_arm_MCH_bones(Genesis_version):
     armature = bpy.data.armatures[0]
     # 选中armature以后进入编辑模式
     bpy.ops.object.mode_set(mode='EDIT')
@@ -125,7 +125,7 @@ def creat_arm_MCH_bones(armature_name):
         new_bone.use_deform = False
         original_bone.parent = new_bone
 
-    if armature_name == 'Genesis3Female':
+    if Genesis_version == 3:
         task_list = [{
             "first_bone_name": "ShldrBend",
             "second_bone_name_str": "ShldrTwist",
@@ -147,13 +147,17 @@ def creat_arm_MCH_bones(armature_name):
         armature.edit_bones["MCH_forearm_L"].head = armature.edit_bones["MCH_arm_L"].tail
         armature.edit_bones["MCH_forearm_R"].parent = armature.edit_bones["MCH_arm_R"]
         armature.edit_bones["MCH_forearm_R"].head = armature.edit_bones["MCH_arm_R"].tail
-    elif armature_name == 'Genesis2Female':
+    elif Genesis_version == 2:
         task_list = ['Shldr', 'ForeArm']
         suffix = ['_L', '_R']
 
         for task in task_list:
             for post in suffix:
                 creat_arm_MCH_bone_v2(task + post)
+
+        armature.edit_bones["MCH_ForeArm_L"].parent = armature.edit_bones["MCH_Shldr_L"]
+        armature.edit_bones["MCH_ForeArm_R"].parent = armature.edit_bones["MCH_Shldr_R"]
+
 
 # 第六步，生成手指的mch骨骼
 
@@ -193,19 +197,19 @@ def creat_finger_MCH_bones():
 # 第七步，生成手腕的mch骨骼
 
 
-def creat_wrist_MCH_bones(armature_name):
+def creat_wrist_MCH_bones(Genesis_version):
     armature = bpy.data.armatures[0]
     # 进入编辑模式
     bpy.ops.object.mode_set(mode='EDIT')
 
-    def creat_wrist_MCH_bone(wrist_name: str, suffix: str, armature_name: str):
+    def creat_wrist_MCH_bone(wrist_name: str, suffix: str, Genesis_version: int):
         wrist_bone = armature.edit_bones[wrist_name + suffix]
         mch_name = "MCH_" + wrist_name + suffix
         new_bone = armature.edit_bones.new(mch_name)
         new_bone.head = wrist_bone.head
         new_bone.tail = wrist_bone.tail
         new_bone.roll = wrist_bone.roll
-        forearm_name_prefix = "MCH_forearm" if armature_name == "Genesis3Female" else "MCH_ForeArm"
+        forearm_name_prefix = "MCH_forearm" if Genesis_version == 3 else "MCH_ForeArm"
         forearm_name = forearm_name_prefix + suffix
         new_bone.parent = armature.edit_bones[forearm_name]
         new_bone.use_deform = False
@@ -214,7 +218,7 @@ def creat_wrist_MCH_bones(armature_name):
     suffixs = ['_L', '_R']
     wrist_name = 'Hand'
     for suffix in suffixs:
-        creat_wrist_MCH_bone(wrist_name, suffix, armature_name)
+        creat_wrist_MCH_bone(wrist_name, suffix, Genesis_version)
 
 
 # 从这里开始的步骤要先从其它文件导入controller以后才能执行
@@ -224,13 +228,14 @@ def change_hand_bone_rotation():
     bpy.ops.object.mode_set(mode='POSE')
 
     suffixs = ['_L', '_R']
-    wrist_name = 'Hand'
+    wrist_names = ['Hand', 'MCH_Hand']
     for suffix in suffixs:
-        wrist_bone = bpy.context.active_object.pose.bones[wrist_name+suffix]
-        wrist_bone.rotation_mode = 'ZXY'
+        for wrist_name in wrist_names:
+            wrist_bone = bpy.context.active_object.pose.bones[wrist_name+suffix]
+            wrist_bone.rotation_mode = 'ZXY'
 
 
-def add_constraints(armature_name):
+def add_constraints(Genesis_version):
     armature = bpy.data.armatures[0]
     # 选中armature以后进入POSE模式
     bpy.ops.object.mode_set(mode='POSE')
@@ -247,7 +252,7 @@ def add_constraints(armature_name):
 
     IK_tasks = [
         {
-            'bone_name': 'MCH_forearm' if armature_name == 'Genesis3Female' else 'MCH_ForeArm',
+            'bone_name': 'MCH_forearm' if Genesis_version == 3 else 'MCH_ForeArm',
             'targetA_name': 'H',
             'targetB_name': 'HP',
             'chain_count': 2
@@ -348,6 +353,7 @@ def add_constraints(armature_name):
 
 
 def add_locked_tracks(armature_name):
+    Genesis_version = armature_name.split('Genesis')[1][0]
     armature = bpy.data.armatures[0]
     # 选中armature以后进入edit模式
     bpy.ops.object.mode_set(mode='EDIT')
@@ -371,7 +377,7 @@ def add_locked_tracks(armature_name):
     target_name = 'Carpal'
     suffixs = ['_L', '_R']
 
-    carpal_num = 5 if armature_name == 'Genesis3Female' else 3
+    carpal_num = 5 if Genesis_version == 3 else 3
 
     for i in range(1, carpal_num):
         for suffix in suffixs:
@@ -403,32 +409,32 @@ def add_locked_tracks(armature_name):
         },
         {
             'bone_name': 'Mid3',
-            'target_name': 'Carpal2' if armature_name == 'Genesis3Female' else 'Carpal1',
+            'target_name': 'Carpal2' if Genesis_version == 3 else 'Carpal1',
             'influence': 0.8
         },
         {
             'bone_name': 'Mid2',
-            'target_name': 'Carpal2' if armature_name == 'Genesis3Female' else 'Carpal1',
+            'target_name': 'Carpal2' if Genesis_version == 3 else 'Carpal1',
             'influence': 0.3
         },
         {
             'bone_name': 'Ring3',
-            'target_name': 'Carpal3' if armature_name == 'Genesis3Female' else 'Carpal2',
+            'target_name': 'Carpal3' if Genesis_version == 3 else 'Carpal2',
             'influence': 0.8
         },
         {
             'bone_name': 'Ring2',
-            'target_name': 'Carpal3' if armature_name == 'Genesis3Female' else 'Carpal2',
+            'target_name': 'Carpal3' if Genesis_version == 3 else 'Carpal2',
             'influence': 0.3
         },
         {
             'bone_name': 'Pinky3',
-            'target_name': 'Carpal4' if armature_name == 'Genesis3Female' else 'Carpal2',
+            'target_name': 'Carpal4' if Genesis_version == 3 else 'Carpal2',
             'influence': 0.8
         },
         {
             'bone_name': 'Pinky2',
-            'target_name': 'Carpal4' if armature_name == 'Genesis3Female' else 'Carpal2',
+            'target_name': 'Carpal4' if Genesis_version == 3 else 'Carpal2',
             'influence': 0.3
         }
     ]
@@ -455,19 +461,21 @@ def move_MCH_bones():
 
 
 def before_controller_export(armature_name):
+    Genesis_version = armature_name.split('Genesis')[1][0]
     clear_collections()
     remove_all_collections_except_collection()
     modify_daz_studio_bones(armature_name)
     create_face_bone_collections()
-    creat_arm_MCH_bones(armature_name)
+    creat_arm_MCH_bones(Genesis_version)
     creat_finger_MCH_bones()
-    creat_wrist_MCH_bones(armature_name)
+    creat_wrist_MCH_bones(Genesis_version)
 
 # 导入控制器之后的操作
 
 
 def after_controller_export(armature_name):
+    Genesis_version = armature_name.split('Genesis')[1][0]
     change_hand_bone_rotation()
-    add_constraints(armature_name)
+    add_constraints(Genesis_version)
     add_locked_tracks(armature_name)
     move_MCH_bones()
