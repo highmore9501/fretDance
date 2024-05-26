@@ -211,6 +211,16 @@ def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1"
     :param status_name: 状态名称
     useage:这个方法同import_left_controller_info，但是是将球的位置设置到控制器上
     """
+    def unlock_location(obj):
+        obj.lock_location[0] = False
+        obj.lock_location[1] = False
+        obj.lock_location[2] = False
+
+    def unlock_rotation(obj):
+        obj.lock_rotation[0] = False
+        obj.lock_rotation[1] = False
+        obj.lock_rotation[2] = False
+
     collections = ['FingerPositionControllers',
                    'RotationControllers', 'HandPositionControllers']
 
@@ -222,14 +232,20 @@ def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1"
             try:
                 if collection == "HandPositionControllers":
                     position_ball_name = f'{status_name}_{position_name}_{obj_name}'
-                    bpy.data.objects[position_ball_name].location = obj.location
+                    position_ball = bpy.data.objects[position_ball_name]
+                    unlock_location(position_ball)
+                    position_ball.location = obj.location
                 elif collection == "FingerPositionControllers":
                     position_ball_name = f'Fret_{position_name}'
                     if obj.name == 'I_L':
-                        bpy.data.objects[position_ball_name].location = obj.location
+                        position_ball = bpy.data.objects[position_ball_name]
+                        unlock_location(position_ball)
+                        position_ball.location = obj.location
                 elif collection == "RotationControllers":
                     rotation_cone_name = f'{status_name}_{position_name}_H_rotation_L'
-                    bpy.data.objects[rotation_cone_name].rotation_euler = obj.rotation_euler
+                    rotation_cone = bpy.data.objects[rotation_cone_name]
+                    unlock_rotation(rotation_cone)
+                    rotation_cone.rotation_euler = obj.rotation_euler
             except Exception as e:
                 print(f"Error: {e}")
 
@@ -303,27 +319,44 @@ def set_right_controller_info_to_position_balls(hand_position: int):
         4: {"p": '_end', "i": '_end', "m": '_end', "a": '_end'}
     }
 
+    def unlock_location(obj):
+        obj.lock_location[0] = False
+        obj.lock_location[1] = False
+        obj.lock_location[2] = False
+
+    def unlock_rotation(obj):
+        obj.lock_rotation[0] = False
+        obj.lock_rotation[1] = False
+        obj.lock_rotation[2] = False
+
     finger_positions = right_hand_test_positions[hand_position]
 
     # 记录右手位置
     hand_position_name = f'h{hand_position}' if hand_position != 4 else 'h_end'
     H_R = bpy.data.objects['H_R']
-    bpy.data.objects[hand_position_name].location = H_R.location
+    hand_position_ball = bpy.data.objects[hand_position_name]
+    unlock_location(hand_position_ball)
+    hand_position_ball.location = H_R.location
 
     hand_pivot_name = f'P{hand_position}_HP_R'
     HP_R = bpy.data.objects['HP_R']
-    bpy.data.objects[hand_pivot_name].location = HP_R.location
+    hand_pivot_ball = bpy.data.objects[hand_pivot_name]
+    unlock_location(hand_pivot_ball)
+    hand_pivot_ball.location = HP_R.location
 
     # 记录旋转值
     H_rotation_controller = bpy.data.objects['H_rotation_R']
     rotation_cone_name = f'Normal_P{hand_position}_H_rotation_R'
     rotation_cone = bpy.data.objects[rotation_cone_name]
+    unlock_rotation(rotation_cone)
     rotation_cone.rotation_euler = H_rotation_controller.rotation_euler
 
     # 记录大拇指位置
     thumb_position_name = f'p{finger_positions["p"]}'
     T_R = bpy.data.objects['T_R']
-    bpy.data.objects[thumb_position_name].location = T_R.location
+    thumb_position_ball = bpy.data.objects[thumb_position_name]
+    unlock_location(thumb_position_ball)
+    thumb_position_ball.location = T_R.location
 
     for obj in bpy.data.collections[collection].objects:
         obj_name = obj.name
@@ -340,7 +373,9 @@ def set_right_controller_info_to_position_balls(hand_position: int):
                 position_ball_name = f'ch{finger_positions["a"]}'
             else:
                 print(f'Error happend. name: {obj_name}')
-            bpy.data.objects[position_ball_name].location = obj.location
+            position_ball = bpy.data.objects[position_ball_name]
+            unlock_location(position_ball)
+            position_ball.location = obj.location
 
         except Exception as e:
             print(f"Error: {e}")
