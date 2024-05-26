@@ -71,7 +71,6 @@ def modify_daz_studio_bones(armature_name):
 
 def create_face_bone_collections():
     armature = bpy.data.armatures[0]
-    face_collection = armature.collections.new("Face")
 
     def find_bone_in_hierarchy(bone, target_bone_name):
         if bone.name == target_bone_name:
@@ -79,11 +78,14 @@ def create_face_bone_collections():
         if bone.parent:
             return find_bone_in_hierarchy(bone.parent, target_bone_name)
         return False
-
-    # 遍历armature上所有骨骼，如果骨骼的parent往上回溯到head，则将这个骨骼添加到face_collection中
-    for bone in armature.bones:
-        if find_bone_in_hierarchy(bone, "head"):
-            face_collection.assign(bone)
+    try:
+        face_collection = armature.collections["Face"]
+        # 遍历armature上所有骨骼，如果骨骼的parent往上回溯到head，则将这个骨骼添加到face_collection中
+        for bone in armature.bones:
+            if find_bone_in_hierarchy(bone, "head"):
+                face_collection.assign(bone)
+    except:
+        print("Face collection not found")
 
 # 第五步，生成手臂的MCH骨骼
 
@@ -156,7 +158,11 @@ def creat_arm_MCH_bones(Genesis_version):
                 creat_arm_MCH_bone_v2(task + post)
 
         armature.edit_bones["MCH_ForeArm_L"].parent = armature.edit_bones["MCH_Shldr_L"]
+        armature.edit_bones["MCH_ForeArm_L"].use_connect = True
+        armature.edit_bones["ForeArm_L"].head = armature.edit_bones["MCH_ForeArm_L"].head
         armature.edit_bones["MCH_ForeArm_R"].parent = armature.edit_bones["MCH_Shldr_R"]
+        armature.edit_bones["MCH_ForeArm_R"].use_connect = True
+        armature.edit_bones["ForeArm_R"].head = armature.edit_bones["MCH_ForeArm_R"].head
 
 
 # 第六步，生成手指的mch骨骼
@@ -171,6 +177,7 @@ def creat_finger_MCH_bones():
         three_finger_name = [finger_name +
                              str(i) + suffix for i in range(1, 4)]
 
+        # 生成三个mch骨骼
         for sub_finger_name in three_finger_name:
             current_finger = armature.edit_bones[sub_finger_name]
             mch_name = "MCH_" + sub_finger_name
@@ -181,11 +188,19 @@ def creat_finger_MCH_bones():
             new_bone.parent = current_finger.parent
             new_bone.use_deform = False
             current_finger.parent = new_bone
-
+        # 将mch骨骼的尾部设置成上一个mch骨骼的头部
         for i in range(2, 4):
             current_mch_bone = armature.edit_bones[f"MCH_{finger_name}{i}{suffix}"]
             current_mch_bone.head = armature.edit_bones[f"MCH_{finger_name}{i-1}{suffix}"].tail
             current_mch_bone.parent = armature.edit_bones[f"MCH_{finger_name}{i-1}{suffix}"]
+            current_mch_bone.use_connect = True
+
+        # 将手指的头部设置成对应mch骨骼的头部
+        for sub_finger_name in three_finger_name:
+            current_finger = armature.edit_bones[sub_finger_name]
+            mch_name = "MCH_" + sub_finger_name
+            mch_bone = armature.edit_bones[mch_name]
+            current_finger.head = mch_bone.head
 
     fingers = ['Thumb', 'Index', 'Mid', 'Ring', 'Pinky']
     suffixs = ['_L', '_R']
@@ -218,7 +233,10 @@ def creat_wrist_MCH_bones(Genesis_version):
     suffixs = ['_L', '_R']
     wrist_name = 'Hand'
     for suffix in suffixs:
-        creat_wrist_MCH_bone(wrist_name, suffix, Genesis_version)
+        try:
+            creat_wrist_MCH_bone(wrist_name, suffix, Genesis_version)
+        except:
+            print(wrist_name, suffix)
 
 
 # 从这里开始的步骤要先从其它文件导入controller以后才能执行
@@ -353,7 +371,7 @@ def add_constraints(Genesis_version):
 
 
 def add_locked_tracks(armature_name):
-    Genesis_version = armature_name.split('Genesis')[1][0]
+    Genesis_version = int(armature_name.split('Genesis')[1][0])
     armature = bpy.data.armatures[0]
     # 选中armature以后进入edit模式
     bpy.ops.object.mode_set(mode='EDIT')
@@ -461,7 +479,7 @@ def move_MCH_bones():
 
 
 def before_controller_export(armature_name):
-    Genesis_version = armature_name.split('Genesis')[1][0]
+    Genesis_version = int(armature_name.split('Genesis')[1][0])
     clear_collections()
     remove_all_collections_except_collection()
     modify_daz_studio_bones(armature_name)
