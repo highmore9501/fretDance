@@ -373,7 +373,7 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
     return result
 
 
-def calculateRightPick(avatar: str, stringIndex: int, pick_down: bool, isArpeggio: bool, isAfterPlayed: bool = False) -> Dict:
+def calculateRightPick(avatar: str, stringIndex: int, isArpeggio: bool, should_stay_at_lower_position: bool) -> Dict:
     json_file = f'asset\controller_infos\{avatar}.json'
     fingerMoveDistanceWhilePlay = 0.009
     with open(json_file, 'r') as f:
@@ -382,13 +382,15 @@ def calculateRightPick(avatar: str, stringIndex: int, pick_down: bool, isArpeggi
     result = {}
     thumb_index = "p_end" if isArpeggio else f"p{stringIndex}"
     T_R = data['RIGHT_HAND_POSITIONS'][thumb_index][:]
-    move = data['RIGHT_HAND_LINES']["T_line"]
-    # 如果当前音符是下拨，并且音符已经演奏完毕，或者当前音符是上拨，并且音符还没有演奏完毕，那么拨片的位置就是在弦的下方
-    pick_on_low_position = (pick_down and isAfterPlayed) or (
-        not pick_down and not isAfterPlayed)
-    multiplier = 1 if pick_on_low_position else -1
-    # 如果是琶音，而且此时已经是在低位置，那么不需要再移动拨片，其它情况都要移动拨片
-    if not (isArpeggio and pick_on_low_position):
+    # 只要当前不是在演奏琶音，都需要移动拨片位置。情况有以下几种：
+    # 1. pick是在高位置，而且是已经演奏完毕，此时pick的位置是在T_R的下方
+    # 2. pick是在低位置，而且还没有开始演奏，此时Pick的位置是在T_R的下方
+    # 3. pick是在低位置，而且是已经演奏完毕，此时pick的位置是在T_R的上方
+    # 4. pick是在高位置，而且还没有开始演奏，此时Pick的位置是在T_R的上方
+    if not isArpeggio:
+        move = data['RIGHT_HAND_LINES']["T_line"]
+        # 如果当前pick位置在当前弦的位置之下，那么就是在低位置，否则就是在高位置
+        multiplier = 1 if should_stay_at_lower_position else -1
         T_R[0] += move[0] * fingerMoveDistanceWhilePlay * multiplier
         T_R[1] += move[1] * fingerMoveDistanceWhilePlay * multiplier
         T_R[2] += move[2] * fingerMoveDistanceWhilePlay * multiplier

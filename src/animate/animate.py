@@ -301,7 +301,7 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int) ->
 
 
 def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, right_hand_animation_file: str, FPS: int) -> None:
-    pick_down = True
+    pick_position = 5.5
     data_for_animation = []
     # 这里是计算按弦需要保持的时间
     elapsed_frame = FPS / 15.0
@@ -325,11 +325,24 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                 if next_frame > played_frame + elapsed_frame:
                     played_finished_frame = played_frame + elapsed_frame
 
+            # 如果pick当前的位置是在最低弦下面，那么以最低弦为演奏弦并且上扫弦
+            # 如果pick当前的位置是在最高弦上面，那么以最高弦为演奏弦并且下扫弦
+            pick_on_low_position = pick_position < min_string
+            start_string = min_string if pick_on_low_position else max_string
+            end_string = max_string if pick_on_low_position else min_string
+            should_start_at_lower_position = pick_on_low_position
+            should_end_at_lower_position = not pick_on_low_position
+
             ready = calculateRightPick(
-                avatar, max_string, pick_down, isArpeggio, isAfterPlayed=False)
+                avatar, start_string, isArpeggio, should_start_at_lower_position)
 
             played = calculateRightPick(
-                avatar, min_string, pick_down, isArpeggio, isAfterPlayed=True)
+                avatar, end_string, isArpeggio, should_end_at_lower_position)
+
+            if isArpeggio:
+                pick_position = -0.5
+            else:
+                pick_position = end_string + 0.5 if should_end_at_lower_position else end_string - 0.5
 
             # pick拨弦分为三个阶段，准备拨弦，拨弦，拨弦后维持动作。它没有再返回准备状态的必要。
             data_for_animation.append({
@@ -347,8 +360,6 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
                     "frame": played_finished_frame,
                     "fingerInfos": played
                 })
-
-            pick_down = not pick_down
 
     with open(right_hand_animation_file, "w") as f:
         json.dump(data_for_animation, f, indent=4)
