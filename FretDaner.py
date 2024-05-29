@@ -260,6 +260,8 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
     current_recoreder_num = 0
     previous_recoreder_num = current_recoreder_num
 
+    print('开始生成左手按弦数据')
+
     update_recorder_pool(total_steps, guitar, handPoseRecordPool, notes_map, current_recoreder_num,
                          previous_recoreder_num)
 
@@ -284,6 +286,7 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
                        left_hand_animation_file, tempo_changes, ticks_per_beat, FPS, max_string_index)
 
     # 下面是处理右手的部分，右手要视情况分电吉他与古典吉他两种情况处理。
+    print('开始生成右手演奏数据')
     if avatar.endswith("_E"):
         leftHand2ElectronicRightHand(
             left_hand_recorder_file, right_hand_recorder_file)
@@ -313,10 +316,11 @@ def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int,
         rightHand2Animation(avatar, right_hand_recorder_file,
                             right_hand_animation_file, FPS)
 
+    print('开始生成吉他弦动画数据')
     animated_guitar_string(left_hand_recorder_file,
                            guitar_string_recorder_file, FPS)
 
-    finall_info = f'全部执行完毕:\nrecorder文件被保存到了{left_hand_recorder_file}和{right_hand_recorder_file}\n动画文件被保存到了{left_hand_animation_file}和{right_hand_animation_file}\n吉它弦动画文件被保存到了{guitar_string_recorder_file}'
+    finall_info = f'全部执行完毕:\nrecorder文件被保存到了:{left_hand_recorder_file} 和 {right_hand_recorder_file}\n动画文件被保存到了:{left_hand_animation_file} 和 {right_hand_animation_file}\n吉它弦动画文件被保存到了:{guitar_string_recorder_file}'
 
     print(finall_info)
 

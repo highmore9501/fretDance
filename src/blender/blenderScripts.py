@@ -94,28 +94,30 @@ def remove_non_associated_bones(mesh_name: str, armature_name: str):
     useage:这个方法用于在blender中删除没有关联的骨骼。注意这个方法非常危险，执行前要想明白自己在做什么
     """
 
-    obj = bpy.data.objects[mesh_name]
+    mesh_obj = bpy.data.objects[mesh_name]
     weight_groups_name = []
 
     # 获取所有的骨骼组
-    for vertex_group in obj.vertex_groups:
+    for vertex_group in mesh_obj.vertex_groups:
         weight_groups_name.append(vertex_group.name)
 
-    obj = bpy.data.objects[armature_name]
+    armature_obj = bpy.data.objects.get(armature_name, None)
 
+    if not armature_obj:
+        print(f"Can't find armature {armature_name}")
+        return
+
+    # 切换到编辑模式
+    bpy.context.view_layer.objects.active = armature_obj
     bpy.ops.object.mode_set(mode='EDIT')
 
-    # 全选所有骨骼
-    bpy.ops.armature.select_all(action='SELECT')
-
     # 遍历所有骨骼，把名字不在weight_groups_name里的骨骼删除
-    for bone in bpy.context.selected_bones:
+    for bone in armature_obj.data.edit_bones:
         if bone.name not in weight_groups_name:
-            # 删除骨骼
-            bpy.ops.armature.delete()
+            armature_obj.data.edit_bones.remove(bone)
 
-    # 切换回姿态模式
-    bpy.ops.object.mode_set(mode='POSE')
+    # 切换回对象模式
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def read_vertex_groups(mesh: str):
@@ -458,7 +460,8 @@ def export_controller_info(file_name: str) -> None:
 
         vec = rot_matrix @ mathutils.Vector((0, 0, 1))
         print(f'{obj_name} quaternion: {vec}')
-        result['RIGHT_HAND_LINES'][obj_name] = vec
+        result['RIGHT_HAND_LINES'][obj_name]['vector'] = vec
+        result['RIGHT_HAND_LINES'][obj_name]['location'] = obj.location
 
     data = json.dumps(result, default=list, indent=4)
 
@@ -744,6 +747,47 @@ def create_MCH_bones():
         new_parent = bpy.context.object.data.edit_bones.get(new_parent_name)
         if new_parent:
             copy_bone.parent = new_parent
+
+
+def fix_foot(foot_obj_name: str, armature_name: str, pivot_bone_name: str, time_range: int):
+    """
+    usage: 这个方法用于修正脚部的位置，主要用于修正脚部在动画中的抖动问题。使用时需要先选中脚部的骨骼，然后输入脚部的骨骼名称，骨骼所在的骨骼名称，和脚部的轴点名称
+    """
+    foot_obj = bpy.data.objects[foot_obj_name]
+    armature = bpy.data.objects[armature_name]
+    pivot_bone = armature.pose.bones[pivot_bone_name]
+
+    pre_foot_location = foot_obj.location.copy()
+
+    for i in range(1, time_range+1):
+        bpy.context.scene.frame_set(i)
+        current_foot_location = foot_obj.location.copy()
+        offset = current_foot_location - pre_foot_location
+        # 将offset转化到pivot_bone父空间内
+        pivot_bone.location = -offset
+        pivot_bone.keyframe_insert(data_path="location")
+        pre_foot_location = current_foot_location
+
+
+def unlock_selected_bones():
+    """
+    usage: This method unlocks the location and rotation of selected bones in Blender.
+    """
+    selected_bones = bpy.context.selected_pose_bones
+
+    def unlock_location(obj):
+        obj.lock_location[0] = False
+        obj.lock_location[1] = False
+        obj.lock_location[2] = False
+
+    def unlock_rotation(obj):
+        obj.lock_rotation[0] = False
+        obj.lock_rotation[1] = False
+        obj.lock_rotation[2] = False
+
+    for bone in selected_bones:
+        unlock_location(bone)
+        unlock_rotation(bone)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,9 @@
 from typing import List, Dict, Union
 import itertools
 from numpy import array, linalg
+import numpy as np
 import json
+from src.utils.caculateCrossPoint import get_cross_point
 
 rightFingers = {
     "p": 0,
@@ -254,16 +256,21 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
 
     isArpeggio = usedRightFingers == []
 
+    # 要确保输出controller_info时，右手是在position3，这样可以基于这个位置来计算其它情况下的变化矩阵
+    H3_R = array(data['RIGHT_HAND_POSITIONS']['h3'])
+    H3_Eulers = array(data['ROTATIONS']['H_rotation_R']['Normal']['P3'])
+    H3_transform_matrix = get_transformation_matrix(H3_R, H3_Eulers)
+
     # 如果是扫弦，只计算h的位置，然后根据相对位置计算出其它手指的位置
     if isArpeggio:
         if isAfterPlayed:
             H_R = array(data['RIGHT_HAND_POSITIONS']['h_end'])
-            H_rotation_R = array(
+            H_Eulers = array(
                 data['ROTATIONS']['H_rotation_R']['Normal']['P3'])
             HP_R = array(data['RIGHT_HAND_POSITIONS']['P3_HP_R'])
             TP_R = array(data['RIGHT_HAND_POSITIONS']['P3_TP_R'])
         else:
-            H_rotation_R = array(
+            H_Eulers = array(
                 data['ROTATIONS']['H_rotation_R']['Normal']['P0'])
             H_R = array(data['RIGHT_HAND_POSITIONS']['h0'])
             HP_R = array(data['RIGHT_HAND_POSITIONS']['P0_HP_R'])
@@ -307,6 +314,8 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
         """
         hand_position = 0.6 * average_offset - 0.6
 
+        # 根据手掌的位置先计算所有确定手掌和手臂位置的点
+
         h0 = array(data['RIGHT_HAND_POSITIONS']['h0'])
         h3 = array(data['RIGHT_HAND_POSITIONS']['h3'])
         H_R = h0 + hand_position * (h3 - h0) / 3
@@ -315,7 +324,7 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
             data['ROTATIONS']['H_rotation_R']['Normal']['P0'])
         h_rotation_3 = array(
             data['ROTATIONS']['H_rotation_R']['Normal']['P3'])
-        H_rotation_R = h_rotation_0 + hand_position * \
+        H_Eulers = h_rotation_0 + hand_position * \
             (h_rotation_3 - h_rotation_0) / 3
 
         hp_0 = array(data['RIGHT_HAND_POSITIONS']['P0_HP_R'])
@@ -326,41 +335,54 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
         tp_3 = array(data['RIGHT_HAND_POSITIONS']['P3_TP_R'])
         TP_R = tp_0 + hand_position * (tp_3 - tp_0) / 3
 
-        t_index = f"p{positions[0]}"
-        T_R = array(data['RIGHT_HAND_POSITIONS'][t_index]
-                    ) if "p" in usedRightFingers else H_R + T_defalut - H_default
-        if isAfterPlayed and "p" in usedRightFingers:
-            move = array(data['RIGHT_HAND_LINES']["T_line"])
-            T_R += move * fingerMoveDistanceWhilePlay * 1.2
+        H_transform_matrix = get_transformation_matrix(H_R, H_Eulers)
+
+        # 当物体从H3坐标系转换到H坐标系时的转化矩阵是
+        H3_to_H_transform_matrix = linalg.inv(
+            H3_transform_matrix) @ H_transform_matrix
+
+        # 接下来计算每个手指的位置
+        # 因为T指的方向线起点与其它指的方向线起点不同，所以会有一个单独的direction_line_location的计算
+        # 而其它手指的方向线都是以H_R为起点的
+        if "p" in usedRightFingers:
+            T_R, t_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+                                                               data, 0, positions[0])
+            if isAfterPlayed:
+                T_R += t_move * fingerMoveDistanceWhilePlay * 1.2
+        else:
+            T_R = H_R + T_defalut - H_default
 
         # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的
-        i_index = f"i{positions[1]}"
-        I_R = array(data['RIGHT_HAND_POSITIONS'][i_index]
-                    ) if "i" in usedRightFingers else H_R + I_default - H_default
-        if isAfterPlayed and "i" in usedRightFingers:
-            move = (I_R - H_R) / linalg.norm(I_R - H_R)
-            I_R -= move * fingerMoveDistanceWhilePlay
+        if "i" in usedRightFingers:
+            I_R, i_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+                                                               data, 1, positions[1])
+            if isAfterPlayed:
+                I_R -= i_move * fingerMoveDistanceWhilePlay
+        else:
+            I_R = H_R + I_default - H_default
 
-        m_index = f"m{positions[2]}"
-        M_R = array(data['RIGHT_HAND_POSITIONS'][m_index]
-                    ) if "m" in usedRightFingers else H_R + M_default - H_default
-        if isAfterPlayed and "m" in usedRightFingers:
-            move = (M_R - H_R) / linalg.norm(M_R - H_R)
-            M_R -= move * fingerMoveDistanceWhilePlay
+        if "m" in usedRightFingers:
+            M_R, i_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+                                                               data, 2, positions[2])
+            if isAfterPlayed:
+                M_R -= i_move * fingerMoveDistanceWhilePlay
+        else:
+            M_R = H_R + M_default - H_default
 
-        r_index = f"a{positions[3]}"
-        R_R = array(data['RIGHT_HAND_POSITIONS'][r_index]
-                    ) if "a" in usedRightFingers else H_R + R_default - H_default
-        if isAfterPlayed and "a" in usedRightFingers:
-            move = (R_R - H_R) / linalg.norm(R_R - H_R)
-            R_R -= move * fingerMoveDistanceWhilePlay
+        if "a" in usedRightFingers:
+            R_R, i_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+                                                               data, 3, positions[3])
+            if isAfterPlayed:
+                R_R -= i_move * fingerMoveDistanceWhilePlay
+        else:
+            R_R = H_R + R_default - H_default
 
     # ch指是不动的，根据相对位置计算出ch的位置
     P_R = H_R + P_default - H_default
 
     result.update({
         'H_R': H_R.tolist(),
-        'H_rotation_R': H_rotation_R.tolist(),
+        'H_rotation_R': H_Eulers.tolist(),
         'HP_R': HP_R.tolist(),
         'TP_R': TP_R.tolist(),
         'T_R': T_R.tolist(),
@@ -373,6 +395,67 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
     return result
 
 
+def caculateFingerPositionByHandPosition(H3_to_H_transform_matrix: array, data: object, finger_index: int, string_index: int) -> array:
+    direction_line_list = ['T', 'I', 'M', 'R', 'P']
+    direction_line_name = f"{direction_line_list[finger_index]}_line"
+    string_line_name = f"string_line_{string_index}"
+
+    direction_line_location = array(
+        data['RIGHT_HAND_LINES'][direction_line_name]['location'])
+    direction_line_location = H3_to_H_transform_matrix[:3,
+                                                       :3] @ direction_line_location
+    direction_line_vector = array(
+        data['RIGHT_HAND_LINES'][direction_line_name]['vector'])
+    direction_line_vector = H3_to_H_transform_matrix[:3,
+                                                     :3] @ direction_line_vector
+
+    string_line_location = array(
+        data['RIGHT_HAND_LINES'][string_line_name]['location'])
+    string_line_vector = array(
+        data['RIGHT_HAND_LINES'][string_line_name]['vector'])
+    guitar_suface_vector = array(
+        data['RIGHT_HAND_LINES']['guitar_surface']['vector'])
+
+    cross_point = get_cross_point(
+        direction_line_location, direction_line_vector, guitar_suface_vector, string_line_location, string_line_vector)
+
+    return cross_point, direction_line_vector
+
+
+def euler_to_rotation_matrix(euler_angles):
+    roll, pitch, yaw = euler_angles
+
+    Rx = np.array([[1, 0, 0],
+                   [0, np.cos(roll), -np.sin(roll)],
+                   [0, np.sin(roll), np.cos(roll)]])
+
+    Ry = np.array([[np.cos(pitch), 0, np.sin(pitch)],
+                   [0, 1, 0],
+                   [-np.sin(pitch), 0, np.cos(pitch)]])
+
+    Rz = np.array([[np.cos(yaw), -np.sin(yaw), 0],
+                   [np.sin(yaw), np.cos(yaw), 0],
+                   [0, 0, 1]])
+
+    R = np.dot(np.dot(Rz, Ry), Rx)
+
+    return R
+
+
+def get_transformation_matrix(position, euler_angles):
+    # 将旋转值转换为旋转矩阵
+    rotation_matrix = euler_to_rotation_matrix(euler_angles)
+
+    # 创建4x4的变换矩阵
+    transformation_matrix = np.eye(4)
+
+    # 将旋转矩阵和位置值填入变换矩阵
+    transformation_matrix[:3, :3] = rotation_matrix
+    transformation_matrix[:3, 3] = position
+
+    return transformation_matrix
+
+
 def calculateRightPick(avatar: str, stringIndex: int, isArpeggio: bool, should_stay_at_lower_position: bool) -> Dict:
     json_file = f'asset\controller_infos\{avatar}.json'
     fingerMoveDistanceWhilePlay = 0.009
@@ -382,11 +465,6 @@ def calculateRightPick(avatar: str, stringIndex: int, isArpeggio: bool, should_s
     result = {}
     thumb_index = "p_end" if isArpeggio else f"p{stringIndex}"
     T_R = data['RIGHT_HAND_POSITIONS'][thumb_index][:]
-    # 只要当前不是在演奏琶音，都需要移动拨片位置。情况有以下几种：
-    # 1. pick是在高位置，而且是已经演奏完毕，此时pick的位置是在T_R的下方
-    # 2. pick是在低位置，而且还没有开始演奏，此时Pick的位置是在T_R的下方
-    # 3. pick是在低位置，而且是已经演奏完毕，此时pick的位置是在T_R的上方
-    # 4. pick是在高位置，而且还没有开始演奏，此时Pick的位置是在T_R的上方
     if not isArpeggio:
         move = data['RIGHT_HAND_LINES']["T_line"]
         # 如果当前pick位置在当前弦的位置之下，那么就是在低位置，否则就是在高位置
