@@ -256,11 +256,6 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
 
     isArpeggio = usedRightFingers == []
 
-    # 要确保输出controller_info时，右手是在position3，这样可以基于这个位置来计算其它情况下的变化矩阵
-    H3_R = array(data['RIGHT_HAND_POSITIONS']['h3'])
-    H3_Eulers = array(data['ROTATIONS']['H_rotation_R']['Normal']['P3'])
-    H3_transform_matrix = get_transformation_matrix(H3_R, H3_Eulers)
-
     # 如果是扫弦，只计算h的位置，然后根据相对位置计算出其它手指的位置
     if isArpeggio:
         if isAfterPlayed:
@@ -335,17 +330,9 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
         tp_3 = array(data['RIGHT_HAND_POSITIONS']['P3_TP_R'])
         TP_R = tp_0 + hand_position * (tp_3 - tp_0) / 3
 
-        H_transform_matrix = get_transformation_matrix(H_R, H_Eulers)
-
-        # 当物体从H3坐标系转换到H坐标系时的转化矩阵是
-        H3_to_H_transform_matrix = linalg.inv(
-            H3_transform_matrix) @ H_transform_matrix
-
         # 接下来计算每个手指的位置
-        # 因为T指的方向线起点与其它指的方向线起点不同，所以会有一个单独的direction_line_location的计算
-        # 而其它手指的方向线都是以H_R为起点的
         if "p" in usedRightFingers:
-            T_R, t_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+            T_R, t_move = caculateFingerPositionByHandPosition(H_R, h3,
                                                                data, 0, positions[0])
             if isAfterPlayed:
                 T_R += t_move * fingerMoveDistanceWhilePlay * 1.2
@@ -354,7 +341,7 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
 
         # 注意，因为ima指运动方向与p指相反，所以这里的移动方向是相反的
         if "i" in usedRightFingers:
-            I_R, i_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+            I_R, i_move = caculateFingerPositionByHandPosition(H_R, h3,
                                                                data, 1, positions[1])
             if isAfterPlayed:
                 I_R -= i_move * fingerMoveDistanceWhilePlay
@@ -362,7 +349,7 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
             I_R = H_R + I_default - H_default
 
         if "m" in usedRightFingers:
-            M_R, i_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+            M_R, i_move = caculateFingerPositionByHandPosition(H_R, h3,
                                                                data, 2, positions[2])
             if isAfterPlayed:
                 M_R -= i_move * fingerMoveDistanceWhilePlay
@@ -370,7 +357,7 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
             M_R = H_R + M_default - H_default
 
         if "a" in usedRightFingers:
-            R_R, i_move = caculateFingerPositionByHandPosition(H3_to_H_transform_matrix,
+            R_R, i_move = caculateFingerPositionByHandPosition(H_R, h3,
                                                                data, 3, positions[3])
             if isAfterPlayed:
                 R_R -= i_move * fingerMoveDistanceWhilePlay
@@ -395,19 +382,41 @@ def caculateRightHandFingers(avatar: str, positions: List[int], usedRightFingers
     return result
 
 
-def caculateFingerPositionByHandPosition(H3_to_H_transform_matrix: array, data: object, finger_index: int, string_index: int) -> array:
-    direction_line_list = ['T', 'I', 'M', 'R', 'P']
-    direction_line_name = f"{direction_line_list[finger_index]}_line"
+def caculateFingerPositionByHandPosition(H_R: array, h3: array, data: object, finger_index: int, string_index: int) -> array:
+    """
+    这里需要解释一下为什么计算手指的位置需要这些参数：
+    计算手指的位置，是根据手掌在position 3 时的几个定位来确定的，这几个定位是：
+    h3,手掌在position 3时的位置
+    每个手指的方向球，也就是T_ball, I_ball, M_ball, R_ball
+    其中，I_ball,M_ball,R_ball与h3的连线，代表了拨弦时i,m,a指的运动方向
+    而p5，也就是p指在position 3 时的位置，与T_ball的连线，代表了拨弦时p指的运动方向
+
+    计算方法是：
+    通过每个手指的方向连线，以及运动方向的起点（p指起点是p5，其它手指是h3），再加上代表吉它指板normal方向的向量guitar_suface_vector，我们可以得到一个平面
+    然后再计算这个平面，与代表弦的直线string_line的交点，就是手指在拨弦时的起点。
+
+    当然，每次计算时，手掌位置不一定还在h3，而是已经实时更新到了H_R，所以我们要更新运动方向的起点，对于i,m,a指来讲，就是H_R。
+    对于p指来讲，就是偏移后的p5位置，它可以利用h3和H_R的offset量计算出。
+
+    到这里可以总结一下，如果是用手指演奏，需要以下几个定位来进行计算：
+    h0,h3，用来计算插值后的手掌位置H_R
+    position 2 时的所有定位，包括{"p": 4, "i": 2, "m": 1, "a": 0}，用来计算非演奏状态下手指的相对位置
+    position 3 时四个ball,也就是T_ball, I_ball, M_ball, R_ball，用来计算手指的运动方向
+
+    如果是用pick演奏，则只需要每根弦上p指的位置，H和T则作为pick的子级，不需要另外计算。
+    而且pick演奏时，即使是换弦，也不会影响H_P和T_P的位置。
+    """
+    direction_ball_list = ['T', 'I', 'M', 'R']
+    direction_ball_name = f"{direction_ball_list[finger_index]}_ball"
     string_line_name = f"string_line_{string_index}"
 
-    direction_line_location = array(
-        data['RIGHT_HAND_LINES'][direction_line_name]['location'])
-    direction_line_location = H3_to_H_transform_matrix[:3,
-                                                       :3] @ direction_line_location
-    direction_line_vector = array(
-        data['RIGHT_HAND_LINES'][direction_line_name]['vector'])
-    direction_line_vector = H3_to_H_transform_matrix[:3,
-                                                     :3] @ direction_line_vector
+    direction_ball_location = array(
+        data['RIGHT_HAND_POSITIONS'][direction_ball_name])
+    p5 = array(data['RIGHT_HAND_POSITIONS']['p5'])
+    offset = H_R - h3
+    direction_line_location = H_R if finger_index != 0 else p5 + offset
+    direction_line_vector = direction_ball_location - \
+        h3 if finger_index != 0 else direction_ball_location - p5
 
     string_line_location = array(
         data['RIGHT_HAND_LINES'][string_line_name]['location'])
@@ -418,6 +427,8 @@ def caculateFingerPositionByHandPosition(H3_to_H_transform_matrix: array, data: 
 
     cross_point = get_cross_point(
         direction_line_location, direction_line_vector, guitar_suface_vector, string_line_location, string_line_vector)
+
+    direction_line_vector = linalg.norm(direction_line_vector)
 
     return cross_point, direction_line_vector
 
