@@ -477,7 +477,7 @@ def calculateRightPick(avatar: str, stringIndex: int, isArpeggio: bool, should_s
     thumb_index = "p_end" if isArpeggio else f"p{stringIndex}"
     T_R = data['RIGHT_HAND_POSITIONS'][thumb_index][:]
     if not isArpeggio:
-        move = data['RIGHT_HAND_LINES']["T_line"]
+        move = data['RIGHT_HAND_LINES']["T_line"]['vector']
         # 如果当前pick位置在当前弦的位置之下，那么就是在低位置，否则就是在高位置
         multiplier = 1 if should_stay_at_lower_position else -1
         T_R[0] += move[0] * fingerMoveDistanceWhilePlay * multiplier
