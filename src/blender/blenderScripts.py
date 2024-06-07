@@ -383,7 +383,7 @@ def set_right_controller_info_to_position_balls(hand_position: int):
             print(f"Error: {e}")
 
 
-def add_random_rotation():
+def add_random_rotation(time_range: int, time_step: int):
     """
     useage:这个方法用于在blender中给头发和裙子添加一些摆动效果
     """
@@ -394,12 +394,22 @@ def add_random_rotation():
     # 获取所有选中的骨骼
     selected_bones = bpy.context.selected_pose_bones_from_active_object
 
-    for pose_bone in selected_bones:
-        # 设置当前激活的对象和骨骼
-        pose_bone.rotation_mode = 'XYZ'
+    for frame in range(0, time_range, time_step):
+        bpy.context.scene.frame_set(frame)
 
-        pose_bone.rotation_euler = mathutils.Euler(
-            [random.random()*0.05, random.random()*0.05, random.random()*0.05])
+        for pose_bone in selected_bones:
+            # 设置当前激活的对象和骨骼
+            pose_bone.rotation_mode = 'XYZ'
+
+            pose_bone.rotation_euler = mathutils.Euler(
+                [random.random()*0.05, random.random()*0.05, random.random()*0.05])
+            pose_bone.keyframe_insert(data_path="rotation_euler")
+
+    end_frame = time_range + time_step
+    bpy.context.scene.frame_set(end_frame)
+    for pose_bone in selected_bones:
+        pose_bone.rotation_euler = mathutils.Euler((0, 0, 0))
+        pose_bone.keyframe_insert(data_path="rotation_euler")
 
 
 def export_controller_info(file_name: str) -> None:

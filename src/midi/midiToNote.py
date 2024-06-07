@@ -86,7 +86,7 @@ def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0,
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :param useTrack: track number to use. 使用的轨道编号
     :param useChannel: channel number to use. 使用的通道编号，如果使用-1表示不限制
-    :return: notes and beat in the midi file. 返回midi文件中的音符和拍子
+    :return: notes and beat in the midi file. 返回midi文件中指定轨道的音符和时间信息
     """
     try:
         midTrack = MidiFile(midiFilePath).tracks[useTrack]
