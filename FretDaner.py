@@ -119,10 +119,14 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
     real_tick = item["real_tick"]
     leftHand = item["leftHand"]
     touchedStrings = []
+    lower_strings = []
 
     for finger in leftHand:
         if finger["fingerIndex"] == -1 or 5 > finger["fingerInfo"]["press"] > 0:
-            touchedStrings.append(finger["fingerInfo"]["stringIndex"])
+            string_index = finger["fingerInfo"]['stringIndex']
+            touchedStrings.append(string_index)
+            if string_index > 2:
+                lower_strings.append(string_index)
 
     if touchedStrings == []:
         return
@@ -134,7 +138,7 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
     touchedStrings.sort(reverse=True)
 
     # 这个重复p的写法是确保p指可能弹两根弦，但如果是四弦bass或者只有一个单音的情况下，就不允许用p指弹两根弦
-    allow_double_p = max_string_index > 3 and len(touchedStrings) > 1
+    allow_double_p = max_string_index > 3 and len(lower_strings) > 1
     allFingers = ["p", "p", "i", "m",
                   "a"] if allow_double_p else ["p", "i", "m", "a"]
     allstrings = list(range(max_string_index + 1))
