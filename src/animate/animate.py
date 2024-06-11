@@ -488,6 +488,13 @@ def animated_guitar_string(left_recorder: str, string_recorder: str, FPS: int) -
 
             fret = 0 if fingerIndex == -1 else fingerInfo["fret"]
 
+            ready = {
+                "frame": frame-1,
+                "stringIndex": stringIndex,
+                "fret": fret,
+                "influence": 0.0
+            }
+
             start = {
                 "frame": frame,
                 "stringIndex": stringIndex,
@@ -501,6 +508,7 @@ def animated_guitar_string(left_recorder: str, string_recorder: str, FPS: int) -
                 "fret": fret,
                 "influence": 0.0
             }
+            data_for_animation.append(ready)
             data_for_animation.append(start)
             data_for_animation.append(end)
 
