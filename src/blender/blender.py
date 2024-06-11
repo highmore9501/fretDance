@@ -102,11 +102,14 @@ def animate_string(string_recorder: str):
 # 从外部读取json文件
 avatar = 'rem'
 midi_name = "Corridors Of Time Fingerstyle"
-track_number = 1
+track_number = [3, 4, 5]
 
-left_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_lefthand_animation.json"
-right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number}_righthand_animation.json"
-guitar_string_recorder_file = f"G:/fretDance/output/{midi_name}_{track_number}_guitar_string_recorder.json"
+track_number_string = "_".join([str(track) for track in track_number]) if len(
+    track_number) > 1 else str(track_number[0])
+
+left_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number_string}_lefthand_animation.json"
+right_hand_animation_file = f"G:/fretDance/output/{avatar}_{midi_name}_{track_number_string}_righthand_animation.json"
+guitar_string_recorder_file = f"G:/fretDance/output/{midi_name}_{track_number_string}_guitar_string_recorder.json"
 
 
 clear_all_keyframe()

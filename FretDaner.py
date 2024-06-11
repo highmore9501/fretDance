@@ -228,19 +228,20 @@ def leftHand2ElectronicRightHand(left_hand_recorder_file, right_hand_recorder_fi
         json.dump(result, f, indent=4)
 
 
-def main(avatar: str, midiFilePath: str, track_number: int, channel_number: int, FPS: int, guitar_string_notes: List[str], octave_down_checkbox: bool, capo_number: int) -> str:
+def main(avatar: str, midiFilePath: str, track_number: List[int], channel_number: int, FPS: int, guitar_string_notes: List[str], octave_down_checkbox: bool, capo_number: int) -> str:
     filename = midiFilePath.split("/")[-1].split(".")[0]
-    notes_map_file = f"output/{filename}_{track_number}_notes_map.json"
-    messages_file = f"output/{filename}_{track_number}_messages.json"
-    left_hand_recorder_file = f"output/{filename}_{track_number}_lefthand_recorder.json"
-    left_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_lefthand_animation.json"
-    right_hand_recorder_file = f"output/{filename}_{track_number}_righthand_recorder.json"
-    right_hand_animation_file = f"output/{avatar}_{filename}_{track_number}_righthand_animation.json"
-    guitar_string_recorder_file = f"output/{filename}_{track_number}_guitar_string_recorder.json"
+    track_number_string = "_".join([str(i) for i in track_number])
+    notes_map_file = f"output/{filename}_{track_number_string}_notes_map.json"
+    messages_file = f"output/{filename}_{track_number_string}_messages.json"
+    left_hand_recorder_file = f"output/{filename}_{track_number_string}_lefthand_recorder.json"
+    left_hand_animation_file = f"output/{avatar}_{filename}_{track_number_string}_lefthand_animation.json"
+    right_hand_recorder_file = f"output/{filename}_{track_number_string}_righthand_recorder.json"
+    right_hand_animation_file = f"output/{avatar}_{filename}_{track_number_string}_righthand_animation.json"
+    guitar_string_recorder_file = f"output/{filename}_{track_number_string}_guitar_string_recorder.json"
 
     tempo_changes, ticks_per_beat = get_tempo_changes(midiFilePath)
     notes_map, pitch_wheel_map, messages = midiToGuitarNotes(
-        midiFilePath, useTrack=track_number, useChannel=channel_number, octave_down_checkbox=octave_down_checkbox, capo_number=capo_number)
+        midiFilePath, useTracks=track_number, useChannel=channel_number, octave_down_checkbox=octave_down_checkbox, capo_number=capo_number)
     with open(notes_map_file, "w") as f:
         json.dump(notes_map, f, indent=4)
     with open(messages_file, "w") as f:

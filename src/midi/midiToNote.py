@@ -81,52 +81,61 @@ def export_midi_info(midiFilePath: str) -> str:
     return result
 
 
-def midiToGuitarNotes(midiFilePath: str, useTrack: int = 0, useChannel: int = 0, octave_down_checkbox: bool = False, capo_number: int = 0) -> object:
+def midiToGuitarNotes(midiFilePath: str, useTracks: List[int], useChannel: int = 0, octave_down_checkbox: bool = False, capo_number: int = 0) -> object:
     """    
     :param midiFilePath: path of input midi file. 输入midi文件路径
     :param useTrack: track number to use. 使用的轨道编号
     :param useChannel: channel number to use. 使用的通道编号，如果使用-1表示不限制
     :return: notes and beat in the midi file. 返回midi文件中指定轨道的音符和时间信息
     """
+    midTracks = []
     try:
-        midTrack = MidiFile(midiFilePath).tracks[useTrack]
+        for track in useTracks:
+            midTracks.append(MidiFile(midiFilePath).tracks[track])
     except:
-        midTrack = MidiFile(midiFilePath).tracks[0]
+        midTracks.append(MidiFile(midiFilePath).tracks[0])
 
     notes_map = []
-    note = []
     pitch_wheel_map = []
-    real_tick: float = 0
-    pre_tick: float = 0
     messages = []
 
-    for message in midTrack:
-        ticks = message.time
-        real_tick += ticks
+    for midTrack in midTracks:
+        note = []
+        real_tick: float = 0
+        pre_tick: float = 0
+        for message in midTrack:
+            ticks = message.time
+            real_tick += ticks
 
-        if not hasattr(message, 'channel'):
-            continue
+            if not hasattr(message, 'channel'):
+                continue
 
-        if message.channel == useChannel or useChannel == -1:
-            messages.append({'message': str(message), 'real_tick': real_tick})
-            if message.type == 'note_on':
-                message_note = message.note if not octave_down_checkbox else message.note - 12
-                message_note -= capo_number
-                note.append(message_note)
-            else:
-                # 结束音符的收集
-                if len(note) == 0:
-                    continue
-                # 将note里的元素按大小排序
-                notes = sorted(note)
-                notes_map.append({"notes": notes, "real_tick": pre_tick})
-                note = []
+            if message.channel == useChannel or useChannel == -1:
+                messages.append(
+                    {'message': str(message), 'real_tick': real_tick})
+                if message.type == 'note_on':
+                    message_note = message.note if not octave_down_checkbox else message.note - 12
+                    message_note -= capo_number
+                    note.append(message_note)
+                else:
+                    # 结束音符的收集
+                    if len(note) == 0:
+                        continue
+                    # 将note里的元素按大小排序
+                    notes = sorted(note)
+                    notes_map.append({"notes": notes, "real_tick": pre_tick})
+                    note = []
 
-            if message.type == 'pitchwheel':
-                pitch_wheel_map.append(
-                    {"pitchwheel": message.pitch, "real_tick": pre_tick})
+                if message.type == 'pitchwheel':
+                    pitch_wheel_map.append(
+                        {"pitchwheel": message.pitch, "real_tick": pre_tick})
 
-        pre_tick = real_tick
+            pre_tick = real_tick
+
+    # notes_map，pitch_wheel_map,messages都按real_tick排序
+    notes_map = sorted(notes_map, key=lambda x: x['real_tick'])
+    pitch_wheel_map = sorted(pitch_wheel_map, key=lambda x: x['real_tick'])
+    messages = sorted(messages, key=lambda x: x['real_tick'])
 
     return notes_map, pitch_wheel_map, messages
 

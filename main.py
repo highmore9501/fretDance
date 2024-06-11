@@ -22,7 +22,7 @@ guitar_type_options = {
 }
 
 
-def check_and_exec(avatar, midiFilePath, track_number, channel_number, FPS, guitar_type, use_custom_string_notes, custom_string_notes, octave_down_checkbox, capo_number) -> str:
+def check_and_exec(avatar, midiFilePath, track_numbers, channel_number, FPS, guitar_type, use_custom_string_notes, custom_string_notes, octave_down_checkbox, capo_number) -> str:
     # 根据复选框的值决定使用哪个弦音高
     if use_custom_string_notes:
         guitar_string_notes = custom_string_notes.replace(' ', '').split(',')
@@ -34,8 +34,14 @@ def check_and_exec(avatar, midiFilePath, track_number, channel_number, FPS, guit
         if note not in all_notes:
             return "Invalid note: " + note
 
+    # 将track_numbers转换为列表
+    try:
+        track_number_list = [int(track) for track in track_numbers.split(',')]
+    except:
+        return "Invalid track number: " + track_numbers
+
     midi_path = "asset/midi/" + midiFilePath
-    result = main(avatar, midi_path, track_number,
+    result = main(avatar, midi_path, track_number_list,
                   channel_number, FPS, guitar_string_notes, octave_down_checkbox, capo_number)
     return result
 
@@ -62,8 +68,8 @@ with gr.Blocks() as demo:
                 midi_dropdown], outputs=midi_info_text)
 
         with gr.Column() as avatar_container:
-            track_number = gr.Number(
-                minimum=0, maximum=100, value=0, step=1, label="select track 选择 MIDI 文件的音轨编号")
+            track_numbers = gr.Textbox(
+                value="0", label="select tracks 可以选择轨道，如果是多个轨道，请用逗号分隔")
             channel_number = gr.Number(
                 minimum=-1, maximum=100, value=-1, step=1, label="select channel 选择 MIDI 文件的通道编号，如果为-1表示接受所有通道")
             fps_number = gr.Number(
@@ -92,7 +98,7 @@ with gr.Blocks() as demo:
         output_textbox = gr.Textbox(label="输出结果")
 
         submit_button.click(check_and_exec, inputs=[
-            avatar_dropdown, midi_dropdown, track_number, channel_number, fps_number, guitar_type_dropdown, use_custom_string_notes_checkbox, custom_string_notes_textbox, octave_down_checkbox, capo_number], outputs=[output_textbox])
+            avatar_dropdown, midi_dropdown, track_numbers, channel_number, fps_number, guitar_type_dropdown, use_custom_string_notes_checkbox, custom_string_notes_textbox, octave_down_checkbox, capo_number], outputs=[output_textbox])
 
 
 demo.launch(inbrowser=True)
