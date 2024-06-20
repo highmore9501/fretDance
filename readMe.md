@@ -41,6 +41,8 @@ The basic principles of animation generation are as follows:
 3. By judging the hand shape information at each time, and then interpolating among the data of these extreme positions and corresponding hand shapes, we can obtain a series of controller information for each keyframe, thereby generating animations.
 4. The principle of the right hand animation is to determine several possible parking positions for the right palm near the sound hole, and find some possible finger contact positions on the six strings. Each time you want to play, place the corresponding palm and fingers on these playing positions.
 
+In the asset/blender folder, there are some character blender files, but they are outdated. Due to the file size limit for uploads on GitHub, you can download the project-related character blender files from this cloud storage address: [Character Blender File Download](https://pan.baidu.com/s/1nmLxx_CDISWWvsQJXYuvew?pwd=dt7h)
+
 In the Blender folder, there are some scripts that run in Blender, which serve the above purposes.
 
 ### Other

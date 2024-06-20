@@ -38,6 +38,8 @@ BiliBili 成品视频：[https://www.bilibili.com/video/BV1my411Y72J/](https://w
 3. 通过判断每一个 time 的手型信息，然后通过在以上这些极端位置和对应手型的数据中进行插值，就可以得到每个关键帧上的一系列控制器的信息，从而生成动画。
 4. 右手动画的原理是，在音孔上方附近确定几个右手掌可能停放的位置，以及在六根弦上寻找一些可能的手指触弦位置。每次要演奏的时候把对应的手掌和手指放到这些弹奏位置上即可。
 
+在 asset/blender 文件夹里，有一些角色的 blender 文件，但它们已经过时。因为 github 上传文件容量的限制，有需要的朋友可以从这个网盘地址去下载项目相关角色的 blender 文件:![角色 blender 文件下载](https://pan.baidu.com/s/1nmLxx_CDISWWvsQJXYuvew?pwd=dt7h)
+
 在 blender 文件夹中，有一些在 blender 运行的脚本，就是为了实现以上目的服务的。
 
 ### 其它

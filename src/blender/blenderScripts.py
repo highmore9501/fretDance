@@ -1,6 +1,6 @@
 # 一些在blender里跑的工具脚本
 import bpy
-from typing import Literal
+from typing import Literal, List
 
 
 def clone_deform_bones():
@@ -87,33 +87,40 @@ def remove_empty_vertex_group():
             obj.vertex_groups.remove(vertex_group)
 
 
-def remove_non_associated_bones(mesh_name: str, armature_name: str):
+def remove_non_associated_bones(armature_name: str):
     """
     :param mesh_name: 网格名称
     :param armature_name: 骨骼名称
     useage:这个方法用于在blender中删除没有关联的骨骼。注意这个方法非常危险，执行前要想明白自己在做什么
     """
 
-    mesh_obj = bpy.data.objects[mesh_name]
-    weight_groups_name = []
-
-    # 获取所有的骨骼组
-    for vertex_group in mesh_obj.vertex_groups:
-        weight_groups_name.append(vertex_group.name)
-
+    mesh_objs = bpy.context.selected_objects
     armature_obj = bpy.data.objects.get(armature_name, None)
-
     if not armature_obj:
         print(f"Can't find armature {armature_name}")
         return
+
+    bone_names = [bone.name for bone in armature_obj.data.edit_bones]
+    weight_groups_names = []
+    for mesh_obj in mesh_objs:
+        if not mesh_obj:
+            print(f"Can't find mesh {mesh_obj}")
+            continue
+        for vertex_group in mesh_obj.vertex_groups:
+            weight_groups_names.append(vertex_group.name)
+
+    # 移除没有关联的顶点组
+    for vertex_group in mesh_obj.vertex_groups:
+        if vertex_group.name not in bone_names:
+            mesh_obj.vertex_groups.remove(vertex_group)
 
     # 切换到编辑模式
     bpy.context.view_layer.objects.active = armature_obj
     bpy.ops.object.mode_set(mode='EDIT')
 
-    # 遍历所有骨骼，把名字不在weight_groups_name里的骨骼删除
+    # 遍历所有骨骼，把名字不在weight_groups_names里的骨骼删除
     for bone in armature_obj.data.edit_bones:
-        if bone.name not in weight_groups_name:
+        if bone.name not in weight_groups_names:
             armature_obj.data.edit_bones.remove(bone)
 
     # 切换回对象模式
@@ -798,6 +805,55 @@ def unlock_selected_bones():
     for bone in selected_bones:
         unlock_location(bone)
         unlock_rotation(bone)
+
+
+def print_all_bone_name():
+    armatrue = bpy.context.object.data
+
+    bones = []
+
+    for bone in armatrue.bones:
+        if bone.name.lower() not in bones:
+            bones.append(bone.name.lower())
+            print(bone.name)
+        else:
+            print(f"Duplicate bone name: {bone.name}")
+
+
+def disable_deform_non_associated_bones(mesh_name: str, armature_name: str):
+    """
+    :param mesh_name: 网格名称
+    :param armature_name: 骨骼名称
+    useage:这个方法用于在blender中将没有关联的骨骼设置为没有deform。
+    """
+
+    mesh_obj = bpy.data.objects[mesh_name]
+    weight_groups_name = []
+
+    # 获取所有的骨骼组
+    for vertex_group in mesh_obj.vertex_groups:
+        weight_groups_name.append(vertex_group.name)
+
+    print(weight_groups_name)
+
+    armature_obj = bpy.data.objects.get(armature_name, None)
+
+    if not armature_obj:
+        print(f"Can't find armature {armature_name}")
+        return
+
+    # 切换到编辑模式
+    bpy.context.view_layer.objects.active = armature_obj
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    # 遍历所有骨骼，把名字不在weight_groups_name里的骨骼删除
+    for bone in armature_obj.data.edit_bones:
+        if bone.name not in weight_groups_name:
+            bone.use_deform = False
+            print(f"Set {bone.name} to non deform")
+
+    # 切换回对象模式
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 if __name__ == "__main__":
