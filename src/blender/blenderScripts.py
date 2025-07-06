@@ -856,5 +856,18 @@ def disable_deform_non_associated_bones(mesh_name: str, armature_name: str):
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
+def rename_bones():
+    """
+    usage: This method renames the selected bones in Blender.
+    """
+    selected_bones = bpy.context.selected_pose_bones
+
+    for bone in selected_bones:
+        if bone.name.startswith('L'):
+            bone.name = bone.name[1:].split('_')[0] + "_L"
+        elif bone.name.startswith('R'):
+            bone.name = bone.name[1:].split('_')[0] + "_R"
+
+
 if __name__ == "__main__":
     pass
