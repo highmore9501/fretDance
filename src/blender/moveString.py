@@ -80,8 +80,15 @@ def rename_shape_key():
             shape_key.name = f"s{current_string_index}" + shape_key_name
 
 
-def make_string_shape_keys(num_divisions: int = 80, offset: float = 0.0025):
+def make_string_shape_keys(num_divisions: int = 80, offset_ratio: float = 0.0025):
     current_object = bpy.context.object
+
+    # 计算弦的实际长度（Z轴方向）
+    z_coords = [v.co.z for v in current_object.data.vertices]
+    string_length = max(z_coords) - min(z_coords)
+
+    # 基于弦长计算实际offset值
+    actual_offset = string_length * offset_ratio
 
     # 检查是否有basis shape key，没有就生成一个
     if not current_object.data.shape_keys:
@@ -145,7 +152,7 @@ def make_string_shape_keys(num_divisions: int = 80, offset: float = 0.0025):
         for id in current_selected_vertices_ids:
             bm.verts[id].select = True
 
-        move_string(offset)
+        move_string(actual_offset)
         # 切换回object模式
         bpy.ops.object.editmode_toggle()
         # 更新场景
@@ -154,3 +161,6 @@ def make_string_shape_keys(num_divisions: int = 80, offset: float = 0.0025):
 
     # 全部好了以后重命名shape key
     rename_shape_key()
+
+
+make_string_shape_keys()

@@ -749,6 +749,7 @@ def create_MCH_bones():
         bone_copy.head = bone.head
         bone_copy.tail = bone.tail
         bone_copy.parent = bone.parent
+        bone_copy.use_deform = False
         # 将现骨骼的connected选项去掉
         bone.use_connect = False
         # 将原骨骼的parent设置为新骨骼
