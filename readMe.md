@@ -1,14 +1,14 @@
 ## FretDance
 
-![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/image00.png)
+![blender screen capture](asset/img/image00.png)
 
-[中文说明](https://github.com/highmore9501/fretDance/blob/master/readMeCN.md)
+[中文说明](readMeCN.md)
 
 Convert the original MIDI file into a guitar tablature fingering arrangement that minimizes the movement trajectories of both hands. Ultimately, present the performance animation in Blender.
 
 Demo video in BiliBili: [https://www.bilibili.com/video/BV1my411Y72J/](https://www.bilibili.com/video/BV1my411Y72J/)
-![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/20240517043502.png)
-![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/20240517043331.png)
+![blender screen capture](asset/img/20240517043502.png)
+![blender screen capture](asset/img/20240517043331.png)
 
 ### How to run
 
@@ -17,7 +17,7 @@ Demo video in BiliBili: [https://www.bilibili.com/video/BV1my411Y72J/](https://w
 - Install dependencies by running `pip install -r requirements.txt`
 - Run `python main.py`, then select the avatar and midi file in the interface, set the `FPS` and the pitch of each string, and click submit to generate the json data required for the animation.
 - Open the corresponding blender file where the avatar is located, go to the `script` interface, select the `animate` file, then copy the absolute paths of the two json files generated in the previous step to the corresponding variables, and click run to generate the animation.
-  ![blender script interface](https://github.com/highmore9501/fretDance/blob/master/asset/img/20240517044031.png)
+  ![blender script interface](asset/img/20240517044031.png)
 
 ### Simple working principle
 

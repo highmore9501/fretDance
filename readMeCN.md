@@ -1,11 +1,11 @@
 ## FretDance
 
-![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/image00.png)
+![blender screen capture](asset/img/image00.png)
 将原始的 midi 文件，转化成吉它曲谱的指法编排，使得双手的移动轨迹最小化。并且最终在 blender 中呈现演奏动画。
 
 BiliBili 成品视频：[https://www.bilibili.com/video/BV1my411Y72J/](https://www.bilibili.com/video/BV1my411Y72J/)
-![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/20240517043502.png)
-![blender screen capture](https://github.com/highmore9501/fretDance/blob/master/asset/img/20240517043331.png)
+![blender screen capture](asset/img/20240517043502.png)
+![blender screen capture](asset/img/20240517043331.png)
 
 ### 运行方法
 
@@ -14,7 +14,7 @@ BiliBili 成品视频：[https://www.bilibili.com/video/BV1my411Y72J/](https://w
 - 安装依赖，运行 `pip install -r requirements.txt`
 - 运行 `python main.py`，然后在界面中选择 avatar 和 midi 文件，设置好 `FPS`，以及各弦的音高，点击提交即可生成动画所需要的 json 数据。
 - 打开对应 avatar 所在的 blender 文件，去到`script`界面，选择`animate`文件，然后将上一步生成的两个 json 文件的绝对路径复制到对应的变量中，点击运行即可生成动画。
-  ![blender script interface](https://github.com/highmore9501/fretDance/blob/master/asset/img/20240517044031.png)
+  ![blender script interface](asset/img/20240517044031.png)
 
 ### 简单运行原理
 
