@@ -870,5 +870,43 @@ def rename_bones():
             bone.name = bone.name[1:].split('_')[0] + "_R"
 
 
+def reparent_children_to_target(source_name: str, target_name: str, recursive: bool = False):
+    """
+    将 source_name 的所有子级重新父级到 target_name 之下。
+    参数：
+        source_name: 源物体名称
+        target_name: 目标物体名称
+        recursive  : True 表示递归处理所有后代；False 仅处理直接子级
+    """
+    src = bpy.data.objects.get(source_name)
+    tgt = bpy.data.objects.get(target_name)
+
+    if not src or not tgt:
+        print("源或目标物体不存在")
+        return
+
+    # 收集需要重新父级的物体
+    if recursive:
+        children = [c for c in src.children_recursive]
+    else:
+        children = list(src.children)
+
+    # 统一在物体模式下操作，避免编辑模式导致矩阵异常
+    if bpy.context.mode != 'OBJECT':
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+    bpy.context.view_layer.update()  # 确保矩阵最新
+
+    for child in children:
+        # 保存世界矩阵
+        world_matrix = child.matrix_world.copy()
+        # 重新设置父级
+        child.parent = tgt
+        # 把世界矩阵写回去，保证位置/旋转/缩放不变
+        child.matrix_world = world_matrix
+
+    print(f"已完成：{len(children)} 个子级已重新父级到 {target_name}")
+
+
 if __name__ == "__main__":
     pass
