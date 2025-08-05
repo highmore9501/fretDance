@@ -3,9 +3,24 @@ import json
 import mathutils
 
 
-def clear_all_keyframe():
-    # 全选所有物体
-    bpy.ops.object.select_all(action='SELECT')
+def clear_all_keyframe(collection_name=None):
+    # 选择特定collection下的所有物体
+    if collection_name:
+        # 取消当前所有选择
+        bpy.ops.object.select_all(action='DESELECT')
+        # 获取指定collection
+        collection = bpy.data.collections.get(collection_name)
+        if collection:
+            # 选择collection中的所有物体
+            for obj in collection.objects:
+                obj.select_set(True)
+        else:
+            print(f"Collection '{collection_name}' not found")
+            return
+    else:
+        # 如果没有指定collection，则选择所有物体（原有逻辑）
+        bpy.ops.object.select_all(action='SELECT')
+
     # 清除所有关键帧
     for ob in bpy.context.selected_objects:
         if ob.animation_data and ob.animation_data.action:
@@ -101,8 +116,8 @@ def animate_string(string_recorder: str):
 
 # 从外部读取json文件
 avatar = 'rem'
-midi_name = "Corridors Of Time Fingerstyle"
-track_number = [3, 4, 5]
+midi_name = "エケステンドアッシュ-蓬莱人"
+track_number = [3]
 
 track_number_string = "_".join([str(track) for track in track_number]) if len(
     track_number) > 1 else str(track_number[0])
