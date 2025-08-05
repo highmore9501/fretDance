@@ -186,14 +186,17 @@ def find_non_associated_groups(armature_name: str, mesh_name: str):
     print(non_associated_groups)
 
 
-def import_left_controller_info(position_name: Literal["P0", "P1", "P2", "P3"], status_name: Literal["Normal", "Outer", "Inner"]):
+def import_left_controller_info(position_name: Literal["P0", "P1", "P2", "P3"], status_name: Literal["Normal", "Outer", "Inner", "Barre"]):
     """    
     :param position_name: 位置名称
     :param status_name: 状态名称
-    useage:这个方法用于在blender中快速将人物左手放置成某个特定的状态。这几个状态分别是，Noraml情况下的P0-P3，Outer情况下的P0和P2，Inner情况下的P1和P3
+    useage:这个方法用于在blender中快速将人物左手放置成某个特定的状态。这几个状态分别是，Normal情况下的P0-P3，Outer情况下的P0和P2，Inner情况下的P1和P3，Barre情况下P0/P2为小横按，P1/P3为大横按
     """
     collections = ['FingerPositionControllers',
                    'RotationControllers', 'HandPositionControllers']
+
+    # 记录导入了哪些控件的属性
+    imported_objects = []
 
     for collection in collections:
         for obj in bpy.data.collections[collection].objects:
@@ -204,17 +207,30 @@ def import_left_controller_info(position_name: Literal["P0", "P1", "P2", "P3"], 
                 if collection == "HandPositionControllers":
                     position_ball_name = f'{status_name}_{position_name}_{obj_name}'
                     obj.location = bpy.data.objects[position_ball_name].location
+                    imported_objects.append(f"位置球 {position_ball_name} (位置)")
                 elif collection == "FingerPositionControllers":
-                    position_ball_name = f'Fret_{position_name}'
+                    # 为Barre状态添加特殊处理逻辑
+                    if status_name == "Barre":
+                        position_ball_name = f'Fret_Barre_{position_name}'
+                    # 原有逻辑保持不变
+                    else:
+                        position_ball_name = f'Fret_{position_name}'
                     obj.location = bpy.data.objects[position_ball_name].location
+                    imported_objects.append(f"位置球 {position_ball_name} (位置)")
                 elif collection == "RotationControllers":
                     rotation_cone_name = f'{status_name}_{position_name}_H_rotation_L'
                     obj.rotation_euler = bpy.data.objects[rotation_cone_name].rotation_euler
+                    imported_objects.append(f"旋转锥 {rotation_cone_name} (旋转)")
             except Exception as e:
                 print(f"Error: {e}")
 
+    # 输出最终导入了哪些控件的属性
+    print(f"总共导入了 {len(imported_objects)} 个控件的属性:")
+    for imported_obj in imported_objects:
+        print(f"  - {imported_obj}")
 
-def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1", "P2", "P3"], status_name: Literal["Normal", "Outer", "Inner"]):
+
+def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1", "P2", "P3"], status_name: Literal["Normal", "Outer", "Inner", "Barre"]):
     """    
     :param position_name: 位置名称
     :param status_name: 状态名称
@@ -233,6 +249,9 @@ def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1"
     collections = ['FingerPositionControllers',
                    'RotationControllers', 'HandPositionControllers']
 
+    # 记录修改了哪些控件的属性
+    modified_objects = []
+
     for collection in collections:
         for obj in bpy.data.collections[collection].objects:
             obj_name = obj.name
@@ -244,19 +263,34 @@ def set_left_controller_info_to_position_balls(position_name: Literal["P0", "P1"
                     position_ball = bpy.data.objects[position_ball_name]
                     unlock_location(position_ball)
                     position_ball.location = obj.location
-                elif collection == "FingerPositionControllers":
-                    position_ball_name = f'Fret_{position_name}'
-                    if obj.name == 'I_L':
+                    modified_objects.append(f"位置球 {position_ball_name} (位置)")
+                elif collection == "FingerPositionControllers" and obj_name == 'I_L':
+                    # 为Barre状态添加特殊处理逻辑
+                    if status_name == "Barre":
+                        position_ball_name = f'Fret_Barre_{position_name}'
                         position_ball = bpy.data.objects[position_ball_name]
                         unlock_location(position_ball)
                         position_ball.location = obj.location
+                    # 原有逻辑保持不变
+                    else:
+                        position_ball_name = f'Fret_{position_name}'
+                        position_ball = bpy.data.objects[position_ball_name]
+                        unlock_location(position_ball)
+                        position_ball.location = obj.location
+                    modified_objects.append(f"位置球 {position_ball_name} (位置)")
                 elif collection == "RotationControllers":
                     rotation_cone_name = f'{status_name}_{position_name}_H_rotation_L'
                     rotation_cone = bpy.data.objects[rotation_cone_name]
                     unlock_rotation(rotation_cone)
                     rotation_cone.rotation_euler = obj.rotation_euler
+                    modified_objects.append(f"旋转锥 {rotation_cone_name} (旋转)")
             except Exception as e:
                 print(f"Error: {e}")
+
+    # 输出最终修改了哪些控件的属性
+    print(f"总共修改了 {len(modified_objects)} 个控件的属性:")
+    for modified_obj in modified_objects:
+        print(f"  - {modified_obj}")
 
 
 def import_right_controller_info(hand_position: int):
