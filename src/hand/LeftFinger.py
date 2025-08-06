@@ -27,7 +27,7 @@ FINGERS: dict = {
 class LeftFinger:
     """
     params:
-    fingerIndex: Index of the finger. 手指的索引
+    fingerIndex: Index of the finger. 手指的索引，左手IMRP指分别对应1234。如果出现-1时，表时此时是空弦音。
     guitarString: The string that the finger is placing. 手指当前所在的弦
     fret: Fret number. 品数
     press: Press state. 按弦状态

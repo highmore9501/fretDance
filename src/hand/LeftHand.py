@@ -101,6 +101,7 @@ class LeftHand():
                 for characterIndex in range(1, 9):
                     characterIndexInPressedFinger = False
                     characterIndexInOpenFinger = False
+                    # 这里只是输出谱面用0表示空弦音，实际定义上，空弦音的手指索引为-1
                     fingerIndex = 0
                     for finger in pressedFinger:
                         if finger.fret - baseFret == characterIndex:
