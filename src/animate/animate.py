@@ -14,10 +14,10 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
     :params FPS: the FPS of the animation"""
     json_file = f'asset\controller_infos\{avatar}.json'
     with open(json_file, "r") as f:
-        base_data = json.load(f)
-    finger_position_p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
-    finger_position_p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
-    finger_position_p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
+        avatar_data = json.load(f)
+    finger_position_p0 = array(avatar_data['LEFT_FINGER_POSITIONS']["P0"])
+    finger_position_p1 = array(avatar_data['LEFT_FINGER_POSITIONS']["P1"])
+    finger_position_p2 = array(avatar_data['LEFT_FINGER_POSITIONS']["P2"])
 
     # 这里是计算左手按弦需要保持的时间
     elapsed_frame = FPS / 8.0
@@ -44,7 +44,7 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
 
         # 计算左手的动画信息
         fingerInfos = animatedLeftHand(
-            base_data, item, normal, max_string_index, pitchwheel)
+            avatar_data, item, normal, max_string_index, pitchwheel)
         data_for_animation.append({
             "frame": frame,
             "fingerInfos": fingerInfos,
@@ -92,13 +92,15 @@ def addPitchwheel(left_hand_recorder_file: str, pitch_wheel_map: list):
             json.dump(new_data, f, indent=4)
 
 
-def animatedLeftHand(base_data: object, item: object, normal: array, max_string_index: int, pitchwheel: int):
+def animatedLeftHand(avatar_data: object, item: object, normal: array, max_string_index: int, pitchwheel: int):
     leftHand = item["leftHand"]
 
     fingerInfos = {}
     hand_fret = 1
     max_finger_string_index = 0
     index_finger_string_number = 0
+    useBarre = False  # 默认不使用横按
+    hasBarre = "Barre_P0" in avatar_data["LEFT_FINGER_POSITIONS"]
 
     # 用于统计每个手指都在哪根弦上的dict
     finger_string_numbers = {
@@ -107,7 +109,17 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
         3: 0,
         4: 0
     }
+    # --判断手型是否使用了横按--
+    if hasBarre:
+        for finger_data in leftHand:
+            fingerIndex = finger_data["fingerIndex"]
+            press = finger_data["fingerInfo"]["press"]
+            # 判断食指是否是在使用横按，发现使用了横按，则跳出循环
+            if fingerIndex == 1 and 5 > press > 1:
+                useBarre = True
+                break
 
+    # --开始计算手指信息--
     for finger_data in leftHand:
         fingerIndex = finger_data["fingerIndex"]
         stringIndex = finger_data["fingerInfo"]["stringIndex"]
@@ -144,28 +156,27 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
             else:
                 stringIndex += pitch_move
 
-        # 如果手指有横按的情况，并且遍历到的stringIndex比之前计算过的要大，那么需要重新计算手指的位置
-        need_recaculate = finger_string_numbers[fingerIndex] < stringIndex and 5 > press > 1
-
-        if press < 2 or press == 5 or need_recaculate:
+        # 手指的横按与非横按使用两套不同的计算方式
+        if useBarre and fingerIndex == 1:
+            finger_position = twiceLerpBarreFingers(
+                avatar_data, fret,  max_finger_string_index, max_string_index)
+            position_value_name = "I_L"
+        else:
             finger_string_numbers[fingerIndex] = stringIndex
             finger_position = twiceLerpFingers(
-                base_data, fret, stringIndex, max_string_index)
-        else:
-            continue
+                avatar_data, fret, stringIndex, max_string_index)
+            # 如果手指没有按下，那么手指位置会稍微上移
+            if press == PRESSSTATE['Open']:
+                finger_position -= normal * 0.006
 
-        # 如果手指没有按下，那么手指位置会稍微上移
-        if press == PRESSSTATE['Open']:
-            finger_position -= normal * 0.006
-
-        if fingerIndex == 1:
-            position_value_name = "I_L"
-        elif fingerIndex == 2:
-            position_value_name = "M_L"
-        elif fingerIndex == 3:
-            position_value_name = "R_L"
-        elif fingerIndex == 4:
-            position_value_name = "P_L"
+            if fingerIndex == 1:
+                position_value_name = "I_L"
+            elif fingerIndex == 2:
+                position_value_name = "M_L"
+            elif fingerIndex == 3:
+                position_value_name = "R_L"
+            elif fingerIndex == 4:
+                position_value_name = "P_L"
 
         fingerInfos[position_value_name] = finger_position.tolist()
 
@@ -174,15 +185,26 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
     pinky_finger_string_number = finger_string_numbers[4]
     hand_state = pinky_finger_string_number - index_finger_string_number
 
-    hand_position = twiceLerp(
-        base_data=base_data,
-        hand_state=hand_state,
-        value="H_L",
-        valueType="position",
-        fret=hand_fret,
-        stringIndex=max_finger_string_index,
-        max_string_index=max_string_index
-    )
+    # --计算手位置--
+    if useBarre:
+        hand_position = twiceLerpBarreHand(
+            avatar_data=avatar_data,
+            value="H_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=max_finger_string_index,
+            max_string_index=max_string_index
+        )
+    else:
+        hand_position = twiceLerp(
+            avatar_data=avatar_data,
+            hand_state=hand_state,
+            value="H_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=max_finger_string_index,
+            max_string_index=max_string_index
+        )
 
     # 添加一点随机移动
     random_move = random.rand(3) * 0.001
@@ -190,48 +212,81 @@ def animatedLeftHand(base_data: object, item: object, normal: array, max_string_
 
     fingerInfos["H_L"] = hand_position.tolist()
 
-    hand_IK_pivot_position = twiceLerp(
-        base_data=base_data,
-        hand_state=hand_state,
-        value="HP_L",
-        valueType="position",
-        fret=hand_fret,
-        stringIndex=index_finger_string_number,
-        max_string_index=max_string_index
-    )
+    # --计算手臂IK，手旋转，大拇指位置，IK--
+    if useBarre:
+        hand_IK_pivot_position = twiceLerpBarreHand(
+            avatar_data=avatar_data,
+            value="HP_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=max_finger_string_index,
+            max_string_index=max_string_index
+        )
+        hand_rotation_y = twiceLerpBarreHand(
+            avatar_data=avatar_data,
+            value="H_rotation_L",
+            valueType="rotation",
+            fret=hand_fret,
+            stringIndex=max_finger_string_index,
+            max_string_index=max_string_index
+        )
+        thumb_position = twiceLerpBarreHand(
+            avatar_data=avatar_data,
+            value="T_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=max_finger_string_index,
+            max_string_index=max_string_index
+        )
+        thumb_IK_pivot_position = twiceLerpBarreHand(
+            avatar_data=avatar_data,
+            value="TP_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=max_finger_string_index,
+            max_string_index=max_string_index
+        )
+    else:
+        hand_IK_pivot_position = twiceLerp(
+            avatar_data=avatar_data,
+            hand_state=hand_state,
+            value="HP_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=index_finger_string_number,
+            max_string_index=max_string_index
+        )
+        hand_rotation_y = twiceLerp(
+            avatar_data=avatar_data,
+            hand_state=hand_state,
+            value="H_rotation_L",
+            valueType="rotation",
+            fret=hand_fret,
+            stringIndex=index_finger_string_number,
+            max_string_index=max_string_index
+        )
+        thumb_position = twiceLerp(
+            avatar_data=avatar_data,
+            hand_state=hand_state,
+            value="T_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=index_finger_string_number,
+            max_string_index=max_string_index
+        )
+        thumb_IK_pivot_position = twiceLerp(
+            avatar_data=avatar_data,
+            hand_state=hand_state,
+            value="TP_L",
+            valueType="position",
+            fret=hand_fret,
+            stringIndex=index_finger_string_number,
+            max_string_index=max_string_index
+        )
+
     fingerInfos["HP_L"] = hand_IK_pivot_position.tolist()
-
-    hand_rotation_y = twiceLerp(
-        base_data=base_data,
-        hand_state=hand_state,
-        value="H_rotation_L",
-        valueType="rotation",
-        fret=hand_fret,
-        stringIndex=index_finger_string_number,
-        max_string_index=max_string_index
-    )
     fingerInfos["H_rotation_L"] = hand_rotation_y.tolist()
-
-    thumb_position = twiceLerp(
-        base_data=base_data,
-        hand_state=hand_state,
-        value="T_L",
-        valueType="position",
-        fret=hand_fret,
-        stringIndex=index_finger_string_number,
-        max_string_index=max_string_index
-    )
     fingerInfos["T_L"] = thumb_position.tolist()
-
-    thumb_IK_pivot_position = twiceLerp(
-        base_data=base_data,
-        hand_state=hand_state,
-        value="TP_L",
-        valueType="position",
-        fret=hand_fret,
-        stringIndex=index_finger_string_number,
-        max_string_index=max_string_index
-    )
     fingerInfos["TP_L"] = thumb_IK_pivot_position.tolist()
 
     return fingerInfos
@@ -365,11 +420,11 @@ def ElectronicRightHand2Animation(avatar: str, right_hand_recorder_file: str, ri
         json.dump(data_for_animation, f, indent=4)
 
 
-def twiceLerpFingers(base_data: object, fret: float, stringIndex: int, max_string_index: int) -> array:
-    p0 = array(base_data['LEFT_FINGER_POSITIONS']["P0"])
-    p1 = array(base_data['LEFT_FINGER_POSITIONS']["P1"])
-    p2 = array(base_data['LEFT_FINGER_POSITIONS']["P2"])
-    p3 = array(base_data['LEFT_FINGER_POSITIONS']["P3"])
+def twiceLerpFingers(avatar_data: object, fret: float, stringIndex: int, max_string_index: int) -> array:
+    p0 = array(avatar_data['LEFT_FINGER_POSITIONS']["P0"])
+    p1 = array(avatar_data['LEFT_FINGER_POSITIONS']["P1"])
+    p2 = array(avatar_data['LEFT_FINGER_POSITIONS']["P2"])
+    p3 = array(avatar_data['LEFT_FINGER_POSITIONS']["P3"])
 
     p_fret_0 = get_position_by_fret(fret, p0, p2)
     p_fret_1 = get_position_by_fret(fret, p1, p3)
@@ -379,17 +434,33 @@ def twiceLerpFingers(base_data: object, fret: float, stringIndex: int, max_strin
     return p_final
 
 
-def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fret: float, stringIndex: int | float, max_string_index: int) -> array:
+def twiceLerpBarreFingers(avatar_data: object, fret: float, max_finger_string_index: int, max_string_index: int) -> array:
+    barre_p0 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P0"])
+    barre_p1 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P1"])
+    barre_p2 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P2"])
+    barre_p3 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P3"])
+
+    p_fret_0 = get_position_by_fret(fret, barre_p0, barre_p2)
+    p_fret_1 = get_position_by_fret(fret, barre_p1, barre_p3)
+
+    # 横按最小是从第三弦开始，最多横按到最后一根弦，所以有下面这样的公式
+    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
+        (max_finger_string_index-2) / (max_string_index-2)
+
+    return p_final
+
+
+def twiceLerp(avatar_data: object, hand_state: int, value: str, valueType: str, fret: float, stringIndex: int | float, max_string_index: int) -> array:
     data_dict = None
 
     if valueType == "position":
-        data_dict = base_data['NORMAL_LEFT_HAND_POSITIONS']
+        data_dict = avatar_data['NORMAL_LEFT_HAND_POSITIONS']
         p0 = array(data_dict["P0"][value])
         p1 = array(data_dict["P1"][value])
         p2 = array(data_dict["P2"][value])
         p3 = array(data_dict["P3"][value])
     elif valueType == "rotation":
-        data_dict = base_data["ROTATIONS"]['H_rotation_L']["Normal"]
+        data_dict = avatar_data["ROTATIONS"]['H_rotation_L']["Normal"]
         p0 = array(data_dict["P0"])
         p1 = array(data_dict["P1"])
         p2 = array(data_dict["P2"])
@@ -419,11 +490,11 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
             stringIndex / max_string_index
     elif hand_state > 0:
         if valueType == "position":
-            outer_data_dict = base_data['OUTER_LEFT_HAND_POSITIONS']
+            outer_data_dict = avatar_data['OUTER_LEFT_HAND_POSITIONS']
             out_p0 = array(outer_data_dict["P0"][value])
             out_p2 = array(outer_data_dict["P2"][value])
         else:
-            outer_data_dict = base_data["ROTATIONS"]['H_rotation_L']["Outer"]
+            outer_data_dict = avatar_data["ROTATIONS"]['H_rotation_L']["Outer"]
             out_p0 = array(outer_data_dict["P0"])
             out_p2 = array(outer_data_dict["P2"])
 
@@ -436,11 +507,11 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
             stringIndex / max_string_index
     else:
         if valueType == "position":
-            inner_data_dict = base_data['INNER_LEFT_HAND_POSITIONS']
+            inner_data_dict = avatar_data['INNER_LEFT_HAND_POSITIONS']
             inner_p1 = array(inner_data_dict["P1"][value])
             inner_p3 = array(inner_data_dict["P3"][value])
         else:
-            inner_data_dict = base_data["ROTATIONS"]['H_rotation_L']["Inner"]
+            inner_data_dict = avatar_data["ROTATIONS"]['H_rotation_L']["Inner"]
             inner_p1 = array(inner_data_dict["P1"])
             inner_p3 = array(inner_data_dict["P3"])
 
@@ -451,6 +522,39 @@ def twiceLerp(base_data: object, hand_state: int, value: str, valueType: str, fr
         p_fret_1 = get_position_by_fret(fret, real_P1, real_P3)
         p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
             stringIndex / max_string_index
+
+    return p_final
+
+
+def twiceLerpBarreHand(
+    avatar_data,
+    value,
+    valueType,
+    fret,
+    stringIndex,
+    max_string_index
+):
+    data_dict = None
+
+    if valueType == "position":
+        data_dict = avatar_data['BARRE_LEFT_HAND_POSITIONS']
+        p0 = array(data_dict["P0"][value])
+        p1 = array(data_dict["P1"][value])
+        p2 = array(data_dict["P2"][value])
+        p3 = array(data_dict["P3"][value])
+    elif valueType == "rotation":
+        data_dict = avatar_data["ROTATIONS"]['H_rotation_L']["Barre"]
+        p0 = array(data_dict["P0"])
+        p1 = array(data_dict["P1"])
+        p2 = array(data_dict["P2"])
+        p3 = array(data_dict["P3"])
+    else:
+        print("valueType error")
+
+    p_fret_0 = get_position_by_fret(fret, p0, p2)
+    p_fret_1 = get_position_by_fret(fret, p1, p3)
+    p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
+        (stringIndex-2) / (max_string_index-2)
 
     return p_final
 
