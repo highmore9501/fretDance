@@ -476,17 +476,19 @@ def export_controller_info(file_name: str) -> None:
         name_parts = obj_name.split('_', 2)
         type_name = name_parts[0]
         position_name = name_parts[1]
+        controller_name = name_parts[2] if len(name_parts) > 2 else ""
         if type_name == 'Fret':
+            if position_name == "Barre":
+                position_name += "_" + controller_name
             result['LEFT_FINGER_POSITIONS'][position_name] = obj.location
         elif type_name == 'Normal':
-            controller_name = name_parts[2]
             result['NORMAL_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
         elif type_name == 'Outer':
-            controller_name = name_parts[2]
             result['OUTER_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
         elif type_name == 'Inner':
-            controller_name = name_parts[2]
             result['INNER_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
+        elif type_name == "Barre":
+            result['BARRE_LEFT_HAND_POSITIONS'][position_name][controller_name] = obj.location
         else:
             print(f'Error happend. type: {type_name}, name: {obj_name}')
 
