@@ -47,8 +47,8 @@ def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: Hand
         oldhand = handPoseRecord.currentHandPose()
 
         # Iterate through the list of fingerings, generate a new LeftHand object based on the fingering. 遍历按法列表，根据按法生成新的LeftHand对象。
-        all_fingers, entropy = oldhand.generateNextHands(
-            guitar, fingerPositions, notes)
+        all_fingers, entropy, use_barre = oldhand.generateNextHands(
+            guitar, fingerPositions)
 
         if all_fingers is not None:
             new_entropy = handPoseRecord.currentEntropy + entropy
@@ -56,7 +56,7 @@ def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: Hand
             # 当新手型符合插入记录器条件时
             if insert_index != -1:
                 newHandPoseRecord = HandPoseRecorder()
-                new_hand = LeftHand(all_fingers)
+                new_hand = LeftHand(all_fingers, use_barre)
 
                 newHandPoseRecord.handPoseList = handPoseRecord.handPoseList + \
                     [new_hand]
