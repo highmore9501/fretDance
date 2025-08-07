@@ -14,6 +14,7 @@ def clear_all_keyframe(collection_name=None):
             # 选择collection中的所有物体
             for obj in collection.objects:
                 obj.select_set(True)
+                bpy.context.view_layer.objects.active = obj  # 设置活动对象
         else:
             print(f"Collection '{collection_name}' not found")
             return
@@ -21,15 +22,32 @@ def clear_all_keyframe(collection_name=None):
         # 如果没有指定collection，则选择所有物体（原有逻辑）
         bpy.ops.object.select_all(action='SELECT')
 
-    # 清除所有关键帧
+    # 清除所有关键帧 - 改进版本
     for ob in bpy.context.selected_objects:
-        if ob.animation_data and ob.animation_data.action:
-            for fcurve in ob.animation_data.action.fcurves:
-                fcurve.keyframe_points.clear()
-        if hasattr(ob.data, "shape_keys"):
-            if ob.data.shape_keys and ob.data.shape_keys.animation_data and ob.data.shape_keys.animation_data.action:
-                for fcurve in ob.data.shape_keys.animation_data.action.fcurves:
+        # 清除对象变换关键帧
+        if ob.animation_data:
+            if ob.animation_data.action:
+                for fcurve in ob.animation_data.action.fcurves:
                     fcurve.keyframe_points.clear()
+            # 清除约束关键帧
+            for constraint in ob.constraints:
+                if constraint.animation_data and constraint.animation_data.action:
+                    for fcurve in constraint.animation_data.action.fcurves:
+                        fcurve.keyframe_points.clear()
+
+        # 清除形态键关键帧
+        if hasattr(ob.data, "shape_keys"):
+            if ob.data.shape_keys and ob.data.shape_keys.animation_data:
+                if ob.data.shape_keys.animation_data.action:
+                    for fcurve in ob.data.shape_keys.animation_data.action.fcurves:
+                        fcurve.keyframe_points.clear()
+
+        # 尝试清除所有动画数据
+        if ob.animation_data:
+            ob.animation_data_clear()
+        if hasattr(ob.data, "shape_keys") and ob.data.shape_keys:
+            if ob.data.shape_keys.animation_data:
+                ob.data.shape_keys.animation_data_clear()
 
     # 取消全选
     bpy.ops.object.select_all(action='DESELECT')
