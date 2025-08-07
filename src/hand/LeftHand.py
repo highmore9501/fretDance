@@ -200,7 +200,7 @@ class LeftHand():
         calculate the hand position. 计算手型的位置
         :return: hand position, which means the fret number of index finger. 手的位置，也就是食指所在的品格
         """
-        handPosition = 0
+        handPosition = 1
         for finger in self.fingers:
             if finger._fingerIndex == 1 and finger.fret > 1:
                 handPosition = finger.fret
@@ -213,19 +213,32 @@ class LeftHand():
         :param chord: List of notes, including fret and string index and index of finger which pressed it. 音符列表，包括品格，弦的索引和按下它的手指的索引
         :return: List of next hands and their entropy. 下一个手型和它们的熵的列表
         """
+        # 初始化空弦数据，按弦数据，横按数据，休息数据
         empty_fingers = []
+        empty_string_index_set = set()
+
+        used_finger_index_set = set()
+        used_finger_fret_set = set()
+        used_string_index_set = set()
+
         pressed_fingers = []
         pressed_finger_dict = {}
-        finger_touch_string_counter = [0] * 5  # 1~4 号手指的触弦数，下标 0 不用
-        newHandPosition = 0
-        minFingerIndex = 5
-        # 最小空弦音的弦的索引，用于判断食指是横按还是普通按
-        min_empty_stringIndex = len(guitar.guitarStrings) - 1
 
-        # 这里的使用弦的索引用于计算休息的手指放在哪个区间合适
-        max_used_stringIndex = -1
-        min_used_stringIndex = len(guitar.guitarStrings) - 1
-        pressed_finger_index_set = set()
+        barre_fingers = []
+        barre_finger_dict = {}
+        need_barre = False
+        keep_barre = False
+        use_barre = False
+
+        keep_fingers = []
+
+        rest_finger_index_set = set()
+        rest_fingers = []
+        # 1~4 号手指的触弦数，下标 0 不用
+        finger_touch_string_counter = [0] * 5
+
+        # 用于计算下一个手型把位的值，一开始它是统计的最低手指所按的品，统计完以后再根据情况来计算
+        newHandPosition = 0
 
         # --第一次循环，处理空弦音，并且计算各个手指的触弦总数,更新最高和最低按弦索引，更新使用的手指索引--
         for fingerPosition in fingerPositions:
@@ -235,126 +248,149 @@ class LeftHand():
             # --生成空弦音的手指--
             if finger_index == -1:
                 empty_finger = LeftFinger(
-                    -1, guitar.guitarStrings[fingerPosition['index']], 0, "Open")
+                    -1, guitar.guitarStrings[string_index], 0, "Open")
                 empty_fingers.append(empty_finger)
-                min_empty_stringIndex = min(
-                    min_empty_stringIndex, fingerPosition['index'])
+                empty_string_index_set.add(string_index)
             # 统计按弦手指的触弦总数
             else:
                 finger_touch_string_counter[finger_index] += 1
-                # 统计最低的按弦的手指的位置
-                if 0 < finger_index < minFingerIndex:
-                    minFingerIndex = finger_index
-                    newHandPosition = fret
+                # 添加按弦品格数据
+                used_finger_fret_set.add(fret)
                 # 如果这个手指同时按了多个弦，那么就使用这些弦里最低一根的弦的索引
                 if finger_touch_string_counter[finger_index] > 1:
-                    old_fret, old_string_index = pressed_finger_dict[finger_index]
+                    # 首次发现某个手指同时按了多个弦，需要把它从按弦手指列表中移除，因为会添加到横按列表中
+                    if finger_touch_string_counter[finger_index] == 2:
+                        old_fret, old_string_index = pressed_finger_dict[finger_index]
+                        del pressed_finger_dict[finger_index]
+                    else:
+                        old_fret, old_string_index = barre_finger_dict[finger_index]
+
                     string_index = max(string_index, old_string_index)
+                    barre_finger_dict[finger_index] = (fret, string_index)
+                else:
+                    pressed_finger_dict[finger_index] = (fret, string_index)
+                used_finger_index_set.add(finger_index)
+                used_string_index_set.add(string_index)
 
-                max_used_stringIndex = max(max_used_stringIndex, string_index)
-                min_used_stringIndex = min(min_used_stringIndex, string_index)
-                pressed_finger_dict[finger_index] = (fret, string_index)
-                pressed_finger_index_set.add(finger_index)
+        # 生成按弦手指
+        for pressed_finger_index in pressed_finger_dict:
+            pressed_fret, pressed_string_index = pressed_finger_dict[pressed_finger_index]
 
-        # 原手型的食指品位
-        current_index_finger_fret = next(
-            (finger.fret for finger in self.fingers if finger._fingerIndex == 1), 0)
+            pressed_finger = LeftFinger(
+                pressed_finger_index, guitar.guitarStrings[pressed_string_index], pressed_fret, "Pressed")
 
-        # --第二次循环，判断是否横按状态--
-        use_barre = False
-        for finger_index in pressed_finger_dict:
-            fret, string_index = pressed_finger_dict[finger_index]
-            touch_count = finger_touch_string_counter[finger_index]
+            pressed_fingers.append(pressed_finger)
 
-            # 这里的意思是虽然这个食指只处理一个音符，但仍然可以用横按的方式
-            # 当手指为食指，并且手指所在的品格和当前食指所在的品格（这个值是根据把位算出来的）相同，并且当前手指的弦索引小于最小空弦音的弦索引，那么这个食指可以横按
-            could_barre = (fret == current_index_finger_fret and finger_index ==
-                           1 and string_index < min_empty_stringIndex)
-            # --这是必须使用横按--
-            need_barre = (touch_count > 1 and finger_index == 1)
+        # 生成横按手指
+        for barre_finger_index in barre_finger_dict:
+            barre_fret, barre_string_index = barre_finger_dict[barre_finger_index]
+            touch_count = finger_touch_string_counter[barre_finger_index]
 
-            use_barre = could_barre or need_barre
-            # 先判断是否横按，并重新计算手指的位置
-            if use_barre:
+            if touch_count > 1 and barre_finger_index == 1:
                 press_state = "Barre"
-                string_index = min_empty_stringIndex - 1
-            elif touch_count == 1:
-                press_state = "Pressed"
-            elif touch_count == 2 and finger_index == 4:
+                need_barre = True
+            elif touch_count == 2 and barre_finger_index == 4:
                 press_state = "Partial_barre_2_strings"
-                # 虽然这里有定义两弦小横按，但实际上动画里只处理食指的三弦到六弦横按
-            elif touch_count == 3 and finger_index == 4:
+            elif touch_count == 3 and barre_finger_index == 4:
                 press_state = "Partial_barre_3_strings"
             else:
-                return None, None, None
+                press_state = "Pressed"
 
-            pressed_fingers.append(
-                LeftFinger(finger_index, guitar.guitarStrings[string_index], fret, press_state))
+            barre_finger = LeftFinger(
+                barre_finger_index, guitar.guitarStrings[barre_string_index], barre_fret, press_state)
 
-        # 下面计算当前的把位，就是食指应该在的品格
-        newHandPosition = max(1, newHandPosition - (minFingerIndex - 1))
+            barre_fingers.append(barre_finger)
 
-        # 筛选出所有可能的保留指
-        keep_finger_index_set = set()
+        # --处理未参与演奏的手指，看它们是横按还是否保留或者休息,在最后面生成保留指--
+        if used_finger_index_set and used_finger_fret_set:
+            newHandPosition = max(
+                1, min(used_finger_fret_set)-(min(used_finger_index_set) - 1))
+        else:
+            # 如果没有按弦手指，使用当前手的位置或者默认位置
+            newHandPosition = self.handPosition
 
-        # 如果没有发生换把
-        if newHandPosition == self.handPosition:
-            for finger in self.fingers:
-                if finger.stringIndex not in pressed_finger_index_set and finger.press != PRESSSTATE["Open"]:
-                    keep_finger_index_set.add(finger._fingerIndex)
-            # 横按状态尽量继承
-            use_barre = self.useBarre or use_barre
-
-        # 第三次循环，是为了检测有没有食指以外的手指按在横按上
-        if use_barre and 1 in pressed_finger_index_set:
-            barre_fret, barre_string_index = pressed_finger_dict[1]
-            for finger_index in pressed_finger_dict:
-                fret, string_index = pressed_finger_dict[finger_index]
-                if finger_index != 1 and fret == barre_fret:
-                    pressed_finger_index_set.remove(finger_index)
-
-        # --寻找并生成未按弦的手指--
-        open_fingers = []
-
-        for finger_index in range(1, 5):
+        for old_finger_index in range(1, 5):
             # 跳过已按的指
-            if finger_index in pressed_finger_index_set:
+            if old_finger_index in used_finger_index_set:
                 continue
-            # 处理非保留指
-            if finger_index not in keep_finger_index_set:
-                # 这里是不使用手指默认放置休息的弦位
-                defalut_string_index = int(
-                    (max_used_stringIndex+min_used_stringIndex)/2) if newHandPosition < 17 else 0
-                defalut_string = guitar.guitarStrings[defalut_string_index]
-                # 这里是默认放置休息的品位
-                defalut_fret = newHandPosition + finger_index - 1
-                press_state = "Open"
-            # 处理保留指
+            # 发生了换把没必要处理保留指，把手指移动到休息位置
+            if newHandPosition != self.handPosition:
+                rest_finger_index_set.add(old_finger_index)
+                continue
+
+            # 读取手指在前一个手型里的位置信息
+            same_finger = [
+                finger for finger in self.fingers if finger._fingerIndex == old_finger_index][0]
+            old_fret = same_finger.fret
+            old_string_index = same_finger.stringIndex
+
+            # 检测旧位置是否在现在横按的情况下可用
+            finger_can_keep = True
+            for barre_finger_index in barre_finger_dict:
+                barre_fret, barre_string_index = barre_finger_dict[barre_finger_index]
+                if old_fret <= barre_fret and old_string_index <= barre_string_index:
+                    finger_can_keep = False
+                    break
+
+            # 如果旧位置与当前横按冲突，结束检测，将旧位置的手指索引添加到休息指索引列中
+            if not finger_can_keep:
+                rest_finger_index_set.add(old_finger_index)
+                continue
+
+            # 检测旧位置是否与当前按的位置有重合
+            for pressed_finger_index in pressed_finger_dict:
+                pressed_fret, pressed_string_index = pressed_finger_dict[pressed_finger_index]
+                if old_fret == pressed_fret and old_string_index == pressed_string_index:
+                    finger_can_keep = False
+                    break
+
+            # 如果有重合，结束检测，直接将旧位置的手指索引添加休息指索引列中
+            if not finger_can_keep:
+                rest_finger_index_set.add(old_finger_index)
+                continue
+
+            # 能运行到这里的都是保留指，直接用原状态生成新的保留指
+            old_string = guitar.guitarStrings[old_string_index]
+            press_state = next(k for k, v in PRESSSTATE.items()
+                               if v == same_finger.press)
+            keep_finger = LeftFinger(
+                old_finger_index, old_string, old_fret, press_state)
+            keep_fingers.append(keep_finger)
+            used_string_index_set.add(old_string_index)
+
+            if same_finger.press == PRESSSTATE["Barre"]:
+                keep_barre = True
+
+        # --现在来处理所有空闲指，判断它们应该放在哪里休息--
+        # 这一段还没考虑如果空闲指与其它手指冲突的处理
+        for rest_finger_index in list(rest_finger_index_set):
+            # 这是默认休息的弦索引，其实就是所有已经按弦弦索引的中位点
+            if used_string_index_set:
+                defalut_rest_string_index = int((min(
+                    used_string_index_set)+max(used_string_index_set))/2) if newHandPosition < 17 else 0
             else:
-                same_finger = [
-                    finger for finger in self.fingers if finger._fingerIndex == finger_index][0]
-                # 这里是保留值默认继承的位置
-                defalut_string = guitar.guitarStrings[same_finger.stringIndex]
-                defalut_fret = same_finger.fret
-                # 如果保留指原来是按弦的，那状态改为Keep;如果是其它（横按），那么保持横按状态
-                if same_finger.press == PRESSSTATE["Pressed"]:
-                    press_state = "Keep"
-                else:
-                    press_state = [key for key, value in PRESSSTATE.items(
-                    ) if value == same_finger.press][0]
+                defalut_rest_string_index = 2
+            # 这里是默认放置休息的品位
+            defalut_rest_fret = newHandPosition + rest_finger_index - 1
+            rest_string = guitar.guitarStrings[defalut_rest_string_index]
 
-            open_finger = LeftFinger(
-                finger_index, defalut_string, defalut_fret, press_state)
+            press_state = "Open"
 
-            open_fingers.append(open_finger)
+            rest_finger = LeftFinger(
+                rest_finger_index, rest_string, defalut_rest_fret, press_state)
 
-        all_fingers = pressed_fingers + empty_fingers + open_fingers
+            rest_fingers.append(rest_finger)
+
+        all_fingers = pressed_fingers + barre_fingers + \
+            empty_fingers + rest_fingers + keep_fingers
 
         if not self.verifyValid(all_fingers):
             return None, None, None
 
         diff = self.caculateDiff(
             all_fingers, newHandPosition, guitar)
+
+        use_barre = need_barre or keep_barre
         return all_fingers, diff, use_barre
 
     def caculateDiff(self, all_fingers, newHandPosition, guitar: Guitar) -> float:
