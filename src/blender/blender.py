@@ -11,10 +11,22 @@ def clear_all_keyframe(collection_name=None):
         # 获取指定collection
         collection = bpy.data.collections.get(collection_name)
         if collection:
-            # 选择collection中的所有物体
-            for obj in collection.objects:
-                obj.select_set(True)
-                bpy.context.view_layer.objects.active = obj  # 设置活动对象
+            # 递归获取collection及其所有子collection中的物体
+            def select_collection_objects(col):
+                # 选择当前collection中的所有物体
+                for obj in col.objects:
+                    obj.select_set(True)
+                    print(f"Selected object: {obj.name}")  # 调试语句
+                    bpy.context.view_layer.objects.active = obj  # 设置活动对象
+
+                # 递归处理所有子collection
+                for child_col in col.children:
+                    select_collection_objects(child_col)
+
+            select_collection_objects(collection)
+            # 调试语句
+            print(
+                f"Total selected objects: {len(bpy.context.selected_objects)}")
         else:
             print(f"Collection '{collection_name}' not found")
             return
@@ -23,11 +35,23 @@ def clear_all_keyframe(collection_name=None):
         bpy.ops.object.select_all(action='SELECT')
 
     # 清除所有关键帧 - 改进版本
+    # 调试语句
+    print(
+        f"Processing {len(bpy.context.selected_objects)} objects for animation clearing")
     for ob in bpy.context.selected_objects:
+        print(f"Processing object: {ob.name}")  # 调试语句
+
         # 清除对象变换关键帧
         if ob.animation_data:
+            print(f"Object {ob.name} has animation_data")  # 调试语句
             if ob.animation_data.action:
+                # 调试语句
+                print(
+                    f"Object {ob.name} has action with {len(ob.animation_data.action.fcurves)} fcurves")
                 for fcurve in ob.animation_data.action.fcurves:
+                    # 调试语句
+                    print(
+                        f"Clearing {len(fcurve.keyframe_points)} keyframes from {ob.name}")
                     fcurve.keyframe_points.clear()
             # 清除约束关键帧
             for constraint in ob.constraints:
@@ -38,15 +62,23 @@ def clear_all_keyframe(collection_name=None):
         # 清除形态键关键帧
         if hasattr(ob.data, "shape_keys"):
             if ob.data.shape_keys and ob.data.shape_keys.animation_data:
+                # 调试语句
+                print(f"Object {ob.name} has shape keys with animation data")
                 if ob.data.shape_keys.animation_data.action:
                     for fcurve in ob.data.shape_keys.animation_data.action.fcurves:
+                        # 调试语句
+                        print(
+                            f"Clearing {len(fcurve.keyframe_points)} shape key keyframes from {ob.name}")
                         fcurve.keyframe_points.clear()
 
         # 尝试清除所有动画数据
         if ob.animation_data:
+            print(f"Clearing animation data for {ob.name}")  # 调试语句
             ob.animation_data_clear()
         if hasattr(ob.data, "shape_keys") and ob.data.shape_keys:
             if ob.data.shape_keys.animation_data:
+                # 调试语句
+                print(f"Clearing shape key animation data for {ob.name}")
                 ob.data.shape_keys.animation_data_clear()
 
     # 取消全选
