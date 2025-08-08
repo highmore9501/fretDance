@@ -289,6 +289,10 @@ class LeftHand():
             if touch_count > 1 and barre_finger_index == 1:
                 press_state = "Barre"
                 need_barre = True
+                # 横按所按的弦，要比其它手指至少低一根弦，否则动画会很难看
+                barre_string_index = max(
+                    barre_string_index, max(used_string_index_set)+1)
+                barre_string_index = min(barre_string_index, 5)
             elif touch_count == 2 and barre_finger_index == 4:
                 press_state = "Partial_barre_2_strings"
             elif touch_count == 3 and barre_finger_index == 4:
@@ -350,16 +354,26 @@ class LeftHand():
                 continue
 
             # 能运行到这里的都是保留指，直接用原状态生成新的保留指
-            old_string = guitar.guitarStrings[old_string_index]
             press_state = next(k for k, v in PRESSSTATE.items()
                                if v == same_finger.press)
+
+            if same_finger.press == PRESSSTATE["Barre"]:
+                keep_barre = True
+                # 如果上一个保留横按的横按指的弦低于当前按弦的弦，那么需要横按指往低移动
+                # 具体来讲，比如一个原来是横按123弦的保留指，结果现在要演奏的音出现了4弦，那么横按指应该至少移动到5弦才会让动画看起来正常
+                old_string_index = max(
+                    old_string_index, max(used_string_index_set)+1)
+                old_string_index = min(old_string_index, 5)
+
+            # 小指不使用保留指，因为动画里横按时小指的状态太难处理
+            if old_finger_index == 4:
+                press_state = "Open"
+
+            old_string = guitar.guitarStrings[old_string_index]
             keep_finger = LeftFinger(
                 old_finger_index, old_string, old_fret, press_state)
             keep_fingers.append(keep_finger)
             used_string_index_set.add(old_string_index)
-
-            if same_finger.press == PRESSSTATE["Barre"]:
-                keep_barre = True
 
         # --现在来处理所有空闲指，判断它们应该放在哪里休息--
         # 这一段还没考虑如果空闲指与其它手指冲突的处理

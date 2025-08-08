@@ -6,10 +6,10 @@ from ..hand.RightHand import caculateRightHandFingers, calculateRightPick
 from ..utils.utils import get_position_by_fret
 
 
-def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes, ticks_per_beat, FPS: float, max_string_index: int) -> None:
+def leftHand2Animation(avatar: str, recorder: str, animation_json_path: str, tempo_changes, ticks_per_beat, FPS: float, max_string_index: int) -> None:
     """
     :params recorder: the path of the recorder file
-    :params animation: the path of the file store information for animation
+    :params animation_json_path: the path of the file store information for animation
     :params BPM: the BPM of the music
     :params FPS: the FPS of the animation"""
     json_file = f'asset\controller_infos\{avatar}.json'
@@ -19,8 +19,10 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
     finger_position_p1 = array(avatar_data['LEFT_FINGER_POSITIONS']["P1"])
     finger_position_p2 = array(avatar_data['LEFT_FINGER_POSITIONS']["P2"])
 
-    # 这里是计算左手按弦需要保持的时间
+    # 这个就是两个不同姿势之间切换时需要的帧数，相当于0.125秒，所以动画人物动作还是非常迅速的
     elapsed_frame = FPS / 8.0
+    # 这是手指从按弦变成松开需要的帧数，相当于0.0625秒
+    finger_return_to_rest_frame = FPS / 16
 
     # 计算finger_position_p0,finger_position_p1,finger_position_p2三点组成的平面上的法线值
     normal = cross(finger_position_p0 - finger_position_p1,
@@ -37,21 +39,78 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
         frame = item["frame"]
         pitchwheel = item.get("pitchwheel", 0)
         hold_pose_frame = None
+        finger_return_to_rest_pose_frame = None
+        finger_index_set_need_to_change = set()
+
         if i != len(handDicts) - 1:
             next_frame = handDicts[i + 1]["frame"]
-            if next_frame > frame + elapsed_frame:
-                hold_pose_frame = next_frame - elapsed_frame
+            no_time_for_detail = (next_frame <= frame + elapsed_frame)
+
+            if not no_time_for_detail:
+                time_enough_for_three_action = (next_frame > frame +
+                                                elapsed_frame + finger_return_to_rest_frame)
+
+                # 对比当前手势和下一个手势，找出来姿势切换时需要抬指的手指
+                current_hand = item["leftHand"]
+                current_finger_dict = {
+                    finger['fingerIndex']: finger['fingerInfo'] for finger in current_hand}
+
+                next_hand = handDicts[i + 1]["leftHand"]
+                next_finger_dict = {
+                    finger['fingerIndex']: finger['fingerInfo'] for finger in next_hand}
+
+                if time_enough_for_three_action:
+                    # 两个音符之间有足够空间时间时，设置保持姿势的时间，以及恢复手指到休息位置的时间
+                    hold_pose_frame = next_frame - elapsed_frame - finger_return_to_rest_frame
+                    finger_return_to_rest_pose_frame = next_frame - finger_return_to_rest_frame
+
+                    for finger_index in range(1, 5):
+                        current_finger = current_finger_dict[finger_index]
+                        next_finger = next_finger_dict[finger_index]
+                        # 如果一个手指当前是按弦状态，而下一个状态换弦了，就需要有抬指的动作（换品可以不抬指直接滑过去）
+                        if current_finger['press'] != 0 and current_finger['stringIndex'] != next_finger['stringIndex']:
+                            finger_index_set_need_to_change.add(finger_index)
+
+                    # 执行完这一段代码以后，得到一个`finger_return_to_rest_pose_frame`以及一个非空的`finger_index_set_need_to_change`
+                else:
+                    hold_pose_frame = next_frame - elapsed_frame
 
         # 计算左手的动画信息
         fingerInfos = animatedLeftHand(
             avatar_data, item, normal, max_string_index, pitchwheel)
+
+        # 按弦帧
         data_for_animation.append({
             "frame": frame,
             "fingerInfos": fingerInfos,
             "pitchwheel": pitchwheel
         })
 
-        # 右手会保持当前动作直到下个动作到来前两帧
+        # 抬指帧
+        if finger_return_to_rest_pose_frame:
+            left_finger_index_dict = {
+                1: "I_L",
+                2: "M_L",
+                3: "R_L",
+                4: "P_L"
+            }
+            for rest_finger_index in list(finger_index_set_need_to_change):
+                controller_name = left_finger_index_dict[rest_finger_index]
+                current_position = array(fingerInfos[controller_name])
+                # 小拇指休息时比其它手指抬得要高一点
+                if rest_finger_index == 4:
+                    new_position = current_position - 2 * normal * 0.006
+                else:
+                    new_position = current_position - normal * 0.006
+                fingerInfos[controller_name] = new_position.tolist()
+
+            data_for_animation.append({
+                "frame": finger_return_to_rest_pose_frame,
+                "fingerInfos": fingerInfos,
+                "pitchwheel": pitchwheel
+            })
+
+        # 保持到下一个姿势切换前的帧
         if hold_pose_frame:
             data_for_animation.append({
                 "frame": hold_pose_frame,
@@ -59,7 +118,7 @@ def leftHand2Animation(avatar: str, recorder: str, animation: str, tempo_changes
                 "pitchwheel": pitchwheel
             })
 
-    with open(animation, "w") as f:
+    with open(animation_json_path, "w") as f:
         json.dump(data_for_animation, f)
 
 
@@ -92,7 +151,7 @@ def addPitchwheel(left_hand_recorder_file: str, pitch_wheel_map: list):
             json.dump(new_data, f, indent=4)
 
 
-def animatedLeftHand(avatar_data: object, item: object, normal: array, max_string_index: int, pitchwheel: int):
+def animatedLeftHand(avatar_data: object, item: object, normal: array, max_string_index: int, pitchwheel: int, rest_finger_distance=0.006):
     leftHand = item["leftHand"]
     use_barre = item.get("use_barre", False)
 
@@ -129,11 +188,11 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
         # 不按弦的手指会稍微移动，以避免和按弦的手指挤在一起
         if press == PRESSSTATE['Open']:
             if stringIndex > 2:
-                stringIndex -= 0.5
+                stringIndex -= 1
             else:
-                stringIndex += 0.5
+                stringIndex += 1
             # 如果是中指没有按弦，还可以保持原来的位置，如果是其它手指，会相对中指进行一定的移动
-            fret -= 0.15 * (fingerIndex - 2)
+            fret -= 0.25 * (fingerIndex - 2)
 
         # 按弦的手指考虑是否有pitchWheel，以进行对应的移动
         if press == PRESSSTATE['Pressed'] and pitchwheel != 0:
@@ -146,7 +205,7 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
         # 手指的横按与非横按使用两套不同的计算方式
         if use_barre and fingerIndex == 1:
             finger_position = twiceLerpBarreFingers(
-                avatar_data, fret,  stringIndex, max_string_index)
+                avatar_data, fret, stringIndex, max_string_index)
             position_value_name = "I_L"
             barre_finger_string_index = stringIndex
         else:
@@ -155,7 +214,11 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
                 avatar_data, fret, stringIndex, max_string_index)
             # 如果手指没有按下，那么手指位置会稍微上移
             if press == PRESSSTATE['Open']:
-                finger_position -= normal * 0.006
+                # 小拇指就是抬得高一些
+                if fingerIndex == 4:
+                    finger_position -= 2 * normal * rest_finger_distance
+                else:
+                    finger_position -= normal * rest_finger_distance
 
             if fingerIndex == 1:
                 position_value_name = "I_L"
@@ -422,7 +485,7 @@ def twiceLerpFingers(avatar_data: object, fret: float, stringIndex: int, max_str
     return p_final
 
 
-def twiceLerpBarreFingers(avatar_data: object, fret: float, max_finger_string_index: int, max_string_index: int) -> array:
+def twiceLerpBarreFingers(avatar_data: object, fret: float, finger_string_index: int, max_string_index: int) -> array:
     barre_p0 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P0"])
     barre_p1 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P1"])
     barre_p2 = array(avatar_data['LEFT_FINGER_POSITIONS']["Barre_P2"])
@@ -431,9 +494,20 @@ def twiceLerpBarreFingers(avatar_data: object, fret: float, max_finger_string_in
     p_fret_0 = get_position_by_fret(fret, barre_p0, barre_p2)
     p_fret_1 = get_position_by_fret(fret, barre_p1, barre_p3)
 
-    # 横按最小是从第三弦开始，最多横按到最后一根弦，所以有下面这样的公式
+    # 横按最小是从第三弦开始（索引为2），最多横按到最后一根弦（索引为max_string_index）
+    # 对finger_string_index进行clamp处理，确保它在有效范围内
+    # clamped_finger_string_index = max(
+    #     2, min(finger_string_index, max_string_index))
+
+    # 如果原始值被clamp了，可能需要记录日志或处理异常情况
+    # if clamped_finger_string_index != finger_string_index:
+    #     # 可选：添加日志记录
+    #     # print(f"Warning: finger_string_index clamped from {finger_string_index} to {clamped_finger_string_index}")
+    #     pass
+
+    # 使用clamp后的值进行计算
     p_final = p_fret_0 + (p_fret_1 - p_fret_0) * \
-        (max_finger_string_index-2) / (max_string_index-2)
+        (finger_string_index - 2) / (max_string_index - 2)
 
     return p_final
 
