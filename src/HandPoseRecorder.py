@@ -61,7 +61,8 @@ class HandPoseRecorder():
             handsDict.append({
                 "real_tick": real_tick,
                 "frame": frame,
-                "leftHand": handInfo
+                "leftHand": handInfo,
+                "use_barre": leftHand.useBarre
             })
 
         with open(jsonFilePath, 'w') as f:

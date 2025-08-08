@@ -94,13 +94,12 @@ def addPitchwheel(left_hand_recorder_file: str, pitch_wheel_map: list):
 
 def animatedLeftHand(avatar_data: object, item: object, normal: array, max_string_index: int, pitchwheel: int):
     leftHand = item["leftHand"]
+    use_barre = item.get("use_barre", False)
 
     fingerInfos = {}
     hand_fret = 1
-    max_finger_string_index = 0
+    barre_finger_string_index = 0
     index_finger_string_number = 0
-    useBarre = False  # 默认不使用横按
-    hasBarre = "Barre_P0" in avatar_data["LEFT_FINGER_POSITIONS"]
 
     # 用于统计每个手指都在哪根弦上的dict
     finger_string_numbers = {
@@ -109,15 +108,6 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
         3: 0,
         4: 0
     }
-    # --判断手型是否使用了横按--
-    if hasBarre:
-        for finger_data in leftHand:
-            fingerIndex = finger_data["fingerIndex"]
-            press = finger_data["fingerInfo"]["press"]
-            # 判断食指是否是在使用横按，发现使用了横按，则跳出循环
-            if fingerIndex == 1 and 5 > press > 1:
-                useBarre = True
-                break
 
     # --开始计算手指信息--
     for finger_data in leftHand:
@@ -130,9 +120,6 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
         # skip open string. 空弦音跳过
         if fingerIndex == -1:
             continue
-
-        # 计算最大的弦数，方便后面计算手的位置
-        max_finger_string_index = max(max_finger_string_index, stringIndex)
 
         # 这里是计算当前手型的把位
         if fingerIndex < min_press_fingerIndex:
@@ -157,10 +144,11 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
                 stringIndex += pitch_move
 
         # 手指的横按与非横按使用两套不同的计算方式
-        if useBarre and fingerIndex == 1:
+        if use_barre and fingerIndex == 1:
             finger_position = twiceLerpBarreFingers(
-                avatar_data, fret,  max_finger_string_index, max_string_index)
+                avatar_data, fret,  stringIndex, max_string_index)
             position_value_name = "I_L"
+            barre_finger_string_index = stringIndex
         else:
             finger_string_numbers[fingerIndex] = stringIndex
             finger_position = twiceLerpFingers(
@@ -186,13 +174,13 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
     hand_state = pinky_finger_string_number - index_finger_string_number
 
     # --计算手位置--
-    if useBarre:
+    if use_barre:
         hand_position = twiceLerpBarreHand(
             avatar_data=avatar_data,
             value="H_L",
             valueType="position",
             fret=hand_fret,
-            stringIndex=max_finger_string_index,
+            stringIndex=barre_finger_string_index,
             max_string_index=max_string_index
         )
     else:
@@ -202,7 +190,7 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
             value="H_L",
             valueType="position",
             fret=hand_fret,
-            stringIndex=max_finger_string_index,
+            stringIndex=barre_finger_string_index,
             max_string_index=max_string_index
         )
 
@@ -213,13 +201,13 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
     fingerInfos["H_L"] = hand_position.tolist()
 
     # --计算手臂IK，手旋转，大拇指位置，IK--
-    if useBarre:
+    if use_barre:
         hand_IK_pivot_position = twiceLerpBarreHand(
             avatar_data=avatar_data,
             value="HP_L",
             valueType="position",
             fret=hand_fret,
-            stringIndex=max_finger_string_index,
+            stringIndex=barre_finger_string_index,
             max_string_index=max_string_index
         )
         hand_rotation_y = twiceLerpBarreHand(
@@ -227,7 +215,7 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
             value="H_rotation_L",
             valueType="rotation",
             fret=hand_fret,
-            stringIndex=max_finger_string_index,
+            stringIndex=barre_finger_string_index,
             max_string_index=max_string_index
         )
         thumb_position = twiceLerpBarreHand(
@@ -235,7 +223,7 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
             value="T_L",
             valueType="position",
             fret=hand_fret,
-            stringIndex=max_finger_string_index,
+            stringIndex=barre_finger_string_index,
             max_string_index=max_string_index
         )
         thumb_IK_pivot_position = twiceLerpBarreHand(
@@ -243,7 +231,7 @@ def animatedLeftHand(avatar_data: object, item: object, normal: array, max_strin
             value="TP_L",
             valueType="position",
             fret=hand_fret,
-            stringIndex=max_finger_string_index,
+            stringIndex=barre_finger_string_index,
             max_string_index=max_string_index
         )
     else:
