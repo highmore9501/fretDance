@@ -6,6 +6,8 @@
 
 具体使用方法和介绍，请看知乎专栏：[fretDance 专栏](https://www.zhihu.com/column/c_1932748054936684153)
 
+B 站上的系列视频教程：[fretDance 教程](https://www.bilibili.com/video/BV1jYp8zQEh2/?spm_id_from=333.1387.0.0)
+
 ### 插件说明
 
 `fret_dance_addon`文件夹下的内容是 blender 插件，使用方法是将整个文件夹压缩成一个 zip 文件，然后在 blender 的 addon 添加界面里找到这个 zip 文件并且添加即可
