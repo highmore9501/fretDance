@@ -224,7 +224,7 @@ def get_usedFingers(finger_list: List[Any], usedStrings: List[int]):
     return [item['finger'] for item in finger_list if item['string'] in usedStrings]
 
 
-def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int], isArpeggio: bool, isAfterPlayed: bool, hand_position: float, usedRIGHT_FINGERS: List[str],  max_string_index: int) -> Dict:
+def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int], isArpeggio: bool, isAfterPlayed: bool, hand_position: float, used_right_fingers: List[str],  max_string_index: int) -> Dict:
     """
     新的定位方法基本上是这样的：
     如果是扫弦，那么直接读取扫弦状态的基准状态，然后结束。
@@ -239,11 +239,13 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
     # 根据手掌的位置先计算所有确定手掌和手臂位置的点
     h0 = array(avatar_data['RIGHT_HAND_POSITIONS']['Normal_P0_H_R'])
     h3 = array(avatar_data['RIGHT_HAND_POSITIONS']['Normal_P3_H_R'])
+    P0 = array(avatar_data['LEFT_FINGER_POSITIONS']['P0'])
+    P1 = array(avatar_data['LEFT_FINGER_POSITIONS']['P1'])
     # 大拇指的移动方向以及其它手指的移动方向，一开始设置为None
     t_move = None
     f_move = None
-    # 定义手指运动的距离，是h0和h3之间的距离的10分之1
-    fingerMoveDistanceWhilePlay = np.linalg.norm(h0 - h3) / 15
+    # 定义手指运动的距离，是P0和P1之间的距离的8分之1，相当于0.725的弦距
+    fingerMoveDistanceWhilePlay = np.linalg.norm(P0 - P1) / 8
 
     if isArpeggio:
         if isAfterPlayed:
@@ -341,7 +343,7 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
         ch3 = array(avatar_data['RIGHT_HAND_POSITIONS']['ch3'])
         ch_rest_position = ch0 + (ch3 - ch0) * hand_position / 3
 
-        if "p" in usedRIGHT_FINGERS:
+        if "p" in used_right_fingers:
             p_current_string_index = rightFingerPositions[0]
             # t_target就是大拇指运动时的目标位置，和其它手指都是向掌心运动不同，大拇指是往弦上运动的
             t_target = t_rest_postion + thumb_direction
@@ -365,13 +367,12 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
 
         finger_results = {}
 
-        # 计算手指的拨弦方向，这里要注意因为在blender中方向线与手指运动的方式是相反的，所以这里要加负号
-        f_move = -finger_direct / np.linalg.norm(finger_direct)
-
         # 处理ima三个手指的拨弦，它们的逻辑是相似的
         for finger_char, finger_idx, rest_pos in finger_configs:
             # 小拇指的英文缩写和吉他用语里的左手小拇指不一样，导致这个判断的写法会啰嗦一点
-            if finger_char in usedRIGHT_FINGERS or finger_char == 'r' and 'a' in usedRIGHT_FINGERS:
+            if finger_char in used_right_fingers or finger_char == 'r' and 'a' in used_right_fingers:
+                # 计算手指的拨弦方向，这里要注意因为在blender中方向线与手指运动的方式是相反的，所以这里要加负号
+                f_move = -finger_direct / np.linalg.norm(finger_direct)
                 current_string_index = rightFingerPositions[finger_idx]
                 target = rest_pos + finger_direct
                 touch_position = getStringTouchPosition(
