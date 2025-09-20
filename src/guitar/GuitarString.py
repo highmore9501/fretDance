@@ -24,7 +24,7 @@ class GuitarString():
         fret = note - self._baseNote.num
         if fret < 0 or fret > 23:
             return False
-        return note - self._baseNote.num
+        return fret
 
 
 def createGuitarStrings(notes: List[str]) -> List[GuitarString]:
@@ -53,20 +53,38 @@ def getKeynoteByValue(value: str) -> Any:
         return KEYNOTES[value.upper()] + 12
     # 如果value长度大于1，并且最后一个值是一个数字
     elif len(value) > 1 and value[-1].isdigit():
-        # 如果第一个值是小写并在KEYNOTES中，说明当前值是高音，数字越大音越高
-        if value[0] in KEYNOTES and value[0].islower():
-            return KEYNOTES[value[0]] + 12 * int(value[-1])
-        # 如果第一个值是大写并在KEYNOTES中，说明当前值是低音，数字越大音越低
-        elif value[0:-1].upper() in KEYNOTES and value[0].isupper():
-            return KEYNOTES[value[0].upper()] - 12 * int(value[-1])
-    # 处理带#号的音符
-    elif len(value) > 1 and value[1:-1].isdigit() and value[-1] == "#":
-        # 如果第一个值是小写并在KEYNOTES中，说明当前值是高音，数字越大音越高
-        if value[0] in KEYNOTES and value[0].islower():
-            return KEYNOTES[value[0]] + 12 * int(value[1:-1]) + 1
-        # 如果第一个值是大写并在KEYNOTES中，说明当前值是低音，数字越大音越低
-        elif value[0].upper() in KEYNOTES and value[0].isupper():
-            return KEYNOTES[value[0]] - 12 * int(value[1:-1]) + 1
+        # 提取音符部分和数字部分
+        note_part = value[:-1]
+        octave = int(value[-1])
+
+        # 处理带#号的音符+数字（如C#1, c#1）
+        if "#" in note_part and note_part.replace("#", "").upper() in KEYNOTES:
+            base_note = note_part.replace("#", "").upper()
+            # 判断是高音还是低音
+            if note_part[0].islower():
+                # 小写表示高音
+                return KEYNOTES[base_note] + 12 * octave + 1
+            else:
+                # 大写表示低音
+                return KEYNOTES[base_note] - 12 * octave + 1
+        # 处理普通音符+数字（如C1, c1）
+        elif note_part.upper() in KEYNOTES:
+            base_note = note_part.upper()
+            # 判断是高音还是低音
+            if note_part[0].islower():
+                # 小写表示高音
+                return KEYNOTES[base_note] + 12 * octave
+            else:
+                # 大写表示低音
+                return KEYNOTES[base_note] - 12 * octave
+        else:
+            # 音符部分无效
+            print("音符格式有误：", value)
+            return False
+    # 处理带#号的音符（不带数字）
+    elif "#" in value and value.replace("#", "").upper() in KEYNOTES:
+        base_note = value.replace("#", "").upper()
+        return KEYNOTES[base_note] + 1
     # 处理不带数字的大写音符
     elif value.isupper() and value in KEYNOTES:
         return KEYNOTES[value]
