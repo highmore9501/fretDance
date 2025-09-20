@@ -6,7 +6,7 @@ import json
 from src.utils.caculateCrossPoint import get_cross_point
 from src.utils.utils import getStringTouchPosition, slerp
 
-RightFingers = {
+RIGHT_FINGERS = {
     "p": 0,
     "i": 1,
     "m": 2,
@@ -18,7 +18,7 @@ class RightHand():
     def __init__(self, usedFingers: List[str], rightFingerPositions: List[int], preUsedFingers: List[str], isArpeggio: bool = False, is_playing_bass: bool = False):
         self.usedFingers = usedFingers
         self.rightFingerPositions = rightFingerPositions
-        self.preUsedFingers = preUsedFingers
+        self.preUsedFingers = preUsedFingers  # 之所以还要有上一个手型的手指列表，是为了计算diff时，考虑更多一点
         self.isArpeggio = isArpeggio
         self.is_playing_bass = is_playing_bass
 
@@ -70,9 +70,9 @@ class RightHand():
     def validateRightHandByFingerPositions(self, usedFingers: list[str], rightFingerPositions: List[int], repeated_fingers_checked: bool) -> bool:
         for i in range(len(rightFingerPositions) - 1):
             # 检测手指的位置是否从左到右递减，如果手指分布不符合科学，判断为错误;bass因为要考虑到会有im指交替拨低音弦的情况，需要另外考虑
-            if rightFingerPositions[i] < rightFingerPositions[i] and not self.is_playing_bass:
+            if rightFingerPositions[i] < rightFingerPositions[i+1] and not self.is_playing_bass:
                 return False
-            if rightFingerPositions[i] < rightFingerPositions[i] + 1:
+            if rightFingerPositions[i] < rightFingerPositions[i+1]+1:
                 return False
 
         # 如果没有p指，而且其它手指已经预检测掉了重复和可能性，那么就直接返回True
@@ -82,7 +82,7 @@ class RightHand():
         usedString = []
         used_p_strings = []
         for finger in usedFingers:
-            current_string = rightFingerPositions[RightFingers[finger]]
+            current_string = rightFingerPositions[RIGHT_FINGERS[finger]]
             if finger == 'p':
                 used_p_strings.append(current_string)
             elif not repeated_fingers_checked:
@@ -114,13 +114,13 @@ def finger_string_map_generator(allFingers: List[str], touchedStrings: List[int]
 
     for current_finger, touchedString in itertools.product(allFingers, touchedStrings):
         current_pairing_is_legal = True
-        current_finger_index = RightFingers[current_finger]
+        current_finger_index = RIGHT_FINGERS[current_finger]
 
         # 检测当前配对组合是否和之前生成的配对组合有冲突
         for pairing in prev_finger_string_map:
             prev_finger = pairing['finger']
             prev_string = pairing['string']
-            prev_index = RightFingers[prev_finger]
+            prev_index = RIGHT_FINGERS[prev_finger]
             # 这里注意，finger是从pima递增的，但现实中它们拨的弦序号是递减的，所以判断合理性时要留意这一点
             if (current_finger_index > prev_index and touchedString >= prev_string) or (current_finger_index < prev_index and touchedString <= prev_string) or (current_finger_index == prev_index and abs(prev_string-touchedString) > 1):
                 current_pairing_is_legal = False
@@ -156,13 +156,13 @@ def rest_finger_string_map_generator(unusedFingers: List[str], allStrings: List[
     # 这里每次配对以后，不再移除已经配对的弦，因为不演奏的手指可以放在任一根弦上
     for current_finger, cur_string in itertools.product(unusedFingers, allStrings):
         current_pairing_is_legal = True
-        current_finger_index = RightFingers[current_finger]
+        current_finger_index = RIGHT_FINGERS[current_finger]
 
         # 检测当前配对组合是否和之前生成的配对组合有冲突
         for pairing in prev_finger_string_map:
             prev_finger = pairing['finger']
             prev_string = pairing['string']
-            prev_index = RightFingers[prev_finger]
+            prev_index = RIGHT_FINGERS[prev_finger]
             if (current_finger_index > prev_index and cur_string > prev_string + 1) or (current_finger_index < prev_index and cur_string < prev_string-1):
                 current_pairing_is_legal = False
 
@@ -224,7 +224,7 @@ def get_usedFingers(finger_list: List[Any], usedStrings: List[int]):
     return [item['finger'] for item in finger_list if item['string'] in usedStrings]
 
 
-def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int], isArpeggio: bool, isAfterPlayed: bool, hand_position: float, usedRightFingers: List[str],  max_string_index: int) -> Dict:
+def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int], isArpeggio: bool, isAfterPlayed: bool, hand_position: float, usedRIGHT_FINGERS: List[str],  max_string_index: int) -> Dict:
     """
     新的定位方法基本上是这样的：
     如果是扫弦，那么直接读取扫弦状态的基准状态，然后结束。
@@ -239,8 +239,11 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
     # 根据手掌的位置先计算所有确定手掌和手臂位置的点
     h0 = array(avatar_data['RIGHT_HAND_POSITIONS']['Normal_P0_H_R'])
     h3 = array(avatar_data['RIGHT_HAND_POSITIONS']['Normal_P3_H_R'])
-    # 定义手指运动的距离，是h0和h3之间的距离的20分之1
-    fingerMoveDistanceWhilePlay = np.linalg.norm(h0 - h3) / 10
+    # 大拇指的移动方向以及其它手指的移动方向，一开始设置为None
+    t_move = None
+    f_move = None
+    # 定义手指运动的距离，是h0和h3之间的距离的10分之1
+    fingerMoveDistanceWhilePlay = np.linalg.norm(h0 - h3) / 15
 
     if isArpeggio:
         if isAfterPlayed:
@@ -338,8 +341,7 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
         ch3 = array(avatar_data['RIGHT_HAND_POSITIONS']['ch3'])
         ch_rest_position = ch0 + (ch3 - ch0) * hand_position / 3
 
-        # 接下来计算每个手指的位置
-        if "p" in usedRightFingers:
+        if "p" in usedRIGHT_FINGERS:
             p_current_string_index = rightFingerPositions[0]
             # t_target就是大拇指运动时的目标位置，和其它手指都是向掌心运动不同，大拇指是往弦上运动的
             t_target = t_rest_postion + thumb_direction
@@ -348,9 +350,9 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
             # 读取大拇指拨弦的方向
             t_move = thumb_direction / np.linalg.norm(thumb_direction)
             if isAfterPlayed:
-                T_R = t_touch_position - t_move * fingerMoveDistanceWhilePlay
-            else:
                 T_R = t_touch_position + t_move * fingerMoveDistanceWhilePlay
+            else:
+                T_R = t_touch_position - t_move * fingerMoveDistanceWhilePlay
         else:
             T_R = t_rest_postion
 
@@ -364,12 +366,12 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
         finger_results = {}
 
         # 计算手指的拨弦方向，这里要注意因为在blender中方向线与手指运动的方式是相反的，所以这里要加负号
-        t_move = -finger_direct / np.linalg.norm(finger_direct)
+        f_move = -finger_direct / np.linalg.norm(finger_direct)
 
         # 处理ima三个手指的拨弦，它们的逻辑是相似的
         for finger_char, finger_idx, rest_pos in finger_configs:
             # 小拇指的英文缩写和吉他用语里的左手小拇指不一样，导致这个判断的写法会啰嗦一点
-            if finger_char in usedRightFingers or finger_char == 'r' and 'a' in usedRightFingers:
+            if finger_char in usedRIGHT_FINGERS or finger_char == 'r' and 'a' in usedRIGHT_FINGERS:
                 current_string_index = rightFingerPositions[finger_idx]
                 target = rest_pos + finger_direct
                 touch_position = getStringTouchPosition(
@@ -377,12 +379,14 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
 
                 if isAfterPlayed:
                     finger_results[finger_char.upper() + '_R'] = touch_position + \
-                        t_move * fingerMoveDistanceWhilePlay
+                        f_move * fingerMoveDistanceWhilePlay
                 else:
                     finger_results[finger_char.upper() + '_R'] = touch_position - \
-                        t_move * fingerMoveDistanceWhilePlay
+                        f_move * fingerMoveDistanceWhilePlay
+
             else:
-                finger_results[finger_char.upper() + '_R'] = rest_pos
+                finger_results[finger_char.upper(
+                ) + '_R'] = rest_pos
 
         # 然后分别赋值
         I_R = finger_results['I_R']
@@ -392,10 +396,10 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
         # ch指是不参与演奏的，所以直接使用休息位置
         P_R = ch_rest_position
 
-    # 给最终的手掌位置添加一点随机移动
-    random_vector = np.random.rand(3)
-    random_vector = random_vector / np.linalg.norm(random_vector)
-    H_R = H_R + random_vector * fingerMoveDistanceWhilePlay * 0.5
+    # 给拨弦后的手掌添加一点移动
+    h_move = f_move if f_move is not None else t_move
+    if h_move is not None and isAfterPlayed:
+        H_R = H_R - h_move * fingerMoveDistanceWhilePlay * 0.25
 
     result.update({
         'H_R': H_R.tolist(),
@@ -462,101 +466,6 @@ def caculateRightHandFingers(avatar_data: dict, rightFingerPositions: List[int],
         avatar_data, rightFingerPositions, isArpeggio, isAfterPlayed, hand_position, usedRightFingers, max_string_index)
 
     return result
-
-
-def caculateFingerPositionByHandPosition(H_R: np.ndarray, h3: np.ndarray, avatar_data: Any, finger_index: int, string_index: int) -> Any:
-    """
-    这是老版本的计算手指位置的方法：
-    参数：
-    H_R: 手掌位置
-    h3: 手掌在position 3 时的位置
-    avatar_data: avatar_data
-    finger_index: 指的索引，0表示T指，1表示I指，M表示m指，3表示A指
-    string_index: 弦的索引，用于定位和读取具体弦的方向向量值
-
-
-    ------------------------------------------------------------
-    这里需要解释一下为什么计算手指的位置需要这些参数：
-    计算手指的位置，是根据手掌在position 3 时的几个定位来确定的，这几个定位是：
-    h3,手掌在position 3时的位置
-    每个手指的方向球，也就是T_ball, I_ball, M_ball, R_ball
-    其中，I_ball,M_ball,R_ball与h3的连线，代表了拨弦时i,m,a指的运动方向
-    而p5，也就是p指在position 3 时的位置，与T_ball的连线，代表了拨弦时p指的运动方向
-
-    计算方法是：
-    通过每个手指的方向连线，以及运动方向的起点（p指起点是p5，其它手指是h3），再加上代表吉它指板normal方向的向量guitar_suface_vector，我们可以得到一个平面
-    然后再计算这个平面，与代表弦的直线string_line的交点，就是手指在拨弦时的起点。
-
-    当然，每次计算时，手掌位置不一定还在h3，而是已经实时更新到了H_R，所以我们要更新运动方向的起点，对于i,m,a指来讲，就是H_R。
-    对于p指来讲，就是偏移后的p5位置，它可以利用h3和H_R的offset量计算出。
-
-    到这里可以总结一下，如果是用手指演奏，需要以下几个定位来进行计算：
-    h0,h3，用来计算插值后的手掌位置H_R
-    position 2 时的所有定位，包括{"p": 4, "i": 2, "m": 1, "a": 0}，用来计算非演奏状态下手指的相对位置
-    position 3 时四个ball,也就是T_ball, I_ball, M_ball, R_ball，用来计算手指的运动方向
-
-    如果是用pick演奏，则只需要每根弦上p指的位置，H和T则作为pick的子级，不需要另外计算。
-    而且pick演奏时，即使是换弦，也不会影响H_P和T_P的位置。
-    """
-    direction_ball_list = ['T', 'I', 'M', 'R']
-    direction_ball_name = f"{direction_ball_list[finger_index]}_ball"
-    string_line_name = f"string_line_{string_index}"
-
-    direction_ball_location = array(
-        avatar_data['RIGHT_HAND_POSITIONS'][direction_ball_name])
-    p5 = array(avatar_data['RIGHT_HAND_POSITIONS']['p5'])
-    offset = H_R - h3
-    direction_line_location = H_R if finger_index != 0 else p5 + offset
-    direction_line_vector = direction_ball_location - \
-        h3 if finger_index != 0 else direction_ball_location - p5
-
-    string_line_location = array(
-        avatar_data['RIGHT_HAND_LINES'][string_line_name]['location'])
-    string_line_vector = array(
-        avatar_data['RIGHT_HAND_LINES'][string_line_name]['vector'])
-    guitar_suface_vector = array(
-        avatar_data['RIGHT_HAND_LINES']['guitar_surface']['vector'])
-
-    cross_point = get_cross_point(
-        direction_line_location, direction_line_vector, guitar_suface_vector, string_line_location, string_line_vector)
-
-    direction_line_vector = linalg.norm(direction_line_vector)
-
-    return cross_point, direction_line_vector
-
-
-def euler_to_rotation_matrix(euler_angles):
-    roll, pitch, yaw = euler_angles
-
-    Rx = np.array([[1, 0, 0],
-                   [0, np.cos(roll), -np.sin(roll)],
-                   [0, np.sin(roll), np.cos(roll)]])
-
-    Ry = np.array([[np.cos(pitch), 0, np.sin(pitch)],
-                   [0, 1, 0],
-                   [-np.sin(pitch), 0, np.cos(pitch)]])
-
-    Rz = np.array([[np.cos(yaw), -np.sin(yaw), 0],
-                   [np.sin(yaw), np.cos(yaw), 0],
-                   [0, 0, 1]])
-
-    R = np.dot(np.dot(Rz, Ry), Rx)
-
-    return R
-
-
-def get_transformation_matrix(position, euler_angles):
-    # 将旋转值转换为旋转矩阵
-    rotation_matrix = euler_to_rotation_matrix(euler_angles)
-
-    # 创建4x4的变换矩阵
-    transformation_matrix = np.eye(4)
-
-    # 将旋转矩阵和位置值填入变换矩阵
-    transformation_matrix[:3, :3] = rotation_matrix
-    transformation_matrix[:3, 3] = position
-
-    return transformation_matrix
 
 
 def calculateRightPick(avatar: str, stringIndex: int, isArpeggio: bool, should_stay_at_lower_position: bool, guitar_max_string_index: int = 5) -> Dict:
