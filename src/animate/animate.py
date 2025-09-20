@@ -535,13 +535,10 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int, ma
             played_frame = frame + elapsed_frame * time_multiplier
 
             played_finished_frame = None
-            hold_pose_frame = None
             if i != hand_count-1:
                 next_frame = handDicts[i + 1]['frame']
-                if next_frame > played_frame + elapsed_frame:
-                    played_finished_frame = played_frame + elapsed_frame
-                    if next_frame > played_finished_frame + elapsed_frame:
-                        hold_pose_frame = next_frame - elapsed_frame
+                if next_frame > played_frame + 2*elapsed_frame:  # 这个2 * elapsed_frame 相当于留给手掌移动到下一个位置的时间
+                    played_finished_frame = next_frame - 2 * elapsed_frame
 
             ready = caculateRightHandFingers(avatar_data,
                                              rightFingerPositions, usedFingers, max_string_index, isAfterPlayed=False)
@@ -561,17 +558,10 @@ def rightHand2Animation(avatar: str, recorder: str, animation: str, FPS: int, ma
                 "frame": played_frame,
                 "fingerInfos": played,
             })
-            # 拨弦后维持动作帧
+            # 拨弦后慢慢弹回来
             if played_finished_frame is not None:
                 data_for_animation.append({
                     "frame": played_finished_frame,
-                    "fingerInfos": played,
-                })
-
-            # 拨弦后返回准备状态帧
-            if hold_pose_frame is not None:
-                data_for_animation.append({
-                    "frame": hold_pose_frame,
                     "fingerInfos": ready,
                 })
 
