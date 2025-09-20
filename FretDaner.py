@@ -153,6 +153,8 @@ def generateRightHandRecoder(item, rightHandRecordPool, current_recoreder_num, p
         lastHand = handRecorder.currentHandPose()
         usedFingers = combination['usedFingers']
         rightFingerPositions = combination['rightFingerPositions']
+        if not lastHand.validateRightHandByFingerPositions(usedFingers, rightFingerPositions, True):
+            continue
         rightHand = RightHand(
             usedFingers, rightFingerPositions, lastHand.usedFingers, usedFingers == [])
 
