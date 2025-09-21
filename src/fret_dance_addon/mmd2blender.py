@@ -165,6 +165,11 @@ def create_finger_MCH_bones(armature):
                 # 检查是否存在mch_bone_name
 
     for bone in current_bones:
+        bone_copy_name = "MCH_" + bone.name
+        bone_copy = edit_bones.get(bone_copy_name)
+        if bone_copy:
+            print(f"{bone_copy_name} 已存在，无需创建")
+            continue
         # 复制骨骼
         bone_copy = bpy.context.object.data.edit_bones.new("MCH_" + bone.name)
         bone_copy.head = bone.head
