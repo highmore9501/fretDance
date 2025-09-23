@@ -81,18 +81,11 @@ def generateLeftHandRecoder(guitarNote, guitar: Guitar, handPoseRecordPool: Hand
             musice_note = MusicNote(note)
             print(musice_note.key)
 
-    # 如果无法生成正常的按法，就添加一个默认在第五品的A和弦按法。
-    # sunflower中第五把位Am按法 + 右手食指12品击弦，产生的音符是常规按法所无法生成的，所以这里用默认按法来填充。
+    # 如果无法生成正常的按法，就重复最后一个record
     if current_recoreder_num == 0:
-        defalut_fingers = [
-            LeftFinger(1, guitar.guitarStrings[5], 5, 'Barre'),
-            LeftFinger(1, guitar.guitarStrings[0], 5, 'Barre'),
-            LeftFinger(1, guitar.guitarStrings[1], 5, 'Barre'),
-            LeftFinger(2, guitar.guitarStrings[2], 6, 'Pressed'),
-            LeftFinger(3, guitar.guitarStrings[4], 7, 'Pressed'),
-            LeftFinger(4, guitar.guitarStrings[3], 7, 'Pressed')
-        ]
-        defalut_hand = LeftHand(defalut_fingers)
+
+        defalut_hand = handPoseRecordPool.preHandPoseRecordPool[-1].currentHandPose(
+        )
         for handrecoder in handPoseRecordPool.preHandPoseRecordPool:
             new_handrecoder = HandPoseRecorder()
             new_handrecoder.handPoseList = handrecoder.handPoseList + \
