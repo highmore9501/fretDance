@@ -202,24 +202,52 @@ def insert_values(fingerInfos):
 
 
 def animate_string(string_recorder: str):
+    guitar_name = 'guitar'
+    guitar_obj = bpy.data.objects.get(guitar_name, None)
+
+    # 判断模型类型：分离式（弦和吉他分开）还是合并式（弦和吉他合并）
+    model_type = "merged"  # 默认为合并式
+    separate_strings = {}  # 存储分离的弦对象
+
+    # 检查是否存在独立的弦对象
+    for i in range(0, 10):
+        string_obj = bpy.data.objects.get(f"string{i}", None)
+        if string_obj and string_obj != guitar_obj and string_obj.data.shape_keys:
+            separate_strings[i] = string_obj
+            model_type = "separate"  # 如果找到独立弦对象，则为分离式
 
     # 读取json文件
     bpy.context.scene.frame_set(0)  # 从第0帧开始动画，否则会出现插值问题
-    for i in range(0, 10):
-        current_string = bpy.data.objects.get(f"string{i}", None)
-        if current_string is None:
-            continue
-        # 将current_string上所有的shape_key值设置为0
-        for shape_key in current_string.data.shape_keys.key_blocks:
-            shape_key.value = 0
-            shape_key.keyframe_insert(data_path="value")
+
+    # 根据模型类型初始化shape key值
+    if model_type == "separate":
+        # 分离式：处理独立的弦对象
+        for string_index, string_obj in separate_strings.items():
+            for shape_key in string_obj.data.shape_keys.key_blocks:
+                shape_key.value = 0
+                shape_key.keyframe_insert(data_path="value")
+    else:
+        # 合并式：处理吉他对象上的shape key
+        if guitar_obj and guitar_obj.data.shape_keys:
+            for shape_key in guitar_obj.data.shape_keys.key_blocks:
+                shape_key.value = 0
+                shape_key.keyframe_insert(data_path="value")
+
+    print("model_type:", model_type)
 
     with open(string_recorder, "r") as f:
         stringDicts = json.load(f)
 
-        for item in stringDicts:
+        steps = len(stringDicts)
+
+        for i in range(steps):
+            item = stringDicts[i]
             if item["frame"] is None:
                 continue
+
+            if i % 100 == 0:  # 每隔100步打印一次进度
+                print(f"processing step {i}/{steps}")
+
             frame = int(item["frame"])
             stringIndex = item["stringIndex"]
             fret = item["fret"]
@@ -228,7 +256,13 @@ def animate_string(string_recorder: str):
             # 设置时间
             bpy.context.scene.frame_set(frame)
 
-            current_string = bpy.data.objects[f"string{stringIndex}"]
+            if model_type == "separate":
+                # 分离式模型处理
+                current_string = separate_strings.get(stringIndex, None)
+            else:
+                # 合并式模型处理
+                current_string = guitar_obj
+
             if current_string:
                 # 新增功能：检查并设置自定义属性"is_vib"
                 if "is_vib" in current_string:
@@ -237,24 +271,27 @@ def animate_string(string_recorder: str):
 
                 shape_key_name = f's{stringIndex}fret{fret}'
                 current_shape_key = current_string.data.shape_keys.key_blocks.get(
-                    shape_key_name, None)
+                    shape_key_name, None) if current_string.data.shape_keys else None
+
                 if current_shape_key:
                     # 设置形状关键帧
                     current_shape_key.value = influence
                     current_shape_key.keyframe_insert(data_path="value")
                 else:
                     biggest_shape_key_name = f's{stringIndex}fret20'
-                    biggest_shape_key = current_string.data.shape_keys.key_blocks[
-                        biggest_shape_key_name]
-                    if biggest_shape_key:
-                        biggest_shape_key.value = influence
-                        biggest_shape_key.keyframe_insert(data_path="value")
+                    if current_string.data.shape_keys:
+                        biggest_shape_key = current_string.data.shape_keys.key_blocks.get(
+                            biggest_shape_key_name, None)
+                        if biggest_shape_key:
+                            biggest_shape_key.value = influence
+                            biggest_shape_key.keyframe_insert(
+                                data_path="value")
 
 
 # 从外部读取json文件
-avatar = 'rem'
-midi_name = "エケステンドアッシュ-蓬莱人"
-track_number = [3]
+avatar = '神里绫华-花时来信'
+midi_name = "妖怪之山"
+track_number = [2, 5]
 
 track_number_string = "_".join([str(track) for track in track_number]) if len(
     track_number) > 1 else str(track_number[0])
