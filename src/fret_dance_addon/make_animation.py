@@ -203,7 +203,10 @@ def insert_values(fingerInfos):
 
 def animate_string(string_recorder: str):
     guitar_name = 'guitar'
+    bass_name = 'bass'
     guitar_obj = bpy.data.objects.get(guitar_name, None)
+    if not guitar_obj:
+        guitar_obj = bpy.data.objects.get(bass_name, None)
 
     # 判断模型类型：分离式（弦和吉他分开）还是合并式（弦和吉他合并）
     model_type = "merged"  # 默认为合并式
@@ -289,9 +292,9 @@ def animate_string(string_recorder: str):
 
 
 # 从外部读取json文件
-avatar = '神里绫华-花时来信'
+avatar = '荧_B'
 midi_name = "妖怪之山"
-track_number = [2, 5]
+track_number = [8]
 
 track_number_string = "_".join([str(track) for track in track_number]) if len(
     track_number) > 1 else str(track_number[0])
