@@ -306,8 +306,6 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
         P1 = array(avatar_data['LEFT_FINGER_POSITIONS']['P1'])
         P2 = array(avatar_data['LEFT_FINGER_POSITIONS']['P2'])
         P3 = array(avatar_data['LEFT_FINGER_POSITIONS']['P3'])
-        string_direction = P2 - P0
-        string_direction = string_direction / np.linalg.norm(string_direction)
 
         t0 = array(avatar_data['RIGHT_HAND_POSITIONS']['p0'])
         t3 = array(avatar_data['RIGHT_HAND_POSITIONS']['p3'])
@@ -397,10 +395,21 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
         # ch指是不参与演奏的，所以直接使用休息位置
         P_R = ch_rest_position
 
-    # 给拨弦后的手掌添加一点移动
-    h_move = f_move if f_move is not None else t_move
-    if h_move is not None and isAfterPlayed:
-        H_R = H_R - h_move * fingerMoveDistanceWhilePlay * 0.25
+        # 给拨弦后的手掌添加一点移动，这个移动适用于所有不参与演奏的手指以及手掌自己
+        h_move = f_move if f_move is not None else t_move
+        if h_move is not None and isAfterPlayed:
+            h_move = h_move * fingerMoveDistanceWhilePlay * 0.25
+            H_R = H_R - h_move
+
+            if "p" not in used_right_fingers:
+                T_R -= h_move
+
+            # 处理ima三个手指的拨弦，它们的逻辑是相似的
+            for finger_char, finger_idx, rest_pos in finger_configs:
+                # 小拇指的英文缩写和吉他用语里的左手小拇指不一样，导致这个判断的写法会啰嗦一点
+                if finger_char not in used_right_fingers and (finger_char != 'r' or 'a' not in used_right_fingers):
+                    finger_results[finger_char.upper(
+                    ) + '_R'] -= h_move
 
     result.update({
         'H_R': H_R.tolist(),
