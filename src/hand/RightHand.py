@@ -245,7 +245,8 @@ def new_finger_position_method(avatar_data: Any, rightFingerPositions: List[int]
     t_move = None
     f_move = None
     # 定义手指运动的距离，是P0和P1之间的距离的8分之1，相当于0.725的弦距
-    fingerMoveDistanceWhilePlay = np.linalg.norm(P0 - P1) / 8
+    fingerMoveDistanceWhilePlay = 0.725 * \
+        np.linalg.norm(P0 - P1) / (max_string_index+1)
 
     if isArpeggio:
         if isAfterPlayed:
