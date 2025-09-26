@@ -102,7 +102,7 @@ def midiToGuitarNotes(midiFilePath: str, useTracks: List[int], useChannel: int =
     for midTrack in midTracks:
         note = []
         real_tick: float = 0
-        pre_tick: float = 0
+        current_tick: float = 0  # 当前正在处理的音符时间点
         for message in midTrack:
             ticks = message.time
             real_tick += ticks
@@ -113,24 +113,34 @@ def midiToGuitarNotes(midiFilePath: str, useTracks: List[int], useChannel: int =
             if message.channel == useChannel or useChannel == -1:
                 messages.append(
                     {'message': str(message), 'real_tick': real_tick})
+
                 if message.type == 'note_on':
+                    # 如果当前时间与之前记录的时间不同，说明是新的一组音符
+                    if current_tick != real_tick and len(note) > 0:
+                        # 保存之前收集的音符
+                        notes = sorted(note)
+                        notes_map.append(
+                            {"notes": notes, "real_tick": current_tick})
+                        note = []  # 重置音符列表
+
+                    # 更新当前时间点
+                    current_tick = real_tick
+
+                    # 添加新音符
                     message_note = message.note if not octave_down_checkbox else message.note - 12
                     message_note -= capo_number
                     note.append(message_note)
                 else:
-                    # 结束音符的收集
-                    if len(note) == 0:
-                        continue
-                    # 将note里的元素按大小排序
-                    notes = sorted(note)
-                    notes_map.append({"notes": notes, "real_tick": pre_tick})
-                    note = []
+                    # 处理非note_on事件，如果当前有音符则保存
+                    if len(note) > 0:
+                        notes = sorted(note)
+                        notes_map.append(
+                            {"notes": notes, "real_tick": current_tick})
+                        note = []
 
                 if message.type == 'pitchwheel':
                     pitch_wheel_map.append(
-                        {"pitchwheel": message.pitch, "real_tick": pre_tick})
-
-            pre_tick = real_tick
+                        {"pitchwheel": message.pitch, "real_tick": real_tick})
 
     # notes_map，pitch_wheel_map,messages都按real_tick排序
     notes_map = sorted(notes_map, key=lambda x: x['real_tick'])
