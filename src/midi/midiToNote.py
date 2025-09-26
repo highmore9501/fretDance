@@ -142,6 +142,11 @@ def midiToGuitarNotes(midiFilePath: str, useTracks: List[int], useChannel: int =
                     pitch_wheel_map.append(
                         {"pitchwheel": message.pitch, "real_tick": real_tick})
 
+        # 处理循环结束后可能剩余的音符
+        if len(note) > 0:
+            notes = sorted(note)
+            notes_map.append({"notes": notes, "real_tick": current_tick})
+
     # notes_map，pitch_wheel_map,messages都按real_tick排序
     notes_map = sorted(notes_map, key=lambda x: x['real_tick'])
     pitch_wheel_map = sorted(pitch_wheel_map, key=lambda x: x['real_tick'])
