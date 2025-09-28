@@ -62,21 +62,51 @@ def get_tempo_changes(midiFilePath: str):
 
 
 def export_midi_info(midi_name: str) -> str:
-    midiFilePath = 'asset/midi/' + midi_name+'.mid'
+    midiFilePath = 'asset/midi/' + midi_name + '.mid'
     result = ''
     midFile = MidiFile(midiFilePath)
+
+    # 用于统计每个channel的note_on事件数量
+    note_count_by_channel = {}
+
+    # 存储每个(track, channel)组合最新的乐器
+    channel_instruments = {}
 
     with open('output/current_midi_info.txt', 'w', encoding='utf-8') as f:
         for message in midFile.tracks[0]:
             f.write(str(message) + '\n')
 
+    # 统计所有note_on消息
+    for i, track in enumerate(midFile.tracks):
+        for msg in track:
+            if msg.type == 'note_on':
+                channel = msg.channel
+                if channel not in note_count_by_channel:
+                    note_count_by_channel[channel] = 0
+                note_count_by_channel[channel] += 1
+
+    # 跟踪每个channel最后使用的乐器
     for i, track in enumerate(midFile.tracks):
         result += f'Track {i}: {track.name}\n'
         for msg in track:
             if msg.type == 'program_change':
-                channel = msg.channel
-                instrument = MIDI_INSTRUMENTS[msg.program]
-                result += f'Track {i}, Channel {channel}: {instrument}\n'
+                channel_instruments[(i, msg.channel)
+                                    ] = MIDI_INSTRUMENTS[msg.program]
+
+    # 生成带note数量的乐器信息
+    # 先创建一个按channel聚合的乐器信息
+    channel_latest_instrument = {}
+    for (track, channel), instrument in channel_instruments.items():
+        channel_latest_instrument[channel] = instrument
+
+    # 输出每个channel的信息
+    for channel in sorted(note_count_by_channel.keys()):
+        note_count = note_count_by_channel[channel]
+        if channel in channel_latest_instrument:
+            instrument = channel_latest_instrument[channel]
+            result += f'Channel {channel}: {instrument} ({note_count} notes)\n'
+        else:
+            result += f'Channel {channel}: Unknown instrument ({note_count} notes)\n'
 
     return result
 
