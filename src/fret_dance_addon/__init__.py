@@ -1,9 +1,11 @@
 # g:\fretDance\src\blender\__init__.py
 import os
+import json
 import bpy  # type: ignore
 from bpy.types import Panel, Operator  # type: ignore
 from bpy.props import EnumProperty, StringProperty  # type: ignore
 from bpy_extras.io_utils import ImportHelper, ExportHelper  # type: ignore
+from .make_animation import clear_all_keyframe, clear_string_aniamtion, animate_hand, animate_string
 
 # 使用相对导入
 from .base_states import BaseState, Instruments, BasePositions, LeftHandStates, RightHandStates
@@ -23,7 +25,7 @@ bl_info = {
 class FRET_DANCE_OT_setup_objects(Operator):
     """Setup all controller and recorder objects"""
     bl_idname = "fret_dance.setup_objects"
-    bl_label = "Setup addons"
+    bl_label = "设置控制与记录器"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -37,7 +39,7 @@ class FRET_DANCE_OT_setup_objects(Operator):
 class FRET_DANCE_OT_check_status(Operator):
     """Check the status of controller and recorder objects"""
     bl_idname = "fret_dance.check_status"
-    bl_label = "Check Status"
+    bl_label = "检查状态"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -199,6 +201,261 @@ class FRET_DANCE_OT_import_info(Operator, ImportHelper):
         return {'FINISHED'}
 
 
+class FRET_DANCE_OT_select_animation_file(Operator, ImportHelper):
+    """Select animation configuration file"""
+    bl_idname = "fret_dance.select_animation_file"
+    bl_label = "Select Animation Config"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # ImportHelper mixin class uses this
+    filename_ext = ".json"
+
+    __annotations__ = {
+        "filter_glob": StringProperty(
+            default="*.json",
+            options={'HIDDEN'},
+            maxlen=255,
+        )
+    }
+
+    def execute(self, context):
+
+        # 验证JSON文件结构
+        try:
+            with open(self.filepath, 'r') as f:
+                data = json.load(f)
+
+            # 检查必需的键是否存在
+            required_keys = [
+                "guitar_string_recorder_file",
+                "left_hand_animation_file",
+                "right_hand_animation_file"
+            ]
+
+            missing_keys = []
+            for key in required_keys:
+                if key not in data:
+                    missing_keys.append(key)
+
+            if missing_keys:
+                self.report(
+                    {'ERROR'}, f"Missing keys in JSON file: {', '.join(missing_keys)}")
+                return {'CANCELLED'}
+
+            # 检查文件路径是否存在
+            missing_files = []
+            for key in required_keys:
+                file_path = data[key]
+                if not os.path.exists(file_path):
+                    missing_files.append(file_path)
+
+            if missing_files:
+                self.report(
+                    {'WARNING'}, f"Following files not found: {', '.join(missing_files)}")
+
+            self.report({'INFO'}, "Animation config file loaded successfully")
+            # 设置选中的文件路径
+            context.scene.fret_dance_animation_file = self.filepath
+            return {'FINISHED'}
+
+        except json.JSONDecodeError as e:
+            self.report({'ERROR'}, f"Invalid JSON format: {str(e)}")
+            return {'CANCELLED'}
+        except Exception as e:
+            self.report({'ERROR'}, f"Error reading file: {str(e)}")
+            return {'CANCELLED'}
+
+
+class FRET_DANCE_OT_generate_left_hand_animation(Operator):
+    """Generate left hand animation from selected config file"""
+    bl_idname = "fret_dance.generate_left_hand_animation"
+    bl_label = "Generate Left Hand Animation"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        config_path = scene.fret_dance_animation_file
+
+        # 检查是否选择了配置文件
+        if not config_path or not os.path.exists(config_path):
+            self.report(
+                {'ERROR'}, "Please select a valid animation configuration file")
+            return {'CANCELLED'}
+
+        try:
+            # 读取配置文件
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+
+            # 清除左手现有关键帧
+            clear_all_keyframe("Left_Hand_Controllers")
+
+            # 应用左手动画数据
+            if 'left_hand_animation_file' in config and os.path.exists(config['left_hand_animation_file']):
+                animate_hand(config['left_hand_animation_file'])
+                self.report(
+                    {'INFO'}, "Left hand animation generation completed")
+            else:
+                self.report(
+                    {'WARNING'}, "Left hand animation file not found or specified")
+                return {'CANCELLED'}
+
+            return {'FINISHED'}
+
+        except Exception as e:
+            self.report(
+                {'ERROR'}, f"Failed to generate left hand animation: {str(e)}")
+            return {'CANCELLED'}
+
+
+class FRET_DANCE_OT_generate_right_hand_animation(Operator):
+    """Generate right hand animation from selected config file"""
+    bl_idname = "fret_dance.generate_right_hand_animation"
+    bl_label = "Generate Right Hand Animation"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        config_path = scene.fret_dance_animation_file
+
+        # 检查是否选择了配置文件
+        if not config_path or not os.path.exists(config_path):
+            self.report(
+                {'ERROR'}, "Please select a valid animation configuration file")
+            return {'CANCELLED'}
+
+        try:
+            # 读取配置文件
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+
+            # 清除右手现有关键帧
+            clear_all_keyframe("Right_Hand_Controllers")
+
+            # 应用右手动画数据
+            if 'right_hand_animation_file' in config and os.path.exists(config['right_hand_animation_file']):
+                animate_hand(
+                    config['right_hand_animation_file'])
+                self.report(
+                    {'INFO'}, "Right hand animation generation completed")
+            else:
+                self.report(
+                    {'WARNING'}, "Right hand animation file not found or specified")
+                return {'CANCELLED'}
+
+            return {'FINISHED'}
+
+        except Exception as e:
+            self.report(
+                {'ERROR'}, f"Failed to generate right hand animation: {str(e)}")
+            return {'CANCELLED'}
+
+
+class FRET_DANCE_OT_generate_string_animation(Operator):
+    """Generate string animation from selected config file"""
+    bl_idname = "fret_dance.generate_string_animation"
+    bl_label = "Generate String Animation"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        config_path = scene.fret_dance_animation_file
+
+        # 检查是否选择了配置文件
+        if not config_path or not os.path.exists(config_path):
+            self.report(
+                {'ERROR'}, "Please select a valid animation configuration file")
+            return {'CANCELLED'}
+
+        try:
+            # 读取配置文件
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+
+            clear_string_aniamtion()
+
+            # 应用弦动画数据
+            if 'guitar_string_recorder_file' in config and os.path.exists(config['guitar_string_recorder_file']):
+                animate_string(
+                    config['guitar_string_recorder_file'])
+                self.report({'INFO'}, "String animation generation completed")
+            else:
+                self.report(
+                    {'WARNING'}, "String animation file not found or specified")
+                return {'CANCELLED'}
+
+            return {'FINISHED'}
+
+        except Exception as e:
+            self.report(
+                {'ERROR'}, f"Failed to generate string animation: {str(e)}")
+            return {'CANCELLED'}
+
+
+class FRET_DANCE_OT_generate_all_animation(Operator):
+    """Generate all animations from selected config file"""
+    bl_idname = "fret_dance.generate_all_animation"
+    bl_label = "Generate All Animations"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        config_path = scene.fret_dance_animation_file
+
+        # 检查是否选择了配置文件
+        if not config_path or not os.path.exists(config_path):
+            self.report(
+                {'ERROR'}, "Please select a valid animation configuration file")
+            return {'CANCELLED'}
+
+        try:
+            # 读取配置文件
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+
+            # 清除所有现有关键帧
+            clear_all_keyframe("Left_Hand_Controllers")
+            clear_all_keyframe("Right_Hand_Controllers")
+            clear_string_aniamtion()
+
+            # 应用所有动画数据
+            success_count = 0
+
+            if 'left_hand_animation_file' in config and os.path.exists(config['left_hand_animation_file']):
+                animate_hand(config['left_hand_animation_file'])
+                success_count += 1
+            else:
+                self.report(
+                    {'WARNING'}, "Left hand animation file not found or specified")
+
+            if 'right_hand_animation_file' in config and os.path.exists(config['right_hand_animation_file']):
+                animate_hand(
+                    config['right_hand_animation_file'])
+                success_count += 1
+            else:
+                self.report(
+                    {'WARNING'}, "Right hand animation file not found or specified")
+
+            if 'guitar_string_recorder_file' in config and os.path.exists(config['guitar_string_recorder_file']):
+                animate_string(
+                    config['guitar_string_recorder_file'])
+                success_count += 1
+            else:
+                self.report(
+                    {'WARNING'}, "String animation file not found or specified")
+
+            if success_count > 0:
+                self.report({'INFO'}, "All animations generation completed")
+                return {'FINISHED'}
+            else:
+                self.report({'ERROR'}, "No animation files found or specified")
+                return {'CANCELLED'}
+
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to generate animations: {str(e)}")
+            return {'CANCELLED'}
+
+
 class FRET_DANCE_PT_main_panel(Panel):
     """Creates a Panel in the 3D View sidebar"""
     bl_label = "FretDance Controller Setup"
@@ -213,7 +470,7 @@ class FRET_DANCE_PT_main_panel(Panel):
 
         # 第一大块：INIT
         box = layout.box()
-        box.label(text="init", icon='TOOL_SETTINGS')
+        box.label(text="初始化", icon='TOOL_SETTINGS')
         row = box.row()
         row.prop(scene, "fret_dance_instruments")
         row = box.row(align=True)
@@ -224,7 +481,7 @@ class FRET_DANCE_PT_main_panel(Panel):
 
         # 第二大块：Choose left hand state
         box = layout.box()
-        box.label(text="Choose Left Hand State", icon='HAND')
+        box.label(text="选择左手状态", icon='HAND')
         row = box.row()
         row.prop(scene, "fret_dance_base_positions")
         row = box.row()
@@ -232,23 +489,42 @@ class FRET_DANCE_PT_main_panel(Panel):
 
         # 第三大块：Choose right hand state
         box = layout.box()
-        box.label(text="Choose Right Hand State", icon='RIGHTARROW_THIN')
+        box.label(text="选择右手状态", icon='RIGHTARROW_THIN')
         row = box.row()
         row.prop(scene, "fret_dance_right_hand_states")
 
         # 第四大块：Set and Load
         box = layout.box()
-        box.label(text="Set and Load", icon='FILE_REFRESH')
+        box.label(text="设置与加载", icon='FILE_REFRESH')
         row = box.row(align=True)
         row.operator("fret_dance.set_state")
         row.operator("fret_dance.load_state")
 
         # 保存控制信息
         box = layout.box()
-        box.label(text="Import and Export Controller Info", icon='EXPORT')
+        box.label(text="导入/导出人物信息", icon='EXPORT')
         row = box.row(align=True)
-        row.operator("fret_dance.import_info", text="Import")
-        row.operator("fret_dance.export_info", text="Export")
+        row.operator("fret_dance.import_info", text="导入")
+        row.operator("fret_dance.export_info", text="导出")
+
+        # 动画生成部分
+        box = layout.box()
+        box.label(text="生成动画", icon='PLAY')
+        row = box.row()
+        row.prop(scene, "fret_dance_animation_file", text="")
+        row = box.row()
+        row.operator("fret_dance.select_animation_file", text="选择动画文件")
+
+        row = box.row(align=True)
+        row.operator("fret_dance.generate_left_hand_animation",
+                     text="左手动画")
+        row.operator("fret_dance.generate_right_hand_animation",
+                     text="右手动画")
+
+        row = box.row(align=True)
+        row.operator("fret_dance.generate_string_animation", text="弦动画")
+        row = box.row()
+        row.operator("fret_dance.generate_all_animation", text="一键生成全部动画")
 
 
 def register():
@@ -299,6 +575,12 @@ def register():
         default='0'
     )
 
+    bpy.types.Scene.fret_dance_animation_file = StringProperty(
+        name="Animation Config File",
+        description="Path to animation configuration JSON file",
+        subtype='FILE_PATH'
+    )
+
     # 注册类
     bpy.utils.register_class(FRET_DANCE_OT_setup_objects)
     bpy.utils.register_class(FRET_DANCE_OT_check_status)
@@ -308,6 +590,11 @@ def register():
     bpy.utils.register_class(FRET_DANCE_OT_import_info)
     bpy.utils.register_class(WM_OT_mmd2blender_initialize)
     bpy.utils.register_class(FRET_DANCE_PT_main_panel)
+    bpy.utils.register_class(FRET_DANCE_OT_select_animation_file)
+    bpy.utils.register_class(FRET_DANCE_OT_generate_left_hand_animation)
+    bpy.utils.register_class(FRET_DANCE_OT_generate_right_hand_animation)
+    bpy.utils.register_class(FRET_DANCE_OT_generate_string_animation)
+    bpy.utils.register_class(FRET_DANCE_OT_generate_all_animation)
 
 
 def unregister():
@@ -320,12 +607,18 @@ def unregister():
     bpy.utils.unregister_class(FRET_DANCE_OT_check_status)
     bpy.utils.unregister_class(FRET_DANCE_OT_setup_objects)
     bpy.utils.unregister_class(WM_OT_mmd2blender_initialize)
+    bpy.utils.unregister_class(FRET_DANCE_OT_select_animation_file)
+    bpy.utils.unregister_class(FRET_DANCE_OT_generate_all_animation)
+    bpy.utils.unregister_class(FRET_DANCE_OT_generate_string_animation)
+    bpy.utils.unregister_class(FRET_DANCE_OT_generate_right_hand_animation)
+    bpy.utils.unregister_class(FRET_DANCE_OT_generate_left_hand_animation)
 
     # 删除属性
     del bpy.types.Scene.fret_dance_instruments
     del bpy.types.Scene.fret_dance_base_positions
     del bpy.types.Scene.fret_dance_left_hand_states
     del bpy.types.Scene.fret_dance_right_hand_states
+    del bpy.types.Scene.fret_dance_animation_file
 
 
 if __name__ == "__main__":

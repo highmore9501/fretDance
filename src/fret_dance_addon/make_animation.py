@@ -291,20 +291,83 @@ def animate_string(string_recorder: str):
                                 data_path="value")
 
 
-# 从外部读取json文件
-avatar = '荧_B'
-midi_name = "妖怪之山"
-track_number = [8]
+def clear_string_aniamtion():
+    """
+    查找场景中带有特定shape key的物体列表，并清理这些shape key上的关键帧。
+    这些shape key名字是`s0fret21`,`s1fret21`,`s2fret21`...，s后面的数字一直增加，
+    直到找不到为止。找到后清理这些shape key上的关键帧。
 
-track_number_string = "_".join([str(track) for track in track_number]) if len(
-    track_number) > 1 else str(track_number[0])
+    Returns:
+        list[str]: 包含目标shape key的物体名称列表
 
-left_hand_animation_file = f"G:/fretDance/output/hand_animation/{avatar}_{midi_name}_{track_number_string}_lefthand_animation.json"
-right_hand_animation_file = f"G:/fretDance/output/hand_animation/{avatar}_{midi_name}_{track_number_string}_righthand_animation.json"
-guitar_string_recorder_file = f"G:/fretDance/output/string_recorder/{midi_name}_{track_number_string}_guitar_string_recorder.json"
+    Raises:
+        RuntimeError: 如果找不到任何带有目标shape key的物体
+    """
+    # 存储找到的物体名称
+    objects_with_shape_keys = set()  # 使用集合自动去重
+
+    # 从0开始递增查找
+    index = 0
+    while True:
+        shape_key_name = f"s{index}fret21"
+        found = False
+
+        # 遍历场景中的所有物体
+        for obj in bpy.data.objects:
+            # 检查物体是否有shape keys
+            if obj.data and hasattr(obj.data, 'shape_keys') and obj.data.shape_keys:
+                # 检查shape key是否存在
+                if shape_key_name in obj.data.shape_keys.key_blocks:
+                    objects_with_shape_keys.add(obj.name)
+                    # 清理该shape key上的关键帧，参考clear_all_keyframe中的方法
+                    shape_key_block = obj.data.shape_keys.key_blocks[shape_key_name]
+                    shape_key_block.value = 0.0  # 归零shape key值
+
+                    # 清除形态键动画数据
+                    if obj.data.shape_keys.animation_data:
+                        if obj.data.shape_keys.animation_data.action:
+                            fcurves_to_remove = []
+                            for fcurve in obj.data.shape_keys.animation_data.action.fcurves:
+                                if fcurve.data_path == "key_blocks[\"{}\"].value".format(shape_key_name):
+                                    fcurve.keyframe_points.clear()
+                                    # 如果这条fcurve已经没有关键帧，标记为待删除
+                                    if len(fcurve.keyframe_points) == 0:
+                                        fcurves_to_remove.append(fcurve)
+
+                            # 删除空的fcurve
+                            for fcurve in fcurves_to_remove:
+                                obj.data.shape_keys.animation_data.action.fcurves.remove(
+                                    fcurve)
+                    found = True
+
+        # 如果没找到当前索引的shape key，则停止查找
+        if not found:
+            break
+
+        index += 1
+
+    # 如果没有找到任何物体
+    if not objects_with_shape_keys:
+        raise RuntimeError("找不到带有弦动画的物体")
+
+    return list(objects_with_shape_keys)
 
 
-clear_all_keyframe()
-animate_hand(left_hand_animation_file)
-animate_hand(right_hand_animation_file)
-animate_string(guitar_string_recorder_file)
+if __name__ == "__main__":
+
+    # 从外部读取json文件
+    avatar = '荧_B'
+    midi_name = "妖怪之山"
+    track_number = [8]
+
+    track_number_string = "_".join([str(track) for track in track_number]) if len(
+        track_number) > 1 else str(track_number[0])
+
+    left_hand_animation_file = f"G:/fretDance/output/hand_animation/{avatar}_{midi_name}_{track_number_string}_lefthand_animation.json"
+    right_hand_animation_file = f"G:/fretDance/output/hand_animation/{avatar}_{midi_name}_{track_number_string}_righthand_animation.json"
+    guitar_string_recorder_file = f"G:/fretDance/output/string_recorder/{midi_name}_{track_number_string}_guitar_string_recorder.json"
+
+    clear_all_keyframe()
+    animate_hand(left_hand_animation_file)
+    animate_hand(right_hand_animation_file)
+    animate_string(guitar_string_recorder_file)
