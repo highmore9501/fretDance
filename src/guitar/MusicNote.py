@@ -58,7 +58,9 @@ def getCurrentKeynotes(octave: int) -> dict[str, int]:
         if octave == 0:
             newkey = key
         elif octave > 0:
-            newkey = (key[0] + str(octave) + key[1:]).lower()
+            octave = octave - 1
+            newkey = (key[0] + str(octave) + key[1:]
+                      ).lower() if octave > 0 else key.lower()
         else:
             newkey = key[0] + str(-octave) + key[1:]
         current_keynotes[newkey] = value + 12 * octave
