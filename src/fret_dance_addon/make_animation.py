@@ -291,11 +291,11 @@ def animate_string(string_recorder: str):
                                 data_path="value")
 
 
-def clear_string_aniamtion():
+def clear_string_animation():
     """
-    查找场景中带有特定shape key的物体列表，并清理这些shape key上的关键帧。
-    这些shape key名字是`s0fret21`,`s1fret21`,`s2fret21`...，s后面的数字一直增加，
-    直到找不到为止。找到后清理这些shape key上的关键帧。
+    查找场景中带有特定shape key的物体列表，并清理这些物体上所有shape key的关键帧。
+    这些shape key名字是`s0fret20`,`s1fret20`,`s2fret20`...，s后面的数字一直增加，
+    直到找不到为止。找到后清理这些物体上所有shape key的关键帧。
 
     Returns:
         list[str]: 包含目标shape key的物体名称列表
@@ -309,7 +309,7 @@ def clear_string_aniamtion():
     # 从0开始递增查找
     index = 0
     while True:
-        shape_key_name = f"s{index}fret21"
+        shape_key_name = f"s{index}fret20"
         found = False
 
         # 遍历场景中的所有物体
@@ -319,25 +319,6 @@ def clear_string_aniamtion():
                 # 检查shape key是否存在
                 if shape_key_name in obj.data.shape_keys.key_blocks:
                     objects_with_shape_keys.add(obj.name)
-                    # 清理该shape key上的关键帧，参考clear_all_keyframe中的方法
-                    shape_key_block = obj.data.shape_keys.key_blocks[shape_key_name]
-                    shape_key_block.value = 0.0  # 归零shape key值
-
-                    # 清除形态键动画数据
-                    if obj.data.shape_keys.animation_data:
-                        if obj.data.shape_keys.animation_data.action:
-                            fcurves_to_remove = []
-                            for fcurve in obj.data.shape_keys.animation_data.action.fcurves:
-                                if fcurve.data_path == "key_blocks[\"{}\"].value".format(shape_key_name):
-                                    fcurve.keyframe_points.clear()
-                                    # 如果这条fcurve已经没有关键帧，标记为待删除
-                                    if len(fcurve.keyframe_points) == 0:
-                                        fcurves_to_remove.append(fcurve)
-
-                            # 删除空的fcurve
-                            for fcurve in fcurves_to_remove:
-                                obj.data.shape_keys.animation_data.action.fcurves.remove(
-                                    fcurve)
                     found = True
 
         # 如果没找到当前索引的shape key，则停止查找
@@ -345,6 +326,39 @@ def clear_string_aniamtion():
             break
 
         index += 1
+
+    # 清除找到的物体上所有shape key的动画
+    for obj_name in objects_with_shape_keys:
+        obj = bpy.data.objects.get(obj_name)
+        if obj and obj.data and hasattr(obj.data, 'shape_keys') and obj.data.shape_keys:
+            # 首先归零所有shape key的值
+            for shape_key_block in obj.data.shape_keys.key_blocks:
+                shape_key_block.value = 0.0
+
+            # 清除所有shape key动画数据
+            if obj.data.shape_keys.animation_data:
+                if obj.data.shape_keys.animation_data.action:
+                    # 清除所有fcurve上的关键帧
+                    for fcurve in obj.data.shape_keys.animation_data.action.fcurves:
+                        fcurve.keyframe_points.clear()
+
+                # 清除形态键动画数据
+                obj.data.shape_keys.animation_data_clear()
+
+        # 处理 is_vib 自定义属性动画
+        if obj and "is_vib" in obj:
+            obj["is_vib"] = 0.0
+            if obj.animation_data and obj.animation_data.action:
+                fcurves_to_remove = []
+                for fcurve in obj.animation_data.action.fcurves:
+                    if '["is_vib"]' in fcurve.data_path:
+                        fcurve.keyframe_points.clear()
+                        if len(fcurve.keyframe_points) == 0:
+                            fcurves_to_remove.append(fcurve)
+
+                # 删除空的fcurve
+                for fcurve in fcurves_to_remove:
+                    obj.animation_data.action.fcurves.remove(fcurve)
 
     # 如果没有找到任何物体
     if not objects_with_shape_keys:

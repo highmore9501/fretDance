@@ -5,7 +5,7 @@ import bpy  # type: ignore
 from bpy.types import Panel, Operator  # type: ignore
 from bpy.props import EnumProperty, StringProperty  # type: ignore
 from bpy_extras.io_utils import ImportHelper, ExportHelper  # type: ignore
-from .make_animation import clear_all_keyframe, clear_string_aniamtion, animate_hand, animate_string
+from .make_animation import clear_all_keyframe, clear_string_animation, animate_hand, animate_string
 
 # 使用相对导入
 from .base_states import BaseState, Instruments, BasePositions, LeftHandStates, RightHandStates
@@ -372,7 +372,7 @@ class FRET_DANCE_OT_generate_string_animation(Operator):
             with open(config_path, 'r') as f:
                 config = json.load(f)
 
-            clear_string_aniamtion()
+            clear_string_animation()
 
             # 应用弦动画数据
             if 'guitar_string_recorder_file' in config and os.path.exists(config['guitar_string_recorder_file']):
@@ -416,7 +416,7 @@ class FRET_DANCE_OT_generate_all_animation(Operator):
             # 清除所有现有关键帧
             clear_all_keyframe("Left_Hand_Controllers")
             clear_all_keyframe("Right_Hand_Controllers")
-            clear_string_aniamtion()
+            clear_string_animation()
 
             # 应用所有动画数据
             success_count = 0
