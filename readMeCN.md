@@ -1,5 +1,8 @@
 ## FretDance
 
+因为已经用 rust 重写并新增了 UI,所以 python 版本不再更新。但 blender 的 addon 会继续更新。
+rust 版本: [fretDance_rust](https://github.com/highmore9501/fretDance_rust)
+
 电吉他演奏视频: [芙宁娜-少女绮想曲](https://www.bilibili.com/video/BV183t9zXEu6/)
 
 古典吉他演奏视频: [婕德-鸟之诗](https://www.bilibili.com/video/BV1HmY6zEEwZ/)

@@ -4,6 +4,9 @@
 
 [中文说明点击这里](readMeCN.md)
 
+Because this project is rewritten with Rust,so the Python version is no longer maintained.But the blender plugin is still available.
+portal to Rust Version: [fretDance Rust](https://github.com/highmore9501/fretDance_rust)
+
 Electric Guitar Performance Video: [Furina - Maiden's Capriccio](https://www.bilibili.com/video/BV183t9zXEu6/)
 
 Classical Guitar Performance Video: [Jeht - Bird's Poem](https://www.bilibili.com/video/BV1HmY6zEEwZ/)
