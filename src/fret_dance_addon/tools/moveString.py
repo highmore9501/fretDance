@@ -80,7 +80,7 @@ def rename_shape_key():
             shape_key.name = f"s{current_string_index}" + shape_key_name
 
 
-def make_string_shape_keys(num_divisions: int = 80, offset_ratio: float = 0.0025):
+def make_string_shape_keys(num_divisions: int = 80, offset_ratio: float = 0.05):
     current_object = bpy.context.object
 
     # 计算弦的实际长度

@@ -21,6 +21,18 @@ value_map = {
     "X": "None"
 }
 
+value_map_for_mmd = {
+    'X': '口横広げ',   # 空闲位置
+    'A': 'ω',         # 闭合唇音 P/B/M
+    'B': 'い',        # 微开齿音 K/S/T
+    'C': 'え',        # 中等开口 EH/AE
+    'D': 'あ',        # 大开口 AA
+    'E': 'お',        # 圆唇音 AO/ER
+    'F': 'う',        # 撅唇音 UW/OW/W
+    'G': '口横缩げ',  # F/V音（可选）
+    'H': 'ぺろっ'     # L音（可选）
+}
+
 all_visemes = ["viseme_PP", "viseme_SS", "viseme_E", "viseme_aa",
                "viseme_O", "viseme_U", "viseme_FF", "viseme_RR"]
 

@@ -548,6 +548,7 @@ def register():
             ('P1', "P1", "Position 1"),
             ('P2', "P2", "Position 2"),
             ('P3', "P3", "Position 3"),
+            ('P4', "P4", "Position 4")
         ],
         default='P0'
     )
