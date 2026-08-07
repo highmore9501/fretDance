@@ -28,3 +28,18 @@ As the author is not a native English speaker, this README may contain machine-t
 2. Use browser translation plugins for optimal reading experience
 
 The automatic translation from Chinese to English typically provides more accurate results than my direct machine translation here.
+
+---
+
+## Discontinuation Notice
+
+This repository is no longer maintained. If you are interested in the music doll series, please check out the following repositories:
+
+- **Unreal version**: [highmore9501/MusicDoll](https://github.com/highmore9501/MusicDoll)
+- **Blender version**: [highmore9501/music_doll_blender](https://github.com/highmore9501/music_doll_blender)
+
+music doll is a series of projects that generate animations from MIDI, and fret dance (guitar) is just one of the instruments it supports.
+
+Please note that the animation generation part of music doll is **not open source**. The two open-source repositories above are only plugins for data exchange with Unreal and Blender software.
+
+For more music doll related videos and finished works, you can visit the author's personal space on Bilibili: [Author's Bilibili Space](https://space.bilibili.com/1954959)
